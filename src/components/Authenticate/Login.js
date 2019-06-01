@@ -19,7 +19,8 @@ export default class Login extends React.Component {
     })
     .then(res => {
       console.log(res)
-      AsyncStorage.setItem("token", res.data.token)
+      AsyncStorage.setItem("token", res.data.token);
+      this.props.navigation.navigate('Landing')
     })
     .catch(err => console.log(err))
   }
