@@ -21,6 +21,7 @@ export default class Login extends React.Component {
       console.log(res)
       AsyncStorage.setItem("token", res.data.token);
       this.props.navigation.navigate('Landing')
+      console.log(res)
     })
     .catch(err => console.log(err))
   }
@@ -52,6 +53,7 @@ export default class Login extends React.Component {
   }
 
   render() {
+    console.log("LOGIN")
     return (
       <View style={styles.loginContainer}>
         <View>
