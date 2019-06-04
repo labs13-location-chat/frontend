@@ -20,6 +20,7 @@ import ChatroomItem from './ChatroomItem';
                         <ChatroomItem 
                             key={index}
                             chatName={chat}
+                            
                         />
                     )
                 })}

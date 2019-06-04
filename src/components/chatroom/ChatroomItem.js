@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Button, AppRegistry } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Button, AppRegistry, LayoutAnimation, UIManager, Platform } from 'react-native'
 import ChatroomItemMap from './ChatroomItemMap'
 import ChatroomItemSelected from './ChatroomItemSelected'
 
@@ -10,13 +10,18 @@ export default class ChatroomItem extends Component {
         super(props)
     
         this.state = {
-            selected: false
+            expanded: false
         }
-    }
+            if (Platform.OS === 'android') {
+                UIManager.setLayoutAnimationEnabledExperimental(true)
+            }
+        }
+
     
     selectionHandler = () => {
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         this.setState({
-            selected: !this.state.selected
+            expanded: !this.state.expanded
         })
     }
 
@@ -43,11 +48,11 @@ export default class ChatroomItem extends Component {
                             0.45 mi
                         </Text>
                         <Text>
-                         {this.state.selected ? '-' : '+'}
+                         {this.state.expanded ? '-' : '+'}
                         </Text>
                     </View>
                 </TouchableOpacity>
-                {this.state.selected ? 
+                {this.state.expanded ? 
                 <View>
                     <ChatroomItemMap style={styles.map} />
                     <ChatroomItemSelected />
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
         height: 100
     },
     container: {
-        height: 60,
+        height: 85,
         borderColor: 'gray',
         borderBottomWidth: 1
     },

@@ -10,6 +10,7 @@ export default class JoinChat extends Component {
         this.state = {
             mapToggle: false
         }
+        
     }
     
     
