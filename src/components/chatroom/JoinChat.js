@@ -8,7 +8,7 @@ export default class JoinChat extends Component {
         super(props)
     
         this.state = {
-             mapToggle: false
+            mapToggle: false
         }
     }
     
@@ -54,19 +54,19 @@ export default class JoinChat extends Component {
         return (
             <View>
                 <View>
-                    <Text>Chat Nearby...</Text>
+                    <Text style={styles.topText} >Chat Nearby...</Text>
                     <TextInput 
                         style={styles.search}
                         placeholder="Search by Zipcode"
                         />
                 </View>
-                <View>
-                    <TouchableOpacity onPress={() => this.searchToggler()}>
+                <View style={styles.option}>
+                    <TouchableOpacity style={!this.state.mapToggle ? styles.condSearch : null} onPress={() => this.searchToggler()}>
                         <Text>
                             SEARCH
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.mapToggler()}>
+                    <TouchableOpacity style={this.state.mapToggle ? styles.condMap : null} onPress={() => this.mapToggler()}>
                         <Text>
                             MAP
                         </Text>
@@ -87,8 +87,28 @@ export default class JoinChat extends Component {
 
 const styles = StyleSheet.create({
     search: {
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: 'black',
         margin: 10
+    },
+    topText: {
+        marginLeft: 10,
+        marginTop: 10,
+        fontSize: 15,
+        fontWeight: "400"
+    },
+    option: {
+        marginTop: 10,
+        marginBottom: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    condMap: {
+        borderBottomWidth: 6,
+        borderBottomColor: '#d9e257'
+    },
+    condSearch: {
+        borderBottomWidth: 6,
+        borderBottomColor: '#d9e257'
     }
 })

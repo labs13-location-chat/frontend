@@ -14,16 +14,27 @@ import ChatroomItem from './ChatroomItem';
 
     render() {
         return (
-            <FlatList 
-                data={chatrooms}
-                renderItem={(info) => (
-                    <ChatroomItem
-                        key={info.index}
-                        chatName={info.item}
-                    />
-                )}
+            <ScrollView>
+                {chatrooms.map((chat, index) => {
+                    return (
+                        <ChatroomItem 
+                            key={index}
+                            chatName={chat}
+                        />
+                    )
+                })}
+            </ScrollView>
+
+            // <FlatList 
+            //     data={chatrooms}
+            //     renderItem={(info) => (
+            //         <ChatroomItem
+            //             key={info.index}
+            //             chatName={info.item}
+            //         />
+            //     )}
             
-            />
+            // />
         )
     }
 }

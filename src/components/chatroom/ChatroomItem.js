@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Button } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Button, AppRegistry } from 'react-native'
 import ChatroomItemMap from './ChatroomItemMap'
+import ChatroomItemSelected from './ChatroomItemSelected'
 
 const pic = {uri: 'https://static.highsnobiety.com/thumbor/CDTF4ezi0dHntnuJiNPxepGkMl0=/fit-in/480x320/smart/static.highsnobiety.com/wp-content/uploads/2015/02/saulgoodman01.jpg'}
 
@@ -27,7 +28,7 @@ export default class ChatroomItem extends Component {
             <View style={styles.container}>
                 <TouchableOpacity style={styles.chatRoom} onPress={() => this.selectionHandler()} >
                     <View>
-                        <Image source={pic} />
+                        <Image style={{ width: 35, height: 35, borderRadius: 35 }} source={{uri: 'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'}} />
                     </View>
                     <View style={styles.nameAddress}>
                         <Text>
@@ -37,7 +38,7 @@ export default class ChatroomItem extends Component {
                             123 Main St, Anytown, USA
                         </Text>
                     </View>
-                    <View>
+                    <View style={styles.distance}>
                         <Text>
                             0.45 mi
                         </Text>
@@ -47,12 +48,10 @@ export default class ChatroomItem extends Component {
                     </View>
                 </TouchableOpacity>
                 {this.state.selected ? 
-                    <View>
-                        <MapView 
-                            provider={PROVIDER_GOOGLE}
-                        />
-                    </View>
-
+                <View>
+                    <ChatroomItemMap style={styles.map} />
+                    <ChatroomItemSelected />
+                </View>
                     : null}
             </View>
         )
@@ -60,6 +59,9 @@ export default class ChatroomItem extends Component {
 }
 
 const styles = StyleSheet.create({
+    map: {
+        height: 100
+    },
     container: {
         height: 60,
         borderColor: 'gray',
@@ -70,7 +72,10 @@ const styles = StyleSheet.create({
     }, 
     chatRoom: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        borderRadius: 50
     },
     nameAddress: {
         width: '70%'
@@ -84,5 +89,11 @@ const styles = StyleSheet.create({
     image: {
         width: 25,
         borderRadius: 5
-    }
+    },
+    // distance: {
+    //     alignItems: 'flex-end'
+    // }
 })
+
+
+AppRegistry.registerComponent('ChatroomItem', () => ChatroomItem)

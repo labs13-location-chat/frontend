@@ -18,6 +18,6 @@ export default class ChatroomItemMap extends Component {
 
 const styles = StyleSheet.create({
     map: {
-        height: 100
+        height: 200
     }
 })
