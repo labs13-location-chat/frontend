@@ -20,6 +20,7 @@ export default class JoinChat extends Component {
             fontSize: 20,
             fontWeight: '400',
             alignItems: 'center',
+            textAlign: 'center'
         },
         headerStyle: {
             backgroundColor: 'white',
