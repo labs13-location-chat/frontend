@@ -30,7 +30,7 @@
 
  const styles = StyleSheet.create({
      map: {
-         height: 400,
+         height: 475,
         //  marginTop: 80
      }
  })

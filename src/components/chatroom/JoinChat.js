@@ -16,7 +16,7 @@ export default class JoinChat extends Component {
     static navigationOptions = {
         title: 'Join a Chat Room',
         headerTitleStyle: {
-            color: 'Black',
+            color: 'black',
             fontSize: 20,
             fontWeight: '400',
             alignItems: 'center',
