@@ -4,6 +4,7 @@ import Landing from '../components/Landing';
 import JoinChat from './chatroom/JoinChat'
 import Login from './Authenticate/Login';
 import Register from './Authenticate/Register';
+import ChatMap from '../components/chatroom/ChatMap'
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
@@ -19,6 +20,10 @@ const AppStack = createStackNavigator({
 
 const cat = createStackNavigator({
     "Join a Chat Room": { screen: JoinChat }
+})
+
+const map = createStackNavigator({
+    "Map": { screen: ChatMap }
 })
 
 // const AuthStack = createStackNavigator({
