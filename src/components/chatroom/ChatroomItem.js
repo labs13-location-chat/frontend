@@ -47,7 +47,7 @@ export default class ChatroomItem extends Component {
                         <Text>
                             0.45 mi
                         </Text>
-                        <Text>
+                        <Text style={styles.expandOperators}>
                          {this.state.expanded ? '-' : '+'}
                         </Text>
                     </View>
@@ -68,9 +68,8 @@ const styles = StyleSheet.create({
         height: 100
     },
     container: {
-        height: 85,
         borderColor: 'gray',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     map: {
         height: 100
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        borderRadius: 50
+        height: 85
     },
     nameAddress: {
         width: '70%'
@@ -98,6 +97,12 @@ const styles = StyleSheet.create({
     // distance: {
     //     alignItems: 'flex-end'
     // }
+    expandOperators: {
+        backgroundColor: '#d9e257',
+        textAlign: 'center',
+        fontSize: 20,
+        margin: 10
+    }
 })
 
 

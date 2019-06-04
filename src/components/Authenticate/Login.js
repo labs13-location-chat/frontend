@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import { View, Button, TouchableOpacity, Text, TextInput, StyleSheet, AsyncStorage, TouchableWithoutFeedback } from "react-native";
+import { View, Button, TouchableOpacity, Text, TextInput, StyleSheet, AsyncStorage, } from "react-native";
 
 const URL = "https://labs13-localchat.herokuapp.com";
 
@@ -29,7 +29,7 @@ export default class Login extends React.Component {
   static navigationOptions = {
     title: 'Log in',
     headerTitleStyle: {
-        color: 'Black',
+        color: 'black',
         fontSize: 20,
         fontWeight: '400',
         alignItems: 'center',
@@ -89,11 +89,11 @@ export default class Login extends React.Component {
         </TouchableOpacity>
         <View style={styles.notRegistered}>
             <Text>Not registered?</Text>
-            <TouchableWithoutFeedback onPress={() => this.viewRegister()}>
+            <TouchableOpacity onPress={() => this.viewRegister()}>
             <View>
                 <Text>Sign up</Text>
             </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </View>
       </View>
     );
