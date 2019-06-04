@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import { View, Button, TouchableOpacity, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, Button, TouchableOpacity, Text, TextInput, StyleSheet, } from "react-native";
 
 const URL = "https://labs13-localchat.herokuapp.com";
 
@@ -54,7 +54,7 @@ export default class Register extends React.Component {
   static navigationOptions = {
     title: 'Sign Up',
     headerTitleStyle: {
-        color: 'Black',
+        color: 'black',
         fontSize: 20,
         fontWeight: '400',
         alignItems: 'center',
@@ -74,7 +74,7 @@ export default class Register extends React.Component {
   }
 
   viewLogin = () => {
-    this.props.navigation.navigate('Login')
+    this.props.navigation.navigate('Login');
   }
 
   render() {
@@ -121,21 +121,21 @@ export default class Register extends React.Component {
 
          <TouchableOpacity>
           <View style={styles.google}>
-            <Text style={styles.buttonText}>Log in with Google</Text>
+            <Text style={styles.buttonText}>Sign up with Google</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity>
           <View style={styles.facebook}>
-            <Text style={styles.buttonText}>Log in with Facebook</Text>
+            <Text style={styles.buttonText}>Sign up with Facebook</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.notRegistered}>
-            <Text>Not registered?</Text>
-            <TouchableWithoutFeedback onPress={() => this.viewLogin()}>
+            <Text>Already registered?</Text>
+            <TouchableOpacity onPress={() => this.viewLogin()}>
             <View>
-                <Text>Sign up</Text>
+                <Text>Log in</Text>
             </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </View>
       </View>
     );
