@@ -39,44 +39,6 @@ export default class ChatMap extends Component {
     });
   };
 
-  // locationHandler = () => {
-  //   const coords = nativeEvent.coordinate;
-  //   this.map.animateToRegion({
-  //     ...this.state.focusedLocation,
-  //     latitude: coords.latitude,
-  //     longitude: coords.longitude
-  //   });
-  //   this.setState(
-  //           focusedLocation: {
-  //               ...prevState.focusedLocation,
-  //               latitude: coords.latitude,
-  //               longitude: coords.longitude
-  //           },
-  //           locationChosen: true
-  //           )
-
-  // };
-
-  // getLocationHandler = () => {
-  //   navigator.geolocation.getCurrentPosition(
-  //     pos => {
-  //       const coordsEvent = {
-  //         nativeEvent: {
-  //           coordinate: {
-  //             latitude: pos.coords.latitude,
-  //             longitude: pos.coords.latitude
-  //           }
-  //         }
-  //       };
-  //       this.setState({});
-  //     },
-  //     err => {
-  //       console.log(err);
-  //       alert("Couldn't find your location");
-  //     }
-  //   );
-  // };
-
   getLocationHandler = () => {
     navigator.geolocation.getCurrentPosition(
       pos => {
