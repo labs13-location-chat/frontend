@@ -17,6 +17,9 @@ export default class Landing extends React.Component {
         super(props);
         this.state= {};
     }
+    static navigationOptions = {
+        title: 'Landing',
+    }
 
     chooseFile = () => {
         const options = {
