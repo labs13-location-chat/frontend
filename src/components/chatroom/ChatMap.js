@@ -59,6 +59,7 @@ export default class ChatMap extends Component {
   };
 
   render() {
+    console.log("Hi");
     let marker = null;
 
     if (this.state.locationChosen) {
