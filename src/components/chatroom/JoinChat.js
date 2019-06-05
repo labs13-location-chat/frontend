@@ -16,19 +16,9 @@ export default class JoinChat extends Component {
     
     static navigationOptions = {
         title: 'Join a Chat Room',
-        headerTitleStyle: {
-            color: 'black',
-            fontSize: 20,
-            fontWeight: '400',
-            alignItems: 'center',
-            textAlign: 'center'
-        },
-        headerStyle: {
-            backgroundColor: 'white',
-        },
-      }
+    }
       
-      searchToggler = () => {
+    searchToggler = () => {
           if (!this.state.mapToggle) {
               return
           } else {
@@ -37,9 +27,9 @@ export default class JoinChat extends Component {
                 })
             }
         //   console.log('toggled')
-      }
+    }
 
-      mapToggler = () => {
+    mapToggler = () => {
         if (this.state.mapToggle) {
             return
         } else {

@@ -52,16 +52,17 @@ export default class Register extends React.Component {
   }
 
   static navigationOptions = {
+    headerLayoutPreset: 'center',
     title: 'Sign Up',
     headerTitleStyle: {
-        color: 'black',
-        fontSize: 20,
-        fontWeight: '400',
-        alignItems: 'center',
+      color: 'black',
+      fontSize: 20,
+      fontWeight: '400',
     },
     headerStyle: {
         backgroundColor: 'white',
     },
+    // headerLeft: <View></View>
   }
 
   handleChange = (key, value) => {
