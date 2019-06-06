@@ -9,8 +9,8 @@ export default class ChatMap extends Component {
 
     this.state = {
       focusedLocation: {
-        latitude: 37.7900352,
-        longitude: -122.4013726,
+        latitude: 0,
+        longitude: 0,
         latitudeDelta: 0.0122,
         longitudeDelta:
           (Dimensions.get("window").width / Dimensions.get("window").height) *
@@ -18,6 +18,10 @@ export default class ChatMap extends Component {
       },
       locationChosen: false
     };
+  }
+
+  componentWillMount() {
+    this.getGeoLocation()
   }
 
   pickLocationHandler = event => {
@@ -38,6 +42,26 @@ export default class ChatMap extends Component {
       };
     });
   };
+
+
+  getGeoLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          this.setState({
+            ...this.state.focusedLocation,
+            focusedLocation: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.0122,
+              longitudeDelta:
+                (Dimensions.get("window").width / Dimensions.get("window").height) * 0.0122
+            }
+          })
+        }
+      )
+    }
+  }
 
   getLocationHandler = () => {
     navigator.geolocation.getCurrentPosition(
@@ -87,8 +111,7 @@ export default class ChatMap extends Component {
 
 const styles = StyleSheet.create({
   map: {
-    // height: 475
-    height: 400
+    height: 475
     //  marginTop: 80
   }
 });
