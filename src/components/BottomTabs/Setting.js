@@ -12,13 +12,13 @@ import {
 
 import ImagePicker from 'react-native-image-picker';
 
-export default class Landing extends React.Component {
+export default class Setting extends React.Component {
     constructor(props) {
         super(props);
         this.state= {};
     }
     static navigationOptions = {
-        title: 'Landing',
+        title: 'Settings',
     }
 
     chooseFile = () => {
@@ -55,14 +55,14 @@ export default class Landing extends React.Component {
     render() {
         return(
             <View>
-                <Text>Landing Screen</Text>
+                <Text>Settings Screen</Text>
                 <Button 
                     title="Sign Out"
                     onPress={this.signOut}
                 />
-                <TouchableOpacity onPress={() => {this.props.navigation.navigate('JoinChat')}}>
+                <TouchableOpacity onPress={() => {this.props.navigation.navigate('MyProfile')}}>
                     <View>
-                        <Text>Join Chat</Text>
+                        <Text>My Profile</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={{alignItems: 'center', justifyContent: 'center'}}>
