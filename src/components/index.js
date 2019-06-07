@@ -7,6 +7,7 @@ import Register from './Authenticate/Register';
 import ChatMap from '../components/chatroom/ChatMap';
 import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
+import ChatApp from '../components/chatroom/twilio/ChatApp'
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
@@ -121,9 +122,9 @@ const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
     }
 )
 
-// const cat = createStackNavigator({
-//     "JoinChat": { screen: JoinChat }
-// })
+const cat = createStackNavigator({
+    "ChatApp": { screen: ChatApp }
+})
 
 // const AuthStack = createStackNavigator({
 //     'Login': { screen: Login },
@@ -178,5 +179,5 @@ const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
 //         initialRouteName: 'AuthCheck',
 //     }
 // ))
-const LocalChat = createAppContainer(tabNavigator)
+const LocalChat = createAppContainer(cat)
 export default LocalChat;
