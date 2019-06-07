@@ -1,10 +1,12 @@
 import React from 'react';
 
-import Landing from '../components/Landing';
+import Setting from './BottomTabs/Setting';
 import JoinChat from './chatroom/JoinChat'
 import Login from './Authenticate/Login';
 import Register from './Authenticate/Register';
-import ChatMap from '../components/chatroom/ChatMap'
+import ChatMap from '../components/chatroom/ChatMap';
+import Camera from './BottomTabs/Camera';
+import MyProfile from './BottomTabs/MyProfile';
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
@@ -15,11 +17,11 @@ import {
 } from 'react-navigation';
 
 // const AppStack = createStackNavigator({
-//     'Landing': { screen: Landing },
+//     'Setting': { screen: Setting },
 //     'JoinChat': { screen: JoinChat }
 //     },
 //     {
-//         initialRouteName: 'Landing',
+//         initialRouteName: 'Setting',
         // headerLayoutPreset: 'center',
         // defaultNavigationOptions: {
         //     headerTitleStyle: {
@@ -34,13 +36,15 @@ import {
         // },
 //     }
 // )
-const Landings = createStackNavigator({
-    'Landing': { screen: Landing },
+const Settings = createStackNavigator({
+    'Setting': { screen: Setting },
+    'MyProfile': { screen: MyProfile },
     },
-        {
+    {
         navigationOptions: {
             tabBarLabel: 'Settings',
         },
+        initialRouteName: 'Setting',
         headerLayoutPreset: 'center',
         defaultNavigationOptions: {
             headerTitleStyle: {
@@ -78,7 +82,29 @@ const JoinChats = createStackNavigator({
     }
 )
 
-const tabNavigator = createBottomTabNavigator({ JoinChats, Landings },
+const Cameras = createStackNavigator({
+    'Camera': { screen: Camera },
+    },
+    {
+        navigationOptions: {
+            tabBarLabel: 'Camera',
+        },
+        headerLayoutPreset: 'center',
+        defaultNavigationOptions: {
+            headerTitleStyle: {
+                color: 'black',
+                fontSize: 20,
+                fontWeight: '400',
+            },
+            headerStyle: {
+                backgroundColor: 'white',
+            },
+            // headerLeft: <View></View>
+        },
+    }
+)
+
+const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
     {
         tabBarOptions: {
             labelStyle: {
