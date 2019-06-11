@@ -121,7 +121,7 @@ const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
     }
 )
 
-const cat = createStackNavigator({
+const LoginScreen = createStackNavigator({
     "Login": { screen: Login }
 })
 
@@ -178,5 +178,13 @@ const cat = createStackNavigator({
 //         initialRouteName: 'AuthCheck',
 //     }
 // ))
-const LocalChat = createAppContainer(cat)
+const LocalChat = createAppContainer(createSwitchNavigator (
+    {
+        AuthCheck: LoginScreen,
+        App: tabNavigator,
+    },
+    {
+        initialRouteName: 'AuthCheck',
+    }
+))
 export default LocalChat;
