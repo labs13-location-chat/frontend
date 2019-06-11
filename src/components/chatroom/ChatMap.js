@@ -111,7 +111,7 @@ export default class ChatMap extends Component {
 
 const styles = StyleSheet.create({
   map: {
-    height: 475
+    height: 360
     //  marginTop: 80
   }
 });
