@@ -12,7 +12,7 @@ export default class Camera extends React.Component {
         this.state= {};
     }
 
-    componentWillMount = () => {
+    componentWillUpdate = () => {
         this.cameraLaunch();
     }
 

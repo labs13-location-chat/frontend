@@ -4,11 +4,8 @@ import MessageList from "./MessageList";
 import TwilioChat from "twilio-chat";
 // import $ from "jquery";
 import axios from "axios";
-import { View, StyleSheet, Text } from 'react-native'
 
-const URL = "https://labs13-localchat.herokuapp.com";
-
-export default class ChatApp extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +21,7 @@ export default class ChatApp extends Component {
       .then(this.joinGeneralChannel)
       .then(this.configureChannelEvents)
       .catch(error => {
-        this.addMessage({ body: `Error: error` });
+        this.addMessage({ body: `Error: ${error.message}` });
       });
   };
 
@@ -32,15 +29,12 @@ export default class ChatApp extends Component {
     return new Promise((resolve, reject) => {
       this.addMessage({ body: "Connecting..." });
       axios
-        // .post("http://localhost:5000/api/token")
-        // .post('http://127.0.0.1:5000/api/token')
-        .post(`${URL}/api/token`)
+        .post("https://labs13-localchat.herokuapp.com/api/token")
         .then(res => {
-          // console.log(res)
           this.setState({
             username: res.data.identity
           });
-          // console.log(res);
+
           resolve(res.data.jwt);
         })
         .catch(err => console.log(err));
@@ -49,7 +43,7 @@ export default class ChatApp extends Component {
 
   createChatClient = token => {
     return new Promise((resolve, reject) => {
-      // console.log(token);
+      console.log("token", token);
       resolve(new TwilioChat(token));
     });
   };
@@ -57,13 +51,11 @@ export default class ChatApp extends Component {
   joinGeneralChannel = chatClient => {
     return new Promise((resolve, reject) => {
       chatClient
-      .getSubscribedChannels()
-      .then(() => {
-        chatClient
-        .getChannelByUniqueName("general")
-        .then(channel => {
-          console.log('get subbed channels')
-              console.log("HELLO, CLG CHANNEL", channel)
+        .getSubscribedChannels()
+        .then(() => {
+          chatClient
+            .getChannelBySid("CH5ca12ba063674ff79fdab6d62636e485")
+            .then(channel => {
               this.addMessage({ body: "Joining general channel..." });
               this.setState({ channel });
 
@@ -73,15 +65,15 @@ export default class ChatApp extends Component {
                   this.addMessage({
                     body: `Joined general channel as ${this.state.username}`
                   });
-                  window.addEventListener("beforeunload", () =>
-                    channel.leave()
-                  );
+                  // window.addEventListener("beforeunload", () =>
+                  //   channel.leave()
+                  // );
                 })
                 .catch(() => reject(Error("Could not join general channel.")));
 
               resolve(channel);
             })
-            .catch(() => this.createGeneralChannel());
+            .catch(() => this.createGeneralChannel(chatClient));
         })
         .catch(() => reject(Error("Could not get channel list.")));
     });
@@ -89,15 +81,13 @@ export default class ChatApp extends Component {
 
   createGeneralChannel = chatClient => {
     return new Promise((resolve, reject) => {
-      console.log("hellooooooo")
       this.addMessage({ body: "Creating general channel..." });
       chatClient
         .createChannel({ uniqueName: "general", friendlyName: "General Chat" })
         .then(() => this.joinGeneralChannel(chatClient))
-        .catch((err) => console.log(err)
-          );
-    }
-    )};
+        .catch(() => reject(Error("Could not create general channel.")));
+    });
+  };
 
   addMessage = message => {
     const messageData = {
@@ -133,24 +123,13 @@ export default class ChatApp extends Component {
   };
 
   render() {
-    console.log(this.state.channel)
-    // alert(this.state.channel)
-    console.log(this.state.username)
     return (
-      <View className="App">
-        <Text>{this.state.username}</Text>
+      <div className="App">
         <MessageList messages={this.state.messages} />
         <MessageForm onMessageSend={this.handleNewMessage} />
-      </View>
+      </div>
     );
   }
 }
 
-
-
-
-  const styles = StyleSheet.create({
-    messageForm: {
-      paddingTop: 200
-    }  
-  })
+export default App;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Button } from 'react-native'
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
 // import propTypes from 'prop-types'
 
 export default class Message extends Component {
@@ -13,10 +13,17 @@ export default class Message extends Component {
     render() {
         console.log(this.props.message)
         return (
-            <View>
-                <Text>{this.props.message.author}:</Text>
+            <View style={styles.message}>
+                <Text>{this.props.message.author}:PoopOpppOpppoppopop</Text>
                 <Text>{this.props.message.body}</Text>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    message: {
+        borderStyle: 'solid',
+        marginTop: 30
+    }
+})
