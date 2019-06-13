@@ -2,39 +2,48 @@ import React, { Component } from "react";
 import MessageForm from "./MessageForm";
 import MessageList from "./MessageList";
 import TwilioChat from "twilio-chat";
+import { getSubscribedChannels } from 'twilio-chat'
 // import $ from "jquery";
 import axios from "axios";
+import { View, StyleSheet, Text } from 'react-native'
 
-class App extends Component {
+const URL = "https://labs13-localchat.herokuapp.com";
+
+export default class ChatApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       messages: [],
       username: null,
       channel: null
-    };
+        };
   }
 
   componentDidMount = () => {
     this.getToken()
       .then(this.createChatClient)
+      // .then(this.createGeneralChannel)
       .then(this.joinGeneralChannel)
       .then(this.configureChannelEvents)
       .catch(error => {
-        this.addMessage({ body: `Error: ${error.message}` });
-      });
+        console.log(error)}
+      )
   };
 
   getToken = () => {
     return new Promise((resolve, reject) => {
       this.addMessage({ body: "Connecting..." });
       axios
-        .post("https://labs13-localchat.herokuapp.com/api/token")
+        // .post("http://localhost:5000/api/token")
+        // .post('http://127.0.0.1:5000/api/token')
+        .post(`${URL}/api/token`)
         .then(res => {
+          // console.log(res)
+        
           this.setState({
             username: res.data.identity
           });
-
+          // console.log(res);
           resolve(res.data.jwt);
         })
         .catch(err => console.log(err));
@@ -43,51 +52,86 @@ class App extends Component {
 
   createChatClient = token => {
     return new Promise((resolve, reject) => {
-      console.log("token", token);
-      resolve(new TwilioChat(token));
+      // console.log(token);
+      resolve(new TwilioChat(token))
+      console.log("tchat", TwilioChat);
     });
   };
 
-  joinGeneralChannel = chatClient => {
+  joinGeneralChannel = (chatClient) => {
     return new Promise((resolve, reject) => {
-      chatClient
-        .getSubscribedChannels()
-        .then(() => {
-          chatClient
-            .getChannelBySid("CH5ca12ba063674ff79fdab6d62636e485")
-            .then(channel => {
-              this.addMessage({ body: "Joining general channel..." });
-              this.setState({ channel });
+      // chatClient.getSubscribedChannels().then(() => {
+        console.log(chatClient.channels.channels)
+        chatClient.getChannelByUniqueName("").then((channel) => {
+          this.addMessage({ body: 'Joining general channel...' })
+          this.setState({ channel })
 
-              channel
-                .join()
-                .then(() => {
-                  this.addMessage({
-                    body: `Joined general channel as ${this.state.username}`
-                  });
-                  // window.addEventListener("beforeunload", () =>
-                  //   channel.leave()
-                  // );
-                })
-                .catch(() => reject(Error("Could not join general channel.")));
+          channel.join().then(() => {
+            this.addMessage({ body: `Joined general channel as ${this.state.username}` })
+            window.addEventListener('beforeunload', () => channel.leave())
+          }).catch(() => reject(Error('Could not join general channel.')))
 
-              resolve(channel);
-            })
-            .catch(() => this.createGeneralChannel(chatClient));
-        })
-        .catch(() => reject(Error("Could not get channel list.")));
-    });
-  };
+          resolve(channel)
+        }).catch(() => reject(Error('Could not find general channel.')))
+      .catch(() => reject(Error('Could not get channel list.')))
+    })
+  }
 
   createGeneralChannel = chatClient => {
     return new Promise((resolve, reject) => {
       this.addMessage({ body: "Creating general channel..." });
+      
       chatClient
-        .createChannel({ uniqueName: "general", friendlyName: "General Chat" })
-        .then(() => this.joinGeneralChannel(chatClient))
-        .catch(() => reject(Error("Could not create general channel.")));
-    });
-  };
+      .createChannel()
+      // .getSubscribedChannels()
+      .then(() => this.joinGeneralChannel(chatClient))
+      console.log(chatClient)
+      })
+        .catch((err) => console.log(err)
+    )};
+  // joinGeneralChannel = chatClient => {
+
+  //   return new Promise((resolve, reject) => {
+  //     // console.log("ChatClient in JGC", chatClient)
+  //     chatClient
+  //     .getSubscribedChannels()
+      
+  //     .then(() => {
+  //       console.log("ChatClient in JGC .then", this)
+  //       chatClient
+  //       .getChannelByUniqueName("general")
+
+  //       .then(channel => {
+  //             console.log("before if statement", channel)
+  //             if (channel) {
+  //               console.log("if channel is true", channel)
+  //               this.addMessage({ body: "Joining general channel..." });
+  //               this.setState({ channel });
+  //             } else {
+  //               this.addMessage({ body: 'no channel'})
+  //             }
+
+
+  //             channel
+  //               .join()
+  //               .then(() => {
+  //                 this.addMessage({
+  //                   body: `Joined general channel as ${this.state.username}`
+  //                 });
+  //                 // window.addEventListener("beforeunload", () =>
+  //                 //   channel.leave()
+  //                 // );
+  //               })
+  //               .catch(() => reject(Error("Could not join general channel.")));
+
+  //             resolve(channel);
+  //           })
+  //           .catch(() => reject(Error("Failed bro")));
+  //       })
+  //       .catch(() => reject(Error("Could not get channel list.")));
+  //   });
+  // };
+
 
   addMessage = message => {
     const messageData = {
@@ -120,16 +164,28 @@ class App extends Component {
     channel.on("typingStarted", member => {
       this.addMessage({ body: `${member.identity} is currently typing.` });
     });
+
   };
 
   render() {
+    console.log(this.state.channel)
+    
+    // console.log("Username", this.state.username)
     return (
-      <div className="App">
+      <View className="App">
+        <Text>{this.state.username}</Text>
         <MessageList messages={this.state.messages} />
         <MessageForm onMessageSend={this.handleNewMessage} />
-      </div>
+      </View>
     );
   }
 }
 
-export default App;
+
+
+
+  const styles = StyleSheet.create({
+    messageForm: {
+      paddingTop: 200
+    }  
+  })

@@ -155,6 +155,9 @@ export default class Login extends React.Component {
       Linking.openURL(url);
     }
   };
+    viewJoinChats = () => {
+    this.props.navigation.navigate('JoinChat')
+  }
 
   render() {
     const { user } = this.state;
@@ -164,10 +167,11 @@ export default class Login extends React.Component {
           ? // Show user info if already logged in
             <View style={styles.content}>
               <Text style={styles.header}>
-                Welcome {user.name}!
+                Welcome {user.first_name}!
               </Text>
               <View style={styles.avatar}>
                 <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
+                <Button title="Join Chats" onPress={this.viewJoinChats} />
               </View>
             </View>
           : // Show Please log in message if not
@@ -181,27 +185,27 @@ export default class Login extends React.Component {
               <Text style={styles.text}>
                 Please log in to continue {'\n'}
               </Text>
+            {/* Login buttons */}
+            <View style={styles.buttons}>
+              {/* <Icon.Button
+                name="facebook"
+                backgroundColor="#3b5998"
+                onPress={this.loginWithFacebook}
+                {...iconStyles}
+              >
+                Login with Facebook
+              </Icon.Button> */}
+              <Icon.Button
+                name="google"
+                backgroundColor="#DD4B39"
+                onPress={this.loginWithGoogle}
+                {...iconStyles}
+              >
+                Login with Google
+              </Icon.Button>
+            </View>
             </View>
         }
-        {/* Login buttons */}
-        <View style={styles.buttons}>
-          {/* <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.loginWithFacebook}
-            {...iconStyles}
-          >
-            Login with Facebook
-          </Icon.Button> */}
-          <Icon.Button
-            name="google"
-            backgroundColor="#DD4B39"
-            onPress={this.loginWithGoogle}
-            {...iconStyles}
-          >
-            Login with Google
-          </Icon.Button>
-        </View>
       </View>
     );
   }
