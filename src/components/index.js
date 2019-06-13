@@ -7,6 +7,7 @@ import Register from './Authenticate/Register';
 import ChatMap from '../components/chatroom/ChatMap';
 import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
+import ChatApp from '../components/chatroom/twilio/ChatApp';
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
@@ -183,8 +184,13 @@ const LocalChat = createAppContainer(createSwitchNavigator (
         AuthCheck: LoginScreen,
         App: tabNavigator,
     },
-    {
-        initialRouteName: 'AuthCheck',
-    }
+    // {
+    //     initialRouteName: 'AuthCheck',
+    // }
 ))
+// const cat = createStackNavigator({
+//     "ChatApp": { screen: ChatApp },
+// })
+
+// const LocalChat = createAppContainer(cat)
 export default LocalChat;

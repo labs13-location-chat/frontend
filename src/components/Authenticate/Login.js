@@ -149,9 +149,9 @@ export default class Login extends React.Component {
 	// Handle Login with Facebook button tap
 	// loginWithFacebook = () => this.openURL('https://localhost:3000/auth/facebook');
 
-	// Handle Login with Google button tap
-	loginWithGoogle = () =>
-		this.openURL('https://labs13-localchat.herokuapp.com/auth/google');
+	// Handle Login with Facebook button tap
+	loginWithFacebook = () =>
+		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
 	logout = async () => {
 		try {
@@ -177,9 +177,16 @@ export default class Login extends React.Component {
 			Linking.openURL(url);
 		}
 	};
+	viewJoinChats = () => {
+		// AsyncStorage.setItem();
+		this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	};
 
 	render() {
 		const { user } = this.state;
+		// console.log(user)
+		console.log('login', this.props);
+		console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
 				{user ? (
@@ -192,6 +199,10 @@ export default class Login extends React.Component {
 							<Image
 								source={{ uri: user.avatar }}
 								style={styles.avatarImage}
+							/>
+							<Button
+								title='Join Chats'
+								onPress={this.viewJoinChats}
 							/>
 						</View>
 					</View>
@@ -209,35 +220,27 @@ export default class Login extends React.Component {
 						<Text style={styles.text}>
 							Please log in to continue {'\n'}
 						</Text>
+						{/* Login buttons */}
+						<View style={styles.buttons}>
+							<Icon.Button
+								name='facebook'
+								backgroundColor='#3b5998'
+								onPress={this.loginWithFacebook}
+								{...iconStyles}
+							>
+								Login with Facebook
+							</Icon.Button>
+							<Icon.Button
+								name='google'
+								backgroundColor='#DD4B39'
+								onPress={this.loginWithGoogle}
+								{...iconStyles}
+							>
+								Login with Google
+							</Icon.Button>
+						</View>
 					</View>
 				)}
-				{/* Login buttons */}
-				<View style={styles.buttons}>
-					{/* <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.loginWithFacebook}
-            {...iconStyles}
-          >
-            Login with Facebook
-          </Icon.Button> */}
-					<Icon.Button
-						name='google'
-						backgroundColor='#DD4B39'
-						onPress={this.loginWithGoogle}
-						{...iconStyles}
-					>
-						Login with Google
-					</Icon.Button>
-					<Icon.Button
-						// name='logout'
-						backgroundColor='#DD4B39'
-						onPress={this.logout}
-						{...iconStyles}
-					>
-						Logout
-					</Icon.Button>
-				</View>
 			</View>
 		);
 	}
@@ -277,7 +280,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5
 	},
 	buttons: {
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		flexDirection: 'row',
 		margin: 20,
 		marginBottom: 30

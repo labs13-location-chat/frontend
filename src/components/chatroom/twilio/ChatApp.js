@@ -94,9 +94,8 @@ export default class ChatApp extends Component {
       chatClient
         .createChannel({ uniqueName: "general", friendlyName: "General Chat" })
         .then(() => this.joinGeneralChannel(chatClient))
+      })
         .catch((err) => console.log(err)
-          );
-    }
     )};
 
   addMessage = message => {
@@ -151,6 +150,6 @@ export default class ChatApp extends Component {
 
   const styles = StyleSheet.create({
     messageForm: {
-      paddingTop: 200
+      // paddingTop: 200
     }  
   })
