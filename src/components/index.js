@@ -183,14 +183,14 @@ const cat = createStackNavigator({
 //         initialRouteName: 'AuthCheck',
 //     }
 // ))
-// const LocalChat = createAppContainer(createSwitchNavigator (
-//     {
-//         AuthCheck: LoginScreen,
-//         App: tabNavigator,
-//     },
-//     {
-//         initialRouteName: 'AuthCheck',
-//     }
-// ))
-const LocalChat = createAppContainer(cat)
+const LocalChat = createAppContainer(createSwitchNavigator (
+    {
+        AuthCheck: LoginScreen,
+        App: tabNavigator,
+    },
+    {
+        initialRouteName: 'AuthCheck',
+    }
+))
+// const LocalChat = createAppContainer(cat)
 export default LocalChat;

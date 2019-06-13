@@ -2,15 +2,33 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
+import axios from 'axios'
+
+const URL = "https://labs13-localchat.herokuapp.com";
+const LURL = "http://127.0.0.1:5000"
+const LHURL = "http://localhost:5000"
 
 export default class JoinChat extends Component {
     constructor(props) {
         super(props)
     
         this.state = {
-            mapToggle: false
+            mapToggle: false,
+            chatrooms: []
         }
         
+    }
+
+    componentDidMount() {
+        axios
+            .get(`${LHURL}/api/chatrooms/`)
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    chatrooms: res.data
+                })
+            })
+            .catch(err => console.log(err))
     }
     
     
@@ -41,7 +59,7 @@ export default class JoinChat extends Component {
     }
     
     render() {
-        console.log(this.state.mapToggle)
+        // console.log(this.state.mapToggle)
         return (
             <View>
                 <View>
