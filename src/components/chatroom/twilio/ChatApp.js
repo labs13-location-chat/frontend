@@ -82,10 +82,15 @@ export default class ChatApp extends Component {
       this.addMessage({ body: "Creating general channel..." });
       
       chatClient
+<<<<<<< HEAD
       .createChannel()
       // .getSubscribedChannels()
       .then(() => this.joinGeneralChannel(chatClient))
       console.log(chatClient)
+=======
+        .createChannel({ uniqueName: "general", friendlyName: "General Chat" })
+        .then(() => this.joinGeneralChannel(chatClient))
+>>>>>>> b80acf14e8b0d112b20249d62531425b1a08d5fe
       })
         .catch((err) => console.log(err)
     )};
@@ -186,6 +191,6 @@ export default class ChatApp extends Component {
 
   const styles = StyleSheet.create({
     messageForm: {
-      paddingTop: 200
+      // paddingTop: 200
     }  
   })

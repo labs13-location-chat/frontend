@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
 import axios from 'axios'
@@ -10,26 +10,16 @@ const LHURL = "http://localhost:5000"
 
 export default class JoinChat extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        // this.fetchUser();
     
         this.state = {
             mapToggle: false,
-            chatrooms: []
+
         }
         
     }
 
-    componentDidMount() {
-        axios
-            .get(`${LHURL}/api/chatrooms/`)
-            .then(res => {
-                console.log(res)
-                this.setState({
-                    chatrooms: res.data
-                })
-            })
-            .catch(err => console.log(err))
-    }
     
     
     static navigationOptions = {
@@ -58,11 +48,23 @@ export default class JoinChat extends Component {
         // console.log('toggled')
     }
     
+    // viewSettingnav = () => {
+    //     this.props.navigation.navigate('Setting', 
+    //     {user: this.props.navigation.state.params.user}
+    //     )
+    // }
+
+    // fetchUser = async () => {
+    //     const user = await AsyncStorage.getItem("user");
+    //     console.log(user)
+    // }
+
     render() {
-        // console.log(this.state.mapToggle)
         return (
             <View>
                 <View>
+                <Button title="nav" onPress={this.viewSettingnav} />
+                    <Text></Text>
                     <Text style={styles.topText} >Chat Nearby...</Text>
                     <TextInput 
                         style={styles.search}

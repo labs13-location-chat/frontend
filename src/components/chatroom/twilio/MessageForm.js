@@ -56,11 +56,11 @@ export default class MessageForm extends Component {
 
 const styles = StyleSheet.create({
     mform: {
-      flexDirection: 'row',
-    //   justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-      alignContent: 'flex-end',
-      marginTop: 200   
+    //   flexDirection: 'row',
+    // //   justifyContent: 'flex-end',
+    //   alignItems: 'flex-end',
+    //   alignContent: 'flex-end',
+    //   marginTop: 200   
     },
     input: {
         width: 325,

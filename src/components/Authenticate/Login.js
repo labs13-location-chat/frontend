@@ -136,7 +136,7 @@ export default class Login extends React.Component {
   };
 
   // Handle Login with Facebook button tap
-  // loginWithFacebook = () => this.openURL('https://localhost:3000/auth/facebook');
+  loginWithFacebook = () => this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
   // Handle Login with Google button tap
   loginWithGoogle = () => this.openURL('https://labs13-localchat.herokuapp.com/auth/google');
@@ -156,11 +156,16 @@ export default class Login extends React.Component {
     }
   };
     viewJoinChats = () => {
-    this.props.navigation.navigate('JoinChat')
+    // this.props.navigation.navigate('JoinChat')
+    // AsyncStorage.setItem();
+    this.props.navigation.navigate('JoinChat', {user: this.state.user})
   }
 
   render() {
     const { user } = this.state;
+    // console.log(user)
+    console.log('login', this.props)
+    console.log('loginstate', this.state)
     return (
       <View style={styles.container}>
         { user
@@ -188,6 +193,7 @@ export default class Login extends React.Component {
             {/* Login buttons */}
             <View style={styles.buttons}>
               {/* <Icon.Button
+              <Icon.Button
                 name="facebook"
                 backgroundColor="#3b5998"
                 onPress={this.loginWithFacebook}
@@ -195,6 +201,7 @@ export default class Login extends React.Component {
               >
                 Login with Facebook
               </Icon.Button> */}
+              {/* </Icon.Button> */}
               <Icon.Button
                 name="google"
                 backgroundColor="#DD4B39"
@@ -245,7 +252,7 @@ const iconStyles = {
     marginBottom: 5,
   },
   buttons: {
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     margin: 20,
     marginBottom: 30,
