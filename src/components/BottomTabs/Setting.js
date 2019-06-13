@@ -53,9 +53,12 @@ export default class Setting extends React.Component {
     }
 
     render() {
+        // const user = this.props.navigation.getParam('user')
+        console.log("settings",this.props)
         return(
             <View>
                 <Text>Settings Screen</Text>
+                {/* <Text>Hello {this.props.navigation.state.params.user.first_name}</Text> */}
                 <Button 
                     title="Sign Out"
                     onPress={this.signOut}
