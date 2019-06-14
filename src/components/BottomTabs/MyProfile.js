@@ -7,15 +7,57 @@ import {
 	StyleSheet,
 	CheckBox,
 	Image,
-	TouchableWithoutFeedback
+	TouchableWithoutFeedback,
+	AsyncStorage
 } from 'react-native';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 export default class MyProfile extends React.Component {
+	constructor(props) {
+		super(props);
+		this.fetchUser();
+		this.state = {
+			firstname: '',
+			lastname: '',
+			email: '',
+			phonenumber: '',
+			anonymous: true,
+			user: ''
+		};
+	}
 	static navigationOptions = {
-		title: 'Profile',
+		title: 'Edit Profile',
 		headerTransparent: true
+	};
+
+	fetchUser = async () => {
+		const first = await AsyncStorage.getItem('firstname');
+		const last = await AsyncStorage.getItem('lastname');
+		const useremail = await AsyncStorage.getItem('email');
+		const phonenumber = await AsyncStorage.getItem('phonenumber');
+		console.log('users from state:', first, last, useremail, phonenumber);
+		this.setState({
+			firstname: first,
+			lastname: last,
+			email: useremail,
+			phonenumber: phonenumber
+		});
+	};
+
+	handleChange = (key, value) => {
+		console.log('value change:', this.state);
+
+		this.setState({
+			...this.state,
+			[key]: value
+		});
+	};
+
+	anonymousCheck = () => {
+		console.log('anonymous:', this.state.anonymous);
+		const val = !this.state.anonymous;
+		this.setState({ anonymous: val });
 	};
 
 	render() {
@@ -33,13 +75,47 @@ export default class MyProfile extends React.Component {
 								'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 						}}
 					/>
+					<Text
+						style={{
+							position: 'absolute',
+							fontSize: 20,
+							marginTop: 95,
+							backgroundColor: 'rgba(244, 244, 244, 0.5)',
+							// backgroundColor: 'red',
+							width: 140,
+							height: 50,
+							// paddingHorizontal: 25,
+							// paddingVertical: 10,
+							textAlign: 'center',
+							borderBottomLeftRadius: 100,
+							borderBottomRightRadius: 100
+						}}
+					>
+						Update
+					</Text>
 					<View style={styles.display}>
 						<Text style={styles.text}>Name</Text>
-						<TextInput style={styles.inputBox} caretHidden={true} />
+						<TextInput
+							style={styles.inputBox}
+							onChangeText={val =>
+								this.handleChange('firstname', val)}
+							value={this.state.firstname}
+							name='firstname'
+						/>
 						<Text style={styles.text}>Phone Number</Text>
-						<TextInput style={styles.inputBox} />
+						<TextInput
+							style={styles.inputBox}
+							keyboardType='phone-pad'
+							name='phonenumber'
+							onChangeText={val =>
+								this.handleChange('phonenumber', val)}
+							value={this.state.phonenumber}
+						/>
 						<Text style={styles.text}>Anonymous</Text>
-						<CheckBox />
+						<CheckBox
+							value={this.state.anonymous}
+							onValueChange={this.anonymousCheck}
+						/>
 					</View>
 					{/* <KeyboardSpacer /> */}
 				</View>
