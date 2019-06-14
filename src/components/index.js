@@ -7,8 +7,7 @@ import Register from './Authenticate/Register';
 import ChatMap from '../components/chatroom/ChatMap';
 import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
-import ChatApp from './chatroom/twilio/ChatApp'
-import ChatApp from '../components/chatroom/twilio/ChatApp';
+
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
