@@ -170,6 +170,10 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         { user
           ? // Show user info if already logged in
+          AsyncStorage.setItem("firstname", this.state.user.first_name) && 
+          AsyncStorage.setItem("lastname", this.state.user.last_name) &&
+          AsyncStorage.setItem("email", this.state.user.email)
+          &&
             <View style={styles.content}>
               <Text style={styles.header}>
                 Welcome {user.first_name}!
