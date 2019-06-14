@@ -6,10 +6,13 @@ import ChatSearch from './ChatSearch'
 export default class JoinChat extends Component {
     constructor(props) {
         super(props);
-        // this.fetchUser();
+        this.fetchUser();
     
         this.state = {
             mapToggle: false,
+            firstname: '',
+            lastname: '',
+            email: '',
         }
         
     }
@@ -47,10 +50,17 @@ export default class JoinChat extends Component {
     //     )
     // }
 
-    // fetchUser = async () => {
-    //     const user = await AsyncStorage.getItem("user");
-    //     console.log(user)
-    // }
+    fetchUser = async () => {
+        const first = await AsyncStorage.getItem("firstname");
+        const last = await AsyncStorage.getItem("lastname");
+        const useremail = await AsyncStorage.getItem("email");
+        console.log(first, last, useremail);
+        this.setState({
+            firstname: first,
+            lastname: last,
+            email: useremail
+        })
+    }
 
     render() {
         console.log(this.state.mapToggle)
@@ -59,8 +69,9 @@ export default class JoinChat extends Component {
         return (
             <View>
                 <View>
-                <Button title="nav" onPress={this.viewSettingnav} />
-                    <Text></Text>
+                {/* <Button title="nav" onPress={this.viewSettingnav} /> */}
+                <Text></Text>
+                    <Text>hello {this.state.firstname}</Text>
                     <Text style={styles.topText} >Chat Nearby...</Text>
                     <TextInput 
                         style={styles.search}
