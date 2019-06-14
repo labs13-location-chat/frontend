@@ -15,7 +15,13 @@ import ImagePicker from 'react-native-image-picker';
 export default class Setting extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.fetchUser();
+		this.state = {
+			firstname: '',
+			lastname: '',
+			email: '',
+			user: ''
+		};
 	}
 	static navigationOptions = {
 		title: 'Settings'
@@ -50,9 +56,21 @@ export default class Setting extends React.Component {
 	// 	});
 	// };
 
+	fetchUser = async () => {
+		const first = await AsyncStorage.getItem('firstname');
+		const last = await AsyncStorage.getItem('lastname');
+		const useremail = await AsyncStorage.getItem('email');
+		console.log(first, last, useremail);
+		this.setState({
+			firstname: first,
+			lastname: last,
+			email: useremail
+		});
+	};
+
 	signOut = async () => {
 		await AsyncStorage.clear();
-		this.props.navigation.navigate('Auth');
+		this.props.navigation.navigate('Login');
 	};
 
 	render() {
@@ -130,6 +148,34 @@ export default class Setting extends React.Component {
 			</View>
 		);
 	}
+
+	// render() {
+	//     // const user = this.props.navigation.getParam('user')
+	//     console.log("settings",this.props)
+	//     return(
+	//         <View>
+	//             <Text>Settings Screen</Text>
+	//             {/* <Text>Hello {this.props.navigation.state.params.user.first_name}</Text> */}
+	//             <Text>hello {this.state.firstname}</Text>
+	//             <Button
+	//                 title="Sign Out"
+	//                 onPress={this.signOut}
+	//             />
+	//             <TouchableOpacity onPress={() => {this.props.navigation.navigate('MyProfile')}}>
+	//                 <View>
+	//                     <Text>My Profile</Text>
+	//                 </View>
+	//             </TouchableOpacity>
+	//             <View style={{alignItems: 'center', justifyContent: 'center'}}>
+	//                 <Button title="Choose File" onPress={this.chooseFile.bind(this)} />
+	//                 <Image
+	//                     source={this.state.avatarSource}
+	//                     style={{width: 300, height: 300}}
+	//                 />
+	//             </View>
+	//         </View>
+	//     )
+	// }
 }
 
 const styles = StyleSheet.create({
