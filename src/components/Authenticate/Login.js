@@ -155,10 +155,18 @@ export default class Login extends React.Component {
       Linking.openURL(url);
     }
   };
-    viewJoinChats = () => {
+  viewJoinChats = () => {
     // AsyncStorage.setItem();
-    this.props.navigation.navigate('JoinChat', {user: this.state.user})
+    this.props.navigation.navigate('JoinChat')
   }
+
+  signOut = () => {
+    this.setState({
+      user: undefined
+    })
+  }
+
+
 
   render() {
     const { user } = this.state;
@@ -169,6 +177,10 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         { user
           ? // Show user info if already logged in
+          AsyncStorage.setItem("firstname", this.state.user.first_name) && 
+          AsyncStorage.setItem("lastname", this.state.user.last_name) &&
+          AsyncStorage.setItem("email", this.state.user.email)
+          &&
             <View style={styles.content}>
               <Text style={styles.header}>
                 Welcome {user.first_name}!
@@ -176,6 +188,8 @@ export default class Login extends React.Component {
               <View style={styles.avatar}>
                 <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
                 <Button title="Join Chats" onPress={this.viewJoinChats} />
+                <Button title="Sign Out" onPress={this.signOut} color="red" />
+
               </View>
             </View>
           : // Show Please log in message if not
