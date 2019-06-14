@@ -69,17 +69,19 @@ export default class Setting extends React.Component {
 	};
 
 	signOut = async () => {
-		await AsyncStorage.clear();
+		const { user } = this.state;
+		// await AsyncStorage.clear();
+		// this.props.navigation.navigate('Login');
+		this.setState({
+			user: undefined
+		});
 		this.props.navigation.navigate('Login');
 	};
 
 	render() {
-		// const user = this.props.navigation.getParam('user')
-		console.log('settings', this.props);
+		const { firstname, lastname } = this.state;
 		return (
 			<View style={styles.container}>
-				{/* <Text>Settings Screen</Text> */}
-				{/* <Text>Hello {this.props.navigation.state.params.user.first_name}</Text> */}
 				<Image
 					style={styles.image}
 					source={{
@@ -87,6 +89,7 @@ export default class Setting extends React.Component {
 							'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 					}}
 				/>
+				<Text>{`${firstname} ${lastname}`}</Text>
 				<View style={styles.display}>
 					<TouchableOpacity
 						style={styles.touch}
@@ -118,23 +121,16 @@ export default class Setting extends React.Component {
 							<Text>Notifications</Text>
 						</View>
 					</TouchableOpacity>
-					{/* <TouchableOpacity
-						onPress={() => {
-							this.signOut;
-						}}
+					<TouchableOpacity
+						style={styles.touch}
+						onPress={this.signOut}
 					>
 						<View>
-							<Text>Logout</Text>
+							<Text style={styles.logout}>Logout</Text>
 						</View>
-                    </TouchableOpacity> */}
+					</TouchableOpacity>
 				</View>
-				<View
-					style={{
-						alignItems: 'center',
-						justifyContent: 'center',
-						marginTop: 20
-					}}
-				>
+				<View style={styles.button}>
 					{/* <Button
 						title='Choose File'
 						onPress={this.chooseFile.bind(this)}
@@ -143,39 +139,11 @@ export default class Setting extends React.Component {
 						source={this.state.avatarSource}
 						style={{ width: 300, height: 300 }}
                     /> */}
-					<Button title='Logout' onPress={this.signOut} />
+					{/* <Button title='Logout' onPress={this.signOut} /> */}
 				</View>
 			</View>
 		);
 	}
-
-	// render() {
-	//     // const user = this.props.navigation.getParam('user')
-	//     console.log("settings",this.props)
-	//     return(
-	//         <View>
-	//             <Text>Settings Screen</Text>
-	//             {/* <Text>Hello {this.props.navigation.state.params.user.first_name}</Text> */}
-	//             <Text>hello {this.state.firstname}</Text>
-	//             <Button
-	//                 title="Sign Out"
-	//                 onPress={this.signOut}
-	//             />
-	//             <TouchableOpacity onPress={() => {this.props.navigation.navigate('MyProfile')}}>
-	//                 <View>
-	//                     <Text>My Profile</Text>
-	//                 </View>
-	//             </TouchableOpacity>
-	//             <View style={{alignItems: 'center', justifyContent: 'center'}}>
-	//                 <Button title="Choose File" onPress={this.chooseFile.bind(this)} />
-	//                 <Image
-	//                     source={this.state.avatarSource}
-	//                     style={{width: 300, height: 300}}
-	//                 />
-	//             </View>
-	//         </View>
-	//     )
-	// }
 }
 
 const styles = StyleSheet.create({
@@ -188,14 +156,14 @@ const styles = StyleSheet.create({
 		// justifyContent: 'center'
 	},
 	image: {
-		width: 100,
-		height: 100,
+		width: 150,
+		height: 150,
 		borderRadius: 100,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	display: {
-		marginTop: 150,
+		marginTop: 100,
 		alignItems: 'flex-start'
 	},
 	touch: {
@@ -203,5 +171,13 @@ const styles = StyleSheet.create({
 		paddingVertical: 20,
 		borderBottomWidth: 1,
 		fontSize: 16
+	},
+	button: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 20
+	},
+	logout: {
+		color: 'red'
 	}
 });
