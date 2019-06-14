@@ -146,8 +146,9 @@ export default class Login extends React.Component {
 		}
 	};
 
-	// Handle Login with Facebook button tap
-	// loginWithFacebook = () => this.openURL('https://localhost:3000/auth/facebook');
+	// Handle Login with Google button tap
+	loginWithGoogle = () =>
+		this.openURL('https://labs13-localchat.herokuapp.com/auth/google');
 
 	// Handle Login with Facebook button tap
 	loginWithFacebook = () =>
