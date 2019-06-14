@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions, Button } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Button, AsyncStorage } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import axios from "axios";
 
 export default class ChatMap extends Component {
   constructor(props) {
     super(props);
+    this.fetchUser();
 
     this.state = {
+      firstname: '',
+      lastname: '',
+      email: '',
       focusedLocation: {
         latitude: 0,
         longitude: 0,
@@ -81,6 +85,18 @@ export default class ChatMap extends Component {
       }
     );
   };
+
+  fetchUser = async () => {
+    const first = await AsyncStorage.getItem("firstname");
+    const last = await AsyncStorage.getItem("lastname");
+    const useremail = await AsyncStorage.getItem("email");
+    // console.log(first, last, useremail);
+    this.setState({
+        firstname: first,
+        lastname: last,
+        email: useremail
+    })
+  }
 
   render() {
     console.log("Hi");

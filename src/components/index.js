@@ -8,6 +8,7 @@ import ChatMap from '../components/chatroom/ChatMap';
 import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
 import ChatApp from '../components/chatroom/twilio/ChatApp';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AsyncStorage, View, Text } from 'react-native';
 import {
@@ -17,26 +18,6 @@ import {
     createBottomTabNavigator,
 } from 'react-navigation';
 
-// const AppStack = createStackNavigator({
-//     'Setting': { screen: Setting },
-//     'JoinChat': { screen: JoinChat }
-//     },
-//     {
-//         initialRouteName: 'Setting',
-        // headerLayoutPreset: 'center',
-        // defaultNavigationOptions: {
-        //     headerTitleStyle: {
-        //         color: 'black',
-        //         fontSize: 20,
-        //         fontWeight: '400',
-        //     },
-        //     headerStyle: {
-        //         backgroundColor: 'white',
-        //     },
-        //     // headerLeft: <View></View>
-        // },
-//     }
-// )
 const Settings = createStackNavigator({
     'Setting': { screen: Setting },
     'MyProfile': { screen: MyProfile },
@@ -44,17 +25,18 @@ const Settings = createStackNavigator({
     {
         navigationOptions: {
             tabBarLabel: 'Settings',
+            tabBarIcon: <Icon name="md-settings" size={25}/>
         },
         initialRouteName: 'Setting',
         headerLayoutPreset: 'center',
         defaultNavigationOptions: {
             headerTitleStyle: {
-                color: 'black',
+                color: 'white',
                 fontSize: 20,
                 fontWeight: '400',
             },
             headerStyle: {
-                backgroundColor: 'white',
+                backgroundColor: '#3EB1D6',
             },
             // headerLeft: <View></View>
         },
@@ -67,16 +49,17 @@ const JoinChats = createStackNavigator({
         {
         navigationOptions: {
             tabBarLabel: 'Join Chat',
+            tabBarIcon: <Icon name="md-chatboxes" size={25}/>
         },
         headerLayoutPreset: 'center',
         defaultNavigationOptions: {
             headerTitleStyle: {
-                color: 'black',
+                color: 'white',
                 fontSize: 20,
                 fontWeight: '400',
             },
             headerStyle: {
-                backgroundColor: 'white',
+                backgroundColor: '#3EB1D6',
             },
             // headerLeft: <View></View>
         },
@@ -89,6 +72,7 @@ const Cameras = createStackNavigator({
     {
         navigationOptions: {
             tabBarLabel: 'Camera',
+            tabBarIcon: <Icon name="md-camera" size={25}/>
         },
         headerLayoutPreset: 'center',
         defaultNavigationOptions: {
@@ -108,15 +92,16 @@ const Cameras = createStackNavigator({
 const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
     {
         tabBarOptions: {
+            activeTintColor: '#3EB1D6',
             labelStyle: {
-                color: 'white',
+                // color: 'white',
                 fontSize: 14,
                 fontWeight: '600'
             },
             style: {
                 height: 60,
                 padding: 5,
-                backgroundColor: '#3EB1D6',
+                // backgroundColor: '#3EB1D6',
             }
         }
     }

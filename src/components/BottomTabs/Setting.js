@@ -57,7 +57,7 @@ export default class Setting extends React.Component {
         const first = await AsyncStorage.getItem("firstname");
         const last = await AsyncStorage.getItem("lastname");
         const useremail = await AsyncStorage.getItem("email");
-        console.log(first, last, useremail);
+        // console.log(first, last, useremail);
         this.setState({
             firstname: first,
             lastname: last,
@@ -72,12 +72,12 @@ export default class Setting extends React.Component {
 
     render() {
         // const user = this.props.navigation.getParam('user')
-        console.log("settings",this.props)
+        // console.log("settings",this.props)
         return(
             <View>
                 <Text>Settings Screen</Text>
                 {/* <Text>Hello {this.props.navigation.state.params.user.first_name}</Text> */}
-                <Text>hello {this.state.firstname}</Text>
+                {/* <Text>hello {this.state.firstname}</Text> */}
                 <Button 
                     title="Sign Out"
                     onPress={this.signOut}

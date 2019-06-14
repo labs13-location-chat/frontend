@@ -170,7 +170,7 @@ export default class Login extends React.Component {
 
   render() {
     const { user } = this.state;
-    // console.log(user)
+    console.log(user)
     console.log('login', this.props)
     console.log('loginstate', this.state)
     return (
