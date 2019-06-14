@@ -10,6 +10,7 @@ import {
 	TouchableWithoutFeedback,
 	AsyncStorage
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
@@ -23,7 +24,9 @@ export default class MyProfile extends React.Component {
 			email: '',
 			phonenumber: '',
 			anonymous: true,
-			user: ''
+			user: '',
+			photo:
+				'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 		};
 	}
 	static navigationOptions = {
@@ -60,7 +63,32 @@ export default class MyProfile extends React.Component {
 		this.setState({ anonymous: val });
 	};
 
+	chooseFile = () => {
+		const options = {
+			title: 'Select Photo',
+			// customButtons: [{ name: 'gallery', title: 'Choose an Image from your Gallery' }],
+			storageOptions: {
+				skipBackup: true,
+				path: 'images'
+			}
+		};
+		ImagePicker.showImagePicker(options, response => {
+			console.log('Response = ', response);
+			if (response.didCancel) {
+				console.log('User canceled image picker');
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error);
+			} else {
+				const source = { uri: response.uri };
+				this.setState({
+					photo: source
+				});
+			}
+		});
+	};
+
 	render() {
+		const { photo } = this.state;
 		return (
 			<TouchableWithoutFeedback
 				onPress={() => {
@@ -71,11 +99,12 @@ export default class MyProfile extends React.Component {
 					<Image
 						style={styles.image}
 						source={{
-							uri:
-								'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
+							uri: photo.uri
+							// 'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 						}}
 					/>
 					<Text
+						onPress={this.chooseFile.bind(this)}
 						style={{
 							position: 'absolute',
 							fontSize: 20,

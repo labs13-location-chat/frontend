@@ -86,10 +86,10 @@ export default class Setting extends React.Component {
 					style={styles.image}
 					source={{
 						uri:
-							'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
+							'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
 					}}
 				/>
-				<Text>{`${firstname} ${lastname}`}</Text>
+				<Text style={styles.name}>{`${firstname} ${lastname}`}</Text>
 				<View style={styles.display}>
 					<TouchableOpacity
 						style={styles.touch}
@@ -171,6 +171,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 20,
 		borderBottomWidth: 1,
 		fontSize: 16
+	},
+	name: {
+		fontSize: 20
 	},
 	button: {
 		alignItems: 'center',
