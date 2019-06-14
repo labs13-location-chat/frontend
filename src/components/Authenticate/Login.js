@@ -153,16 +153,16 @@ export default class Login extends React.Component {
 	loginWithFacebook = () =>
 		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
-	logout = async () => {
-		try {
-			await this.openURL(
-				'https://labs13-localchat.herokuapp.com/auth/logout'
-			);
-			this.setState({ user: undefined });
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	// logout = async () => {
+	// 	try {
+	// 		await this.openURL(
+	// 			'https://labs13-localchat.herokuapp.com/auth/logout'
+	// 		);
+	// 		this.setState({ user: undefined });
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// };
 
 	// Open URL in a browser
 	openURL = url => {
