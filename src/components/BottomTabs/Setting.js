@@ -56,17 +56,17 @@ export default class Setting extends React.Component {
 	// 	});
 	// };
 
-	fetchUser = async () => {
-		const first = await AsyncStorage.getItem('firstname');
-		const last = await AsyncStorage.getItem('lastname');
-		const useremail = await AsyncStorage.getItem('email');
-		console.log(first, last, useremail);
-		this.setState({
-			firstname: first,
-			lastname: last,
-			email: useremail
-		});
-	};
+    fetchUser = async () => {
+        const first = await AsyncStorage.getItem("firstname");
+        const last = await AsyncStorage.getItem("lastname");
+        const useremail = await AsyncStorage.getItem("email");
+        // console.log(first, last, useremail);
+        this.setState({
+            firstname: first,
+            lastname: last,
+            email: useremail
+        })
+    }
 
 	signOut = async () => {
 		const { user } = this.state;
