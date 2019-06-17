@@ -8,8 +8,10 @@ import {
 	CheckBox,
 	Image,
 	TouchableWithoutFeedback,
-	AsyncStorage
+	AsyncStorage,
+	Button
 } from 'react-native';
+import axios from 'axios';
 import ImagePicker from 'react-native-image-picker';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -87,6 +89,8 @@ export default class MyProfile extends React.Component {
 		});
 	};
 
+	submit = () => {};
+
 	render() {
 		const { photo } = this.state;
 		return (
@@ -147,6 +151,10 @@ export default class MyProfile extends React.Component {
 						/>
 					</View>
 					{/* <KeyboardSpacer /> */}
+					<Button
+						style={{ backgroundColor: '#3EB1D6' }}
+						title='Save'
+					/>
 				</View>
 			</TouchableWithoutFeedback>
 		);
