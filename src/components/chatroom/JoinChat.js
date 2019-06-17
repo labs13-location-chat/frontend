@@ -54,7 +54,7 @@ export default class JoinChat extends Component {
         const first = await AsyncStorage.getItem("firstname");
         const last = await AsyncStorage.getItem("lastname");
         const useremail = await AsyncStorage.getItem("email");
-        console.log(first, last, useremail);
+        // console.log(first, last, useremail);
         this.setState({
             firstname: first,
             lastname: last,
@@ -63,15 +63,12 @@ export default class JoinChat extends Component {
     }
 
     render() {
-        console.log(this.state.mapToggle)
-        console.log('chat', this.props)
-        // console.log(this.props.navigation.state.params.user.first_name)
+        // console.log(this.state.mapToggle)
+        // console.log('chat', this.props)
         return (
             <View>
                 <View>
-                {/* <Button title="nav" onPress={this.viewSettingnav} /> */}
-                <Text></Text>
-                    <Text>hello {this.state.firstname}</Text>
+                    {/* <Text>hello {this.state.firstname}</Text> */}
                     <Text style={styles.topText} >Chat Nearby...</Text>
                     <TextInput 
                         style={styles.search}
