@@ -14,28 +14,28 @@ import ChatroomItem from './ChatroomItem';
 
     render() {
         return (
-            <ScrollView>
-                {chatrooms.map((chat, index) => {
-                    return (
-                        <ChatroomItem 
-                            key={index}
-                            chatName={chat}
+            // <ScrollView>
+            //     {chatrooms.map((chat, index) => {
+            //         return (
+            //             <ChatroomItem 
+            //                 key={index}
+            //                 chatName={chat}
                             
-                        />
-                    )
-                })}
-            </ScrollView>
+            //             />
+            //         )
+            //     })}
+            // </ScrollView>
 
-            // <FlatList 
-            //     data={chatrooms}
-            //     renderItem={(info) => (
-            //         <ChatroomItem
-            //             key={info.index}
-            //             chatName={info.item}
-            //         />
-            //     )}
+            <FlatList 
+                data={chatrooms}
+                renderItem={(info) => (
+                    <ChatroomItem
+                        key={info.index}
+                        chatName={info.item}
+                    />
+                )}
             
-            // />
+            />
         )
     }
 }

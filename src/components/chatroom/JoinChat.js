@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
 
 export default class JoinChat extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.fetchUser();
     
         this.state = {
-            mapToggle: false
+            mapToggle: false,
+            firstname: '',
+            lastname: '',
+            email: '',
         }
         
     }
@@ -40,11 +44,31 @@ export default class JoinChat extends Component {
         // console.log('toggled')
     }
     
+    // viewSettingnav = () => {
+    //     this.props.navigation.navigate('Setting', 
+    //     {user: this.props.navigation.state.params.user}
+    //     )
+    // }
+
+    fetchUser = async () => {
+        const first = await AsyncStorage.getItem("firstname");
+        const last = await AsyncStorage.getItem("lastname");
+        const useremail = await AsyncStorage.getItem("email");
+        // console.log(first, last, useremail);
+        this.setState({
+            firstname: first,
+            lastname: last,
+            email: useremail
+        })
+    }
+
     render() {
-        console.log(this.state.mapToggle)
+        // console.log(this.state.mapToggle)
+        // console.log('chat', this.props)
         return (
             <View>
                 <View>
+                    {/* <Text>hello {this.state.firstname}</Text> */}
                     <Text style={styles.topText} >Chat Nearby...</Text>
                     <TextInput 
                         style={styles.search}
