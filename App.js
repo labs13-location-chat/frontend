@@ -10,7 +10,7 @@ export default class App extends Component {
     super(props)
   
     // Initialize sendbird using our app id
-    const sb = new Sendbird({ appId: Config.appId })
+    var sb = new Sendbird({ appId: Config.appId })
   }
   
   render() {

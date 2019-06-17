@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
+import Sendbird from 'sendbird'
+import Config from '../../config'
+
+var sb = new Sendbird({ appId: Config.appId })
+
 
 export default class JoinChat extends Component {
     constructor(props) {
@@ -14,10 +19,18 @@ export default class JoinChat extends Component {
             lastname: '',
             email: '',
         }
-        
     }
     
     
+componentDidMount() {
+    let userId = AsyncStorage.getItem('userID')
+    let name = AsyncStorage.getItem('firstname')
+    sb.connect(userId, function(user, error) {
+        console.log("Hello", userId, name)
+    })
+}
+
+
     static navigationOptions = {
         title: 'Join a Chat Room',
     }
@@ -63,6 +76,8 @@ export default class JoinChat extends Component {
     }
 
     render() {
+        // console.log(object)
+        
         // console.log(this.state.mapToggle)
         // console.log('chat', this.props)
         return (
