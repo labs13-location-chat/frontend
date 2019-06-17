@@ -33,10 +33,11 @@ export default class ChatSearch extends Component {
     };
   }
 
-  componentDidMount() {
+  getChatroom = () => {
     axios
       .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
       .then(res => {
+        // console.log("res data", res);
         this.setState({
           chatroom: res.data
         });
@@ -44,28 +45,25 @@ export default class ChatSearch extends Component {
       .catch(err => {
         console.log(err);
       });
+  };
+  componentDidMount() {
+    this.getChatroom();
   }
 
   render() {
+    console.log("this.state", this.state.chatroom);
     return (
-      // <ScrollView>
-      //     {chatrooms.map((chat, index) => {
-      //         return (
-      //             <ChatroomItem
-      //                 key={index}
-      //                 chatName={chat}
+      <ScrollView>
+        {this.state.chatroom &&
+          this.state.chatroom.map(chat => {
+            return <ChatroomItem key={chat.id} chat={chat} />;
+          })}
+      </ScrollView>
 
-      //             />
-      //         )
-      //     })}
-      // </ScrollView>
-
-      <FlatList
-        data={chatroom}
-        renderItem={info => (
-          <ChatroomItem key={info.index} chatName={info.item} />
-        )}
-      />
+      //   <FlatList
+      //     data={this.state.chatroom}
+      //     renderItem={info => <ChatroomItem key={info.id} chat={info} />}
+      //   />
     );
   }
 }
