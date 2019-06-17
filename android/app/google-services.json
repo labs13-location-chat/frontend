@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:45411407729:android:3819434297699ac5",
         "android_client_info": {
-          "package_name": "com.reactnativesyncmanagersample"
+          "package_name": "com.labs13localchat"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "45411407729-69k100s1mj7sieui5c4ik60si88sp8rt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.reactnativesyncmanagersample"
+                "bundle_id": "com.labs13localchat"
               }
             }
           ]
@@ -71,7 +71,7 @@
               "client_id": "45411407729-69k100s1mj7sieui5c4ik60si88sp8rt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.reactnativesyncmanagersample"
+                "bundle_id": "com.labs13localchat"
               }
             }
           ]
@@ -107,7 +107,7 @@
               "client_id": "45411407729-69k100s1mj7sieui5c4ik60si88sp8rt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.reactnativesyncmanagersample"
+                "bundle_id": "com.labs13localchat"
               }
             }
           ]

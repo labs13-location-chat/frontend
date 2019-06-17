@@ -6,4 +6,4 @@ import push from './src/push';
 
 console.disableYellowBox = true;
 AppRegistry.registerComponent(appName, () => App);
-AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => push);
+// AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => push);

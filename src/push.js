@@ -7,7 +7,7 @@ export default async (message) => {
     const payload = JSON.parse(message.data.sendbird);
 
     const localNotification = new firebase.notifications.Notification({ show_in_foreground: true })
-      .android.setChannelId('com.reactnativesyncmanagersample.default_channel_id')
+      .android.setChannelId('com.labs13localchat.default_channel_id')
       .android.setSmallIcon('ic_notification')
       .android.setPriority(firebase.notifications.Android.Priority.High)
       .setNotificationId(message.messageId)

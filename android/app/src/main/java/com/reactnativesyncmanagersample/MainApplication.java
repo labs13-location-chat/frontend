@@ -1,4 +1,4 @@
-package com.reactnativesyncmanagersample;
+package com.labs13localchat;
 
 import android.app.Application;
 

@@ -41,7 +41,7 @@ export default class App extends React.Component {
   }
   componentDidMount() {
     const channel = new firebase.notifications.Android.Channel(
-      "com.reactnativesyncmanagersample.default_channel_id",
+      "com.labs13localchat.default_channel_id",
       "React Native SyncManager sample",
       firebase.notifications.Android.Importance.Max
     ).setDescription("React Native SyncManager sample notification channel");
@@ -71,8 +71,8 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
-        {/* <LocalChat /> */}
+        {/* <AppContainer /> */}
+        <LocalChat />
       </Provider>
     );
   }

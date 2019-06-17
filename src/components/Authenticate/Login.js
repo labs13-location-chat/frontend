@@ -155,11 +155,18 @@ export default class Login extends React.Component {
       Linking.openURL(url);
     }
   };
-    viewJoinChats = () => {
-    // this.props.navigation.navigate('JoinChat')
+  viewJoinChats = () => {
     // AsyncStorage.setItem();
-    this.props.navigation.navigate('JoinChat', {user: this.state.user})
+    this.props.navigation.navigate('JoinChat')
   }
+
+  signOut = () => {
+    this.setState({
+      user: undefined
+    })
+  }
+
+
 
   render() {
     const { user } = this.state;
@@ -181,6 +188,8 @@ export default class Login extends React.Component {
               <View style={styles.avatar}>
                 <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
                 <Button title="Join Chats" onPress={this.viewJoinChats} />
+                <Button title="Sign Out" onPress={this.signOut} color="red" />
+
               </View>
             </View>
           : // Show Please log in message if not
@@ -196,7 +205,6 @@ export default class Login extends React.Component {
               </Text>
             {/* Login buttons */}
             <View style={styles.buttons}>
-              {/* <Icon.Button
               <Icon.Button
                 name="facebook"
                 backgroundColor="#3b5998"
@@ -204,8 +212,7 @@ export default class Login extends React.Component {
                 {...iconStyles}
               >
                 Login with Facebook
-              </Icon.Button> */}
-              {/* </Icon.Button> */}
+              </Icon.Button>
               <Icon.Button
                 name="google"
                 backgroundColor="#DD4B39"

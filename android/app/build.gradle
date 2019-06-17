@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.reactnativesyncmanagersample"
+        applicationId "com.labs13localchat"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

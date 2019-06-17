@@ -129,6 +129,10 @@ const LoginScreen = createStackNavigator({
   Login: { screen: Login }
 });
 
+const cat = createStackNavigator({
+  JoinChat: { screen: JoinChat }
+});
+
 // const AuthStack = createStackNavigator({
 //     'Login': { screen: Login },
 //     'Register': { screen: Register }
