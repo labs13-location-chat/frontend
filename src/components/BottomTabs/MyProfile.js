@@ -21,6 +21,7 @@ export default class MyProfile extends React.Component {
 		super(props);
 		// this.fetchUser(props);
 		this.state = {
+			user: [],
 			photo:
 				'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 		};
@@ -30,46 +31,74 @@ export default class MyProfile extends React.Component {
 		headerTransparent: true
 	};
 
+	// getid = () => {
+	// 	let id = false;
+	// 	if(this.props.navigation.state.params) {
+	// 		id = this.props.navigation.state.params.id
+	// 	}
+	// 	return id
+	// }
+
+	// fetchData = async () => {
+	// 	const { navigation } = this.props;
+	// 	const userId = navigation.getParam('userId');
+	// 	console.log('params', params.first_name);
+
+	// 	const response = await fetch(
+	// 		'https://labs13-localchat.herokuapp.com/api/users/' + userId
+	// 	);
+	// 	const user = await response.json();
+	// 	this.setState({
+	// 		user: user
+	// 	});
+	// };
+
 	// componentDidMount() {
+	// 	this.fetchData();
+	// }
+
+	// componentDidMount() {
+	// 	const userId = this.props.navigation.getParam('userId');
+	// 	console.log(userId);
 	// 	axios
-	// 		.get('https://labs13-localchat.herokuapp.com/api/users/')
+	// 		.get(`https://labs13-localchat.herokuapp.com/api/users/` + params.id)
 	// 		.then(res => {
 	// 			console.log('user did mount:', res.data);
 
-	// 			this.setState({
-	// 				user: res.data
-	// 			});
+	// 			// this.setState({
+	// 			// 	user: res.data
+	// 			// });
 	// 		})
 	// 		.catch(err => {
 	// 			console.error(err);
 	// 		});
 	// }
 
-	// fetchUser = async () => {
-	// 	const id = await AsyncStorage.getItem('id');
-	// 	const googleid = await AsyncStorage.getItem('googleid');
-	// 	const facebookid = await AsyncStorage.getItem('facebookid');
-	// 	const first = await AsyncStorage.getItem('firstname');
-	// 	const last = await AsyncStorage.getItem('lastname');
-	// 	const useremail = await AsyncStorage.getItem('email');
-	// 	const phonenumber = await AsyncStorage.getItem('phonenumber');
-	// 	console.log(
-	// 		'users from state:',
-	// 		id,
-	// 		googleid,
-	// 		facebookid,
-	// 		first,
-	// 		last,
-	// 		useremail,
-	// 		phonenumber
-	// 	);
-	// 	this.setState({
-	// 		firstname: first,
-	// 		lastname: last,
-	// 		email: useremail,
-	// 		phonenumber: phonenumber
-	// 	});
-	// };
+	fetchUser = async () => {
+		const id = await this.props.navigation.navigate.state.params.id;
+		const googleid = await AsyncStorage.getItem('googleid');
+		const facebookid = await AsyncStorage.getItem('facebookid');
+		const first = await AsyncStorage.getItem('firstname');
+		const last = await AsyncStorage.getItem('lastname');
+		const useremail = await AsyncStorage.getItem('email');
+		const phonenumber = await AsyncStorage.getItem('phonenumber');
+		console.log(
+			'users from state:',
+			id,
+			googleid,
+			facebookid,
+			first,
+			last,
+			useremail,
+			phonenumber
+		);
+		this.setState({
+			firstname: first,
+			lastname: last,
+			email: useremail,
+			phonenumber: phonenumber
+		});
+	};
 
 	handleChange = (key, value) => {
 		console.log('value change:', this.state);

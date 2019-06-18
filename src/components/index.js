@@ -24,8 +24,7 @@ const Settings = createStackNavigator(
 		Setting: { screen: Setting },
 		MyProfile: { screen: MyProfile },
 		MenuSettings: { screen: MenuSettings },
-		Notifications: { screen: Notifications },
-		Users: { screen: Users }
+		Notifications: { screen: Notifications }
 	},
 	{
 		navigationOptions: {
