@@ -23,7 +23,6 @@ export default class MyProfile extends React.Component {
 		this.state = {
 			firstname: '',
 			lastname: '',
-			email: '',
 			phonenumber: '',
 			anonymous: true,
 			user: '',
@@ -37,23 +36,33 @@ export default class MyProfile extends React.Component {
 	};
 
 	fetchUser = async () => {
-		const id = this.props.navigation.state.params.id;
-		const first = await AsyncStorage.getItem('firstname');
-		const last = await AsyncStorage.getItem('lastname');
-		const useremail = await AsyncStorage.getItem('email');
-		const phonenumber = await AsyncStorage.getItem('phonenumber');
+		const id = await this.props.navigation.state.params.id;
+		const first = await this.props.navigation.state.params.firstname;
+		const last = await this.props.navigation.state.params.lastname;
+		const phonenumber = await this.props.navigation.state.params
+			.phonenumber;
+		const anonymous = await this.props.navigation.state.params.anonymous;
+		// const first = await AsyncStorage.getItem('firstname');
+		// const last = await AsyncStorage.getItem('lastname');
+		// const useremail = await AsyncStorage.getItem('email');
+		// const phonenumber = await AsyncStorage.getItem('phonenumber');
 		console.log(
 			'users from state:',
+			'first name:',
 			first,
+			',',
+			'last name:',
 			last,
-			useremail,
+			',',
+			'phone number:',
 			phonenumber,
+			',',
+			'user id:',
 			id
 		);
 		this.setState({
 			firstname: first,
 			lastname: last,
-			email: useremail,
 			phonenumber: phonenumber
 		});
 	};
@@ -97,22 +106,31 @@ export default class MyProfile extends React.Component {
 		});
 	};
 
-	// submit = (id, user) => {
-	// 	const user_id = AsyncStorage.getItem('id');
-	// 	axios
-	// 		.put(
-	// 			`https://labs13-localchat.herokuapp.com/api/users/${user_id}`,
-	// 			user
-	// 		)
-	// 		.then(res => {
-	// 			console.log('user:', res.data);
-	// 			// ...this.state,
-	// 			// user: res.data
-	// 		})
-	// 		.catch(err => {
-	// 			console.error(err);
-	// 		});
-	// };
+	submit = user => {
+		const user_id = this.props.navigation.state.params.id;
+		const first = this.props.navigation.state.params.firstname;
+		const last = this.props.navigation.state.params.lastname;
+		const phonenumber = this.props.navigation.state.params.phonenumber;
+		const anonymous = this.props.navigation.state.params.anonymous;
+		console.log(user_id);
+		axios
+			.put(
+				`https://labs13-localchat.herokuapp.com/api/users/${user_id}`,
+				user
+			)
+			.then(res => {
+				console.log('user:', res.data);
+				this.setState({
+					firstname: first,
+					lastname: last,
+					phonenumber: phonenumber,
+					anonymous: anonymous
+				});
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	};
 
 	render() {
 		const { photo } = this.state;

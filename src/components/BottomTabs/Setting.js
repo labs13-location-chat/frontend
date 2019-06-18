@@ -20,7 +20,7 @@ export default class Setting extends React.Component {
 			firstname: '',
 			lastname: '',
 			email: '',
-			user: undefined
+			user: []
 		};
 	}
 	static navigationOptions = {
@@ -36,7 +36,6 @@ export default class Setting extends React.Component {
 				this.setState({
 					user: res.data
 				});
-				AsyncStorage.setItem('id', JSON.stringify(res.data.id));
 			})
 			.catch(err => {
 				console.error(err);
