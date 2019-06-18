@@ -10,9 +10,11 @@ import {
   } from "react-native";
 import SendBird from 'sendbird'
 import Config from '../../../config'
+import MessageForm from './MessageForm'
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
+const params = new sb.UserMessageParams();
 
 export default class MessageRoom extends Component {
     constructor(props) {
@@ -20,7 +22,8 @@ export default class MessageRoom extends Component {
     
         this.state = {
              user: [],
-             showChat: false
+             showChat: false,
+             channelInfo: []
         }
     }
 
@@ -40,9 +43,10 @@ export default class MessageRoom extends Component {
             }
         
             channel.enter(function(response, error) {
-              console.log("Welcome to the Channel")
+              console.log("Welcome to the Channel", channel)
+            
               if (error) {
-                  return (console.log(error))
+                //   return (console.log(error))
                 }
             });
         });
@@ -51,18 +55,40 @@ export default class MessageRoom extends Component {
         })
         
     }
+
+
+    sendMessage = params => {
+        // let selectedChannel = sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
+        //     if (error) {
+        //         return;
+        //     }
+        
+        //     return channel
+        //     // Successfully fetched the channel.
+        //     // console.log(channel);
+        //     // let selectedChannel = channel
+        // });
+        channel.sendUserMessage(params, function(message, error) {
+            if (error) {
+                return;
+            }
+        
+            console.log(message);
+        });
+    }
     
 
     render() {
-        console.log(this.state.user)
-        ChannelHandler.onMessageReceived = function(channel, message) {
-            console.log(channel, message)
-        }
+
+        console.log(params.message)
+        // ChannelHandler.onMessageReceived = function(channel, message) {
+        //     console.log(channel, message)
+        // }
         return (
             <View>
                 {this.state.showChat ? 
                     <View>
-                        <Text>Hello</Text>
+                        <MessageForm sendMessage={this.sendMessage} />
                     </View>
                     :
                     <View>
