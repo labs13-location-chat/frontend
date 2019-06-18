@@ -27,6 +27,7 @@ export default class ChatroomItemSelected extends Component {
         longitude: 0,
         latitude: 0
       },
+      chatroom: [],
       user: []
     }
   }
@@ -40,7 +41,7 @@ export default class ChatroomItemSelected extends Component {
             longitude: res.data.coordinate.longitude,
             latitude: res.data.coordinate.latitude
           },
-          user: res.data
+          chatroom: res.data
         })
       })
       .catch(err => console.log(err))
@@ -54,6 +55,7 @@ export default class ChatroomItemSelected extends Component {
 
 
   render() {
+    
     console.log(this.props)
     return (
       <View>
@@ -61,8 +63,9 @@ export default class ChatroomItemSelected extends Component {
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
+            // annotations={markers}
           /> 
-          {/* <Marker coordinate={this.state.location} /> */}
+          {/* <Marker coordinate={markers} /> */}
             </View>
         <View>
           <Button onPress={this.joinChannel} title="Join Chat" />

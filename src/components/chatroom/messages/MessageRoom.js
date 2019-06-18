@@ -16,6 +16,15 @@ var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
 const params = new sb.UserMessageParams();
 
+// params.message = TEXT_MESSAGE;
+// params.customType = CUSTOM_TYPE;
+// params.data = DATA;
+// params.mentionType = 'users';                       // Either 'users' or 'channel'
+// params.mentionedUserIds = ['Jeff', 'Julia'];        // or mentionedUsers = Array<User>;    
+// params.metaArrayKeys = ['key1', 'key2'];
+// params.translationTargetLanguages = ['fe', 'de'];   // French and German
+// params.pushNotificationDeliveryOption = 'default';  // Either 'default' or 'suppress'
+
 export default class MessageRoom extends Component {
     constructor(props) {
         super(props)
@@ -53,21 +62,10 @@ export default class MessageRoom extends Component {
         this.setState({
             showChat: !this.state.showChat
         })
-        
     }
 
 
     sendMessage = params => {
-        // let selectedChannel = sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
-        //     if (error) {
-        //         return;
-        //     }
-        
-        //     return channel
-        //     // Successfully fetched the channel.
-        //     // console.log(channel);
-        //     // let selectedChannel = channel
-        // });
         channel.sendUserMessage(params, function(message, error) {
             if (error) {
                 return;
