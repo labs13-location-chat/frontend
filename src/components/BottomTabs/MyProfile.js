@@ -19,17 +19,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 export default class MyProfile extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fetchUser(props);
+		// this.fetchUser(props);
 		this.state = {
-			id: '',
-			googleid: null,
-			facebookid: null,
-			firstname: '',
-			lastname: '',
-			email: '',
-			phonenumber: '',
-			anonymous: true,
-			users: undefined,
 			photo:
 				'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 		};
@@ -54,31 +45,31 @@ export default class MyProfile extends React.Component {
 	// 		});
 	// }
 
-	fetchUser = async () => {
-		const id = await AsyncStorage.getItem('id');
-		const googleid = await AsyncStorage.getItem('googleid');
-		const facebookid = await AsyncStorage.getItem('facebookid');
-		const first = await AsyncStorage.getItem('firstname');
-		const last = await AsyncStorage.getItem('lastname');
-		const useremail = await AsyncStorage.getItem('email');
-		const phonenumber = await AsyncStorage.getItem('phonenumber');
-		console.log(
-			'users from state:',
-			id,
-			googleid,
-			facebookid,
-			first,
-			last,
-			useremail,
-			phonenumber
-		);
-		this.setState({
-			firstname: first,
-			lastname: last,
-			email: useremail,
-			phonenumber: phonenumber
-		});
-	};
+	// fetchUser = async () => {
+	// 	const id = await AsyncStorage.getItem('id');
+	// 	const googleid = await AsyncStorage.getItem('googleid');
+	// 	const facebookid = await AsyncStorage.getItem('facebookid');
+	// 	const first = await AsyncStorage.getItem('firstname');
+	// 	const last = await AsyncStorage.getItem('lastname');
+	// 	const useremail = await AsyncStorage.getItem('email');
+	// 	const phonenumber = await AsyncStorage.getItem('phonenumber');
+	// 	console.log(
+	// 		'users from state:',
+	// 		id,
+	// 		googleid,
+	// 		facebookid,
+	// 		first,
+	// 		last,
+	// 		useremail,
+	// 		phonenumber
+	// 	);
+	// 	this.setState({
+	// 		firstname: first,
+	// 		lastname: last,
+	// 		email: useremail,
+	// 		phonenumber: phonenumber
+	// 	});
+	// };
 
 	handleChange = (key, value) => {
 		console.log('value change:', this.state);
