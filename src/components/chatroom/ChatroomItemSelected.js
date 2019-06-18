@@ -7,6 +7,7 @@ import {
   Image,
   Button
 } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
 
 export default class ChatroomItemSelected extends Component {
@@ -16,6 +17,12 @@ export default class ChatroomItemSelected extends Component {
   render() {
     return (
       <View>
+        <View>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+          /> 
+            </View>
         <View>
           <Button title="Join Chat" />
         </View>
@@ -36,5 +43,8 @@ const styles = StyleSheet.create({
   button: {
     width: "80%",
     borderRadius: 30
-  }
+  },
+  map: {
+    height: 200
+}
 });

@@ -104,6 +104,9 @@ export default class Login extends React.Component {
 			user: undefined
 		});
 		AsyncStorage.removeItem('userID')
+		sb.disconnect(function(){
+			// A current user is discconected from SendBird server.
+		});
 	};
 
 	setGFId = () => {

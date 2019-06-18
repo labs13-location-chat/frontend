@@ -32,15 +32,15 @@ componentDidMount() {
     sb.connect(userId, function(user, error) {
         console.log("Hello", userId, name)
     })
-    axios
-        .get(`${URL}/api/chatrooms/`)
-        .then(res => {
-            console.log(res)
-            this.setState({
-                chatroom: res.data
-            })
-        })
-        .catch(err => console.log(err))
+    // axios
+    //     .get(`${URL}/api/chatrooms/`)
+    //     .then(res => {
+    //         console.log(res)
+    //         this.setState({
+    //             chatroom: res.data
+    //         })
+    //     })
+    //     .catch(err => console.log(err))
 }
 
 
@@ -121,7 +121,7 @@ componentDidMount() {
                 </View>
                 : 
                 <View>
-                    <ChatSearch chatroomList={true.state.chatroom} />
+                    <ChatSearch chatroomList={this.state.chatroom} />
                 </View>}
             </View>
         )
