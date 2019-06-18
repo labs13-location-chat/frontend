@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Button
+  Button,
+  Modal
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
@@ -13,8 +14,9 @@ import axios from 'axios'
 import SendBird from 'sendbird'
 import Config from '../../config'
 
-const URL = 'https://labs13-localchat.herokuapp.com';
 var sb = new SendBird({appId: Config.appId });
+
+const URL = 'https://labs13-localchat.herokuapp.com';
 
 
 export default class ChatroomItemSelected extends Component {
@@ -41,23 +43,25 @@ export default class ChatroomItemSelected extends Component {
   }
   
   joinChannel = () => {
-    sb.OpenChannel.getChannel(`sendbird_open_channel_52771_86e7888ea74da04c2c221353b90ac8923cb1f98b`, function(channel, error) {
+    sb.OpenChannel.getChannel(this.props.chat.chatroom_url, function(channel, error) {
       if (error) {
         return ("top", console.log(error))
       }
   
       channel.enter(function(response, error) {
         console.log("Welcome to the Channel")
+        
           if (error) {
               return (console.log(error))
           }
       });
   });
+  this.props.navigation.navigate('Chatroom')
   }
 
 
   render() {
-    console.log(this.props.chat)
+    console.log(this.props)
     return (
       <View>
         <View>

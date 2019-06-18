@@ -56,7 +56,7 @@ export default class ChatSearch extends Component {
       <ScrollView>
         {this.state.chatroom &&
           this.state.chatroom.map(chat => {
-            return <ChatroomItem key={chat.id} chat={chat} />;
+            return <ChatroomItem navigation={this.props.navigation} key={chat.id} chat={chat} />;
           })}
       </ScrollView>
 

@@ -121,7 +121,7 @@ componentDidMount() {
                 </View>
                 : 
                 <View>
-                    <ChatSearch chatroomList={this.state.chatroom} />
+                    <ChatSearch chatroomList={this.state.chatroom} navigation={this.props.navigation} />
                 </View>}
             </View>
         )
