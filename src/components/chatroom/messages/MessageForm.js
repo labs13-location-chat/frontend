@@ -20,33 +20,31 @@ export default class MessageForm extends Component {
         super(props)
     
         this.state = {
-           
                 message: ''
-            
         }
     }
     
     messageInputHandler = val => {
         this.setState({
-            
                 message: val
-            
         })
+        
     }
 
     messageSendHandler = () => {
-        this.props.sendMessage(this.state.content)
+        this.props.sendMessage(this.state.message)
         this.setState({
-            
                 message: ''
-            
         })
     }
 
     render() {
+        console.log(this.state.message)
         return (
             <View>
-                <TextInput />
+                <TextInput 
+                    onChangeText={this.messageInputHandler}
+                />
                 <Button title="Send" onPress={this.messageSendHandler}/>
             </View>
         )
