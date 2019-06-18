@@ -100,7 +100,7 @@ export default class JoinChat extends Component {
     // console.log(this.state.mapToggle)
     // console.log('chat', this.props)
     return (
-      <View>
+      <View style={styles.container}>
         <View>
           {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
@@ -142,6 +142,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     margin: 10
+  },
+  container: {
+      height: '90%'
   },
   topText: {
     marginLeft: 10,
