@@ -46,7 +46,7 @@ export default class Login extends React.Component {
   componentWillUnmount() {
     // Remove event listener
     Linking.removeEventListener("url", this.handleOpenURL);
-    this.props.navigation.navigate("MyProfile", { id: this.state.user.id });
+    // this.props.navigation.navigate("MyProfile", { id: this.state.user.id });
   }
 
   handleOpenURL = ({ url }) => {
