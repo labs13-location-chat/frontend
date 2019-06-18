@@ -11,6 +11,7 @@ import {
 import SendBird from 'sendbird'
 import Config from '../../../config'
 import MessageForm from './MessageForm'
+import MessageView from './MessageView'
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
@@ -102,6 +103,7 @@ export default class MessageRoom extends Component {
             <View>
                 {this.state.showChat ? 
                     <View>
+                        <MessageView chatroomInfo={this.state.user} /> 
                         <MessageForm sendMessage={this.sendMessage} />
                     </View>
                     :
