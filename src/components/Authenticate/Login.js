@@ -14,13 +14,22 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import SafariView from "react-native-safari-view";
+import SendBird from "sendbird";
+import Config from "../../config";
 
 const URL = "https://labs13-localchat.herokuapp.com";
 
 export default class Login extends React.Component {
-  state = {
-    user: undefined // user has not logged in yet
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: undefined, // user has not logged in yet
+      userId: "",
+      nickname: ""
+    };
+    var sb = new SendBird({ appId: Config.appId });
+  }
 
   // Set up Linking
   componentDidMount() {
@@ -95,15 +104,34 @@ export default class Login extends React.Component {
     });
   };
 
+  signOut = () => {
+    this.setState({
+      user: undefined
+    });
+    AsyncStorage.removeItem("userID");
+    sb.disconnect(function() {
+      // A current user is discconected from SendBird server.
+    });
+  };
+
+  setGFId = () => {
+    if (this.state.user.google_id) {
+      return AsyncStorage.setItem("userID", this.state.user.google_id);
+    } else {
+      return AsyncStorage.setItem("userID", this.state.user.facebook_id);
+    }
+  };
+
   render() {
     const { user } = this.state;
-    // console.log(user)
-    console.log("login", this.props);
-    console.log("loginstate", this.state);
+    console.log(this.props);
+    // console.log('THIS IS THE USER ID', this.state.user);
+    // console.log('loginstate', this.state);
     return (
       <View style={styles.container}>
         {user ? (
           // Show user info if already logged in
+          this.setGFId() &&
           AsyncStorage.setItem("firstname", this.state.user.first_name) &&
           AsyncStorage.setItem("lastname", this.state.user.last_name) &&
           AsyncStorage.setItem("email", this.state.user.email) &&
