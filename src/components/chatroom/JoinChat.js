@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
-import Sendbird from 'sendbird'
+import SendBird from 'sendbird'
 import Config from '../../config'
 import axios from 'axios'
 
-var sb = new Sendbird({ appId: Config.appId })
+var sb = new SendBird({ appId: Config.appId })
 
 const URL = 'https://labs13-localchat.herokuapp.com';
 

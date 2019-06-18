@@ -70,7 +70,7 @@ export default class ChatroomItem extends Component {
         </TouchableOpacity>
         {this.state.expanded ? (
           <View>
-            <ChatroomItemMap style={styles.map} />
+            {/* <ChatroomItemMap style={styles.map} /> */}
             <ChatroomItemSelected chat={this.props.chat} />
           </View>
         ) : null}

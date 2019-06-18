@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
-import Sendbird from 'sendbird'
+import SendBird from 'sendbird'
 import Config from '../../config'
 
 const URL = 'https://labs13-localchat.herokuapp.com';
@@ -28,7 +28,7 @@ export default class Login extends React.Component {
 			userId: '',
 			nickname: ''
 		};
-		var sb = new Sendbird({ appId: Config.appId })
+		var sb = new SendBird({ appId: Config.appId })
 	}
 	
 
