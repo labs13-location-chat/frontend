@@ -62,7 +62,7 @@ export default class ChatSearch extends Component {
 
         <FlatList
           data={this.state.chatroom}
-          renderItem={info => <ChatroomItem key={info.index} chat={info.item} />}
+          renderItem={info => <ChatroomItem navigation={this.props.navigation} key={info.index} chat={info.item} />}
         />
     );
   }
