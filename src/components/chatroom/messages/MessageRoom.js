@@ -11,19 +11,13 @@ import {
 import SendBird from 'sendbird'
 import Config from '../../../config'
 import MessageForm from './MessageForm'
+import MessageView from './MessageView'
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
 const params = new sb.UserMessageParams();
 
-// params.message = TEXT_MESSAGE;
-// params.customType = CUSTOM_TYPE;
-// params.data = DATA;
-// params.mentionType = 'users';                       // Either 'users' or 'channel'
-// params.mentionedUserIds = ['Jeff', 'Julia'];        // or mentionedUsers = Array<User>;    
-// params.metaArrayKeys = ['key1', 'key2'];
-// params.translationTargetLanguages = ['fe', 'de'];   // French and German
-// params.pushNotificationDeliveryOption = 'default';  // Either 'default' or 'suppress'
+
 
 export default class MessageRoom extends Component {
     constructor(props) {
@@ -41,15 +35,29 @@ export default class MessageRoom extends Component {
         this.setState({
             user: userInfo
         })
-        
+     
     }
     
+    // registerCommonHandler = (channelHandler, channelUrl) => {
+    //     channelHandler.onMessageReceived = (channel, message) => {
+
+    //     }
+    // }
+
+    // registerChannelHandler = () => {
+    //     const sbinstance = SendBird.getInstance()
+    //     let channelHandler = new sb.ChannelHandler();
+    // }
     
     joinChannel = () => {
         sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
             if (error) {
               return ("top", console.log(error))
             }
+            //this code needs to be put somewhere to fetch previous messages if we want that functionality
+            // var messageListQuery = channel.createPreviousMessageListQuery();
+            // messageListQuery.limit = 30;
+            // messageListQuery.reverse = true;
         
             channel.enter(function(response, error) {
               console.log("Welcome to the Channel", channel)
@@ -65,14 +73,23 @@ export default class MessageRoom extends Component {
     }
 
 
-    sendMessage = params => {
-        channel.sendUserMessage(params, function(message, error) {
+    sendMessage = message => {
+        console.log("Message", message)
+        sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
             if (error) {
                 return;
             }
         
-            console.log(message);
-        });
+            // Successfully fetched the channel.
+            // console.log(channel);
+            channel.sendUserMessage(message, function(message, error) {
+                if (error) {
+                    return;
+                }
+                
+                console.log(message);
+            });
+            });
     }
     
 
@@ -86,6 +103,7 @@ export default class MessageRoom extends Component {
             <View>
                 {this.state.showChat ? 
                     <View>
+                        <MessageView chatroomInfo={this.state.user} /> 
                         <MessageForm sendMessage={this.sendMessage} />
                     </View>
                     :
