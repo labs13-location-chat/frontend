@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
+import SendBird from 'sendbird'
+import Config from '../../config'
+import axios from 'axios'
+
+var sb = new SendBird({ appId: Config.appId })
+
+const URL = 'https://labs13-localchat.herokuapp.com';
+
 
 export default class JoinChat extends Component {
     constructor(props) {
@@ -13,11 +21,29 @@ export default class JoinChat extends Component {
             firstname: '',
             lastname: '',
             email: '',
+            chatroom: []
         }
-        
     }
     
     
+componentDidMount() {
+    let userId = AsyncStorage.getItem('userID')
+    let name = AsyncStorage.getItem('firstname')
+    sb.connect(userId, function(user, error) {
+        console.log("Hello", userId, name)
+    })
+    // axios
+    //     .get(`${URL}/api/chatrooms/`)
+    //     .then(res => {
+    //         console.log(res)
+    //         this.setState({
+    //             chatroom: res.data
+    //         })
+    //     })
+    //     .catch(err => console.log(err))
+}
+
+
     static navigationOptions = {
         title: 'Join a Chat Room',
     }
@@ -63,6 +89,8 @@ export default class JoinChat extends Component {
     }
 
     render() {
+        // console.log(object)
+        
         // console.log(this.state.mapToggle)
         // console.log('chat', this.props)
         return (
@@ -93,7 +121,7 @@ export default class JoinChat extends Component {
                 </View>
                 : 
                 <View>
-                    <ChatSearch />
+                    <ChatSearch chatroomList={this.state.chatroom} navigation={this.props.navigation} />
                 </View>}
             </View>
         )

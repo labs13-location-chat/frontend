@@ -1,34 +1,94 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Image, Button } from 'react-native'
-import React, { Component } from 'react'
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  Image,
+  Button,
+  Modal
+} from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
+import React, { Component } from "react";
+import axios from 'axios'
+import SendBird from 'sendbird'
+import Config from '../../config'
+
+var sb = new SendBird({appId: Config.appId });
+
+const URL = 'https://labs13-localchat.herokuapp.com';
+
 
 export default class ChatroomItemSelected extends Component {
-    render() {
-        return (
-            <View>
-                <View>
-                    <Button title="Join Chat" />
-                </View>
-                <View>
-                    <Text>
-                        Name of Chat
-                    </Text>
-                    <Text>15 Members</Text>
-                </View>
-                <View>
-                    <Text>Today at 4:30 to Today at 9:30</Text>
-                    <Text>123 Main Street, Anytown, USA</Text>
-                    <Text>
-                        This is a paragraph.  This is a paragraph.  Paragraph, paragraph.  Dictionary encyclopedia crab.
-                    </Text>
-                </View>
-            </View>
-        )
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: {
+        longitude: 0,
+        latitude: 0
+      },
+      chatroom: [],
+      user: []
     }
+  }
+
+  componentDidMount() {
+    axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
+      .then(res => {
+        console.log(res.data)
+        this.setState({
+          location: {
+            longitude: res.data.coordinate.longitude,
+            latitude: res.data.coordinate.latitude
+          },
+          chatroom: res.data
+        })
+      })
+      .catch(err => console.log(err))
+  }
+  
+  joinChannel = () => {
+  this.props.navigation.navigate('Chatroom', {
+    user: this.state.chatroom
+  })
+  }
+
+
+  render() {
+    
+    console.log(this.state.chatroom)
+    return (
+      <View>
+        <View>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            // annotations={markers}
+          /> 
+          {/* <Marker coordinate={markers} /> */}
+            </View>
+        <View>
+          <Button onPress={this.joinChannel} title="Join Chat" />
+        </View>
+        <View>
+          <Text>{this.props.chat.name}</Text>
+          <Text>{this.props.chat.total_users} users in chat</Text>
+        </View>
+        <View>
+          <Text>`Chatroom created @ ${this.props.chat.created_at}`</Text>
+          <Text>{this.props.chat.description}</Text>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    button: {
-        width: '80%',
-        borderRadius: 30
-    }
-})
+  button: {
+    width: "80%",
+    borderRadius: 30
+  },
+  map: {
+    height: 200
+}
+});
