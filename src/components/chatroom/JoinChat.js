@@ -4,8 +4,11 @@ import ChatMap from './ChatMap'
 import ChatSearch from './ChatSearch'
 import Sendbird from 'sendbird'
 import Config from '../../config'
+import axios from 'axios'
 
 var sb = new Sendbird({ appId: Config.appId })
+
+const URL = 'https://labs13-localchat.herokuapp.com';
 
 
 export default class JoinChat extends Component {
@@ -18,6 +21,7 @@ export default class JoinChat extends Component {
             firstname: '',
             lastname: '',
             email: '',
+            chatroom: []
         }
     }
     
@@ -28,6 +32,15 @@ componentDidMount() {
     sb.connect(userId, function(user, error) {
         console.log("Hello", userId, name)
     })
+    axios
+        .get(`${URL}/api/chatrooms/`)
+        .then(res => {
+            console.log(res)
+            this.setState({
+                chatroom: res.data
+            })
+        })
+        .catch(err => console.log(err))
 }
 
 
@@ -108,7 +121,7 @@ componentDidMount() {
                 </View>
                 : 
                 <View>
-                    <ChatSearch />
+                    <ChatSearch chatroomList={true.state.chatroom} />
                 </View>}
             </View>
         )
