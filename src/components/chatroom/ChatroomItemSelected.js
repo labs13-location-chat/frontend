@@ -49,14 +49,14 @@ export default class ChatroomItemSelected extends Component {
   
   joinChannel = () => {
   this.props.navigation.navigate('Chatroom', {
-    user: this.state.user
+    user: this.state.chatroom
   })
   }
 
 
   render() {
     
-    console.log(this.props)
+    console.log(this.state.chatroom)
     return (
       <View>
         <View>
