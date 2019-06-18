@@ -26,7 +26,8 @@ export default class ChatroomItemSelected extends Component {
       location: {
         longitude: 0,
         latitude: 0
-      }
+      },
+      user: []
     }
   }
 
@@ -35,28 +36,20 @@ export default class ChatroomItemSelected extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          longitude: res.data.coordinate.longitude,
-          latitude: res.data.coordinate.latitude
+          location: {
+            longitude: res.data.coordinate.longitude,
+            latitude: res.data.coordinate.latitude
+          },
+          user: res.data
         })
       })
       .catch(err => console.log(err))
   }
   
   joinChannel = () => {
-    sb.OpenChannel.getChannel(this.props.chat.chatroom_url, function(channel, error) {
-      if (error) {
-        return ("top", console.log(error))
-      }
-  
-      channel.enter(function(response, error) {
-        console.log("Welcome to the Channel")
-        
-          if (error) {
-              return (console.log(error))
-          }
-      });
-  });
-  this.props.navigation.navigate('Chatroom')
+  this.props.navigation.navigate('Chatroom', {
+    user: this.state.user
+  })
   }
 
 
@@ -69,7 +62,7 @@ export default class ChatroomItemSelected extends Component {
             provider={PROVIDER_GOOGLE}
             style={styles.map}
           /> 
-          <Marker coordinate={this.state.location} />
+          {/* <Marker coordinate={this.state.location} /> */}
             </View>
         <View>
           <Button onPress={this.joinChannel} title="Join Chat" />
