@@ -9,23 +9,37 @@ import {
 	Image,
 	StyleSheet
 } from 'react-native';
-
+import axios from 'axios';
 import ImagePicker from 'react-native-image-picker';
 
 export default class Setting extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fetchUser();
 		this.state = {
 			firstname: '',
 			lastname: '',
-			email: '',
-			user: ''
+
+			user: []
 		};
 	}
 	static navigationOptions = {
 		title: 'Settings'
 	};
+
+	componentDidMount() {
+		axios
+			.get(`https://labs13-localchat.herokuapp.com/api/users/`)
+			.then(res => {
+				console.log('users did mount:', res.data);
+
+				this.setState({
+					user: res.data
+				});
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
 
 	// chooseFile = () => {
 	// 	const options = {
@@ -56,22 +70,21 @@ export default class Setting extends React.Component {
 	// 	});
 	// };
 
-    fetchUser = async () => {
-        const first = await AsyncStorage.getItem("firstname");
-        const last = await AsyncStorage.getItem("lastname");
-        const useremail = await AsyncStorage.getItem("email");
-        // console.log(first, last, useremail);
-        this.setState({
-            firstname: first,
-            lastname: last,
-            email: useremail
-        })
-    }
+	// fetchUser = async () => {
+	// 	const first = await AsyncStorage.getItem('firstname');
+	// 	const last = await AsyncStorage.getItem('lastname');
+	// 	const useremail = await AsyncStorage.getItem('email');
+	// 	// console.log(first, last, useremail);
+	// 	this.setState({
+	// 		firstname: first,
+	// 		lastname: last,
+	// 		email: useremail
+	// 	});
+	// };
 
 	signOut = async () => {
 		const { user } = this.state;
-		// await AsyncStorage.clear();
-		// this.props.navigation.navigate('Login');
+
 		this.setState({
 			user: undefined
 		});

@@ -88,7 +88,6 @@ export default class Login extends React.Component {
 		this.props.navigation.navigate('JoinChat');
 	};
 
-
 	signOut = () => {
 		this.setState({
 			user: undefined
@@ -98,7 +97,7 @@ export default class Login extends React.Component {
 	render() {
 		const { user } = this.state;
 		// console.log(user)
-		console.log('login', this.props);
+		// console.log('login', this.props);
 		console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>

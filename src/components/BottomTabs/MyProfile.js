@@ -19,14 +19,17 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 export default class MyProfile extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fetchUser();
+		this.fetchUser(props);
 		this.state = {
+			id: '',
+			googleid: null,
+			facebookid: null,
 			firstname: '',
 			lastname: '',
 			email: '',
 			phonenumber: '',
 			anonymous: true,
-			user: '',
+			users: undefined,
 			photo:
 				'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 		};
@@ -36,12 +39,39 @@ export default class MyProfile extends React.Component {
 		headerTransparent: true
 	};
 
+	// componentDidMount() {
+	// 	axios
+	// 		.get('https://labs13-localchat.herokuapp.com/api/users/')
+	// 		.then(res => {
+	// 			console.log('user did mount:', res.data);
+
+	// 			this.setState({
+	// 				user: res.data
+	// 			});
+	// 		})
+	// 		.catch(err => {
+	// 			console.error(err);
+	// 		});
+	// }
+
 	fetchUser = async () => {
+		const id = await AsyncStorage.getItem('id');
+		const googleid = await AsyncStorage.getItem('googleid');
+		const facebookid = await AsyncStorage.getItem('facebookid');
 		const first = await AsyncStorage.getItem('firstname');
 		const last = await AsyncStorage.getItem('lastname');
 		const useremail = await AsyncStorage.getItem('email');
 		const phonenumber = await AsyncStorage.getItem('phonenumber');
-		console.log('users from state:', first, last, useremail, phonenumber);
+		console.log(
+			'users from state:',
+			id,
+			googleid,
+			facebookid,
+			first,
+			last,
+			useremail,
+			phonenumber
+		);
 		this.setState({
 			firstname: first,
 			lastname: last,
@@ -89,7 +119,22 @@ export default class MyProfile extends React.Component {
 		});
 	};
 
-	submit = () => {};
+	// submit = (id, user) => {
+	// 	const user_id = AsyncStorage.getItem('id');
+	// 	axios
+	// 		.put(
+	// 			`https://labs13-localchat.herokuapp.com/api/users/${user_id}`,
+	// 			user
+	// 		)
+	// 		.then(res => {
+	// 			console.log('user:', res.data);
+	// 			// ...this.state,
+	// 			// user: res.data
+	// 		})
+	// 		.catch(err => {
+	// 			console.error(err);
+	// 		});
+	// };
 
 	render() {
 		const { photo } = this.state;
@@ -152,6 +197,7 @@ export default class MyProfile extends React.Component {
 					</View>
 					{/* <KeyboardSpacer /> */}
 					<Button
+						onPress={this.submit}
 						style={{ backgroundColor: '#3EB1D6' }}
 						title='Save'
 					/>
