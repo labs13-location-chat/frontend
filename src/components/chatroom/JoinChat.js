@@ -92,11 +92,13 @@ export default class JoinChat extends Component {
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
+    let user_id = await AsyncStorage.getItem("userID")
     console.log(first, last, useremail, id);
     this.setState({
       firstname: first,
       lastname: last,
-      email: useremail
+      email: useremail,
+      userID: user_id
     });
   };
 

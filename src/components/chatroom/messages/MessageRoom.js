@@ -36,7 +36,7 @@ export default class MessageRoom extends Component {
              loading: true,
              channel: [],
              userID: '',
-             arrMessage: []
+             messageSentUpdate: false
         }
         
     }
@@ -54,10 +54,10 @@ export default class MessageRoom extends Component {
                 channel: channel
             })
         })
-        // AppState.addEventListener('change', this.handleAppStateChange);
-        this.getChannel();
-        
+        this.getChannel();    
     }
+
+    
 
     fetchUser = async () => {
         const user_id = await AsyncStorage.getItem('userID')
@@ -86,6 +86,9 @@ export default class MessageRoom extends Component {
 
     handleMounting = (channel, error) => {
         console.log("channel in handlemounting", channel)
+        this.setState({
+            channel: channel
+        })
         // channel.markAsRead();
         var messageQuery = channel.createPreviousMessageListQuery()
         messageQuery.load(20, true, (messageList, error) => {
@@ -109,6 +112,8 @@ export default class MessageRoom extends Component {
         }
         sb.addChannelHandler('MessageView', ChannelHandler);
     }
+
+
 
     joinChannel = () => {
         sb.connect(this.state.userID, (user, error) => {
@@ -147,27 +152,32 @@ export default class MessageRoom extends Component {
     
 
 
-    sendMessage = message => {
-        console.log("Message", message)
+    sendMessage = (message, channel) => {
         
-            // Successfully fetched the channel.
-            console.log(channel);
-            
-            this.state.channel.sendUserMessage(message, (message, error) => {
-                if (error) {
-                    return;
-                }
-                this.setState({
-                    channel: channel
-                })
-                
-                console.log(message);
+        // Successfully fetched the channel.
+        console.log("channel in send", channel);
+        console.log("channelstate in send", this.state.channel)
+        channel = this.state.channel
+        channel.sendUserMessage(message, (message, error) => {
+            if (error) {
+                return;
+            }
+            var messages = [message];
+            this.setState({
+                messages: messages.concat(this.state.messages)
             });
             
+            console.log(message);
+        });
+        // this.setState({
+        //     messageSentUpdate: !this.state.messageSentUpdate
+        // })
+        
     }
     
-
+    
     render() {
+        console.log("channel", this.state.channel)
         console.log(this.state.messages, "Messages State")
         // console.log("Userinfo", this.state.chatroomInfo)
         // console.log(this.state.userID)
