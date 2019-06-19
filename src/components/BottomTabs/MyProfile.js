@@ -23,13 +23,14 @@ export default class MyProfile extends React.Component {
     super(props);
     this.fetchUser();
     this.state = {
-      firstname: "",
-      lastname: "",
+      updateUser: false,
+      first_name: "",
+      last_name: "",
       email: "",
-      phonenumber: "",
+      phone_num: "",
       anonymous: true,
-      user: "",
-      user_id: null,
+      user_type: "user",
+      id: null,
       photo: "https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg"
     };
   }
@@ -44,15 +45,16 @@ export default class MyProfile extends React.Component {
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
-    const phonenumber = await AsyncStorage.getItem("phonenumber");
-    console.log("users from state:", first, last, useremail, phonenumber, id);
+    const phone_num = await AsyncStorage.getItem("phone_num");
+    console.log("users from state:", first, last, useremail, phone_num, id);
     this.setState({
-      firstname: first,
-      lastname: last,
+      first_name: first,
+      last_name: last,
       email: useremail,
-      phonenumber: phonenumber,
-      user_id: id,
-      user: {}
+      phone_num: phone_num,
+      id: id,
+      anonymous: true,
+      user_type: "user"
     });
   };
 
@@ -95,20 +97,46 @@ export default class MyProfile extends React.Component {
     });
   };
 
-  updateUser = id => {
+  componentDidUpdate(prevState) {
+    if (this.state.updateUser !== prevState.updateUser) {
+      return this.getUser();
+    } else {
+      return;
+    }
+  }
+
+  updateUser = updateUser => {
+    console.log(updateUser);
     axios
-      .put(`${URL}/api/users/${id}`)
+      .put(`${URL}/api/users/${updateUser.id}`, updateUser)
       .then(res => {
-        console.log(res.body);
+        this.setState({
+          updateUser: !this.state.updateUser
+        });
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  getUser = id => {
+  handleUpdate = e => {
+    e.preventDefault();
+    const updatedUser = {
+      id: this.state.id,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      email: this.state.email,
+      phone_num: this.state.phone_num,
+      anonymous: this.state.anonymous,
+      user_type: this.state.user_type
+    };
+    this.updateUser(updatedUser);
+  };
+
+  getUser = () => {
     axios
-      .get(`${URL}/api/users/${id}`)
+      .get(`${URL}/api/users/${this.state.id}`)
       .then(res => {
         console.log(res);
       })
@@ -158,17 +186,17 @@ export default class MyProfile extends React.Component {
             <Text style={styles.text}>Name</Text>
             <TextInput
               style={styles.inputBox}
-              onChangeText={val => this.handleChange("firstname", val)}
-              value={this.state.firstname}
-              name="firstname"
+              onChangeText={val => this.handleChange("first_name", val)}
+              value={this.state.first_name}
+              name="first_name"
             />
             <Text style={styles.text}>Phone Number</Text>
             <TextInput
               style={styles.inputBox}
               keyboardType="phone-pad"
-              name="phonenumber"
-              onChangeText={val => this.handleChange("phonenumber", val)}
-              value={this.state.phonenumber}
+              name="phone_num"
+              onChangeText={val => this.handleChange("phone_num", val)}
+              value={this.state.phone_num}
             />
             <Text style={styles.text}>Anonymous</Text>
             <CheckBox
@@ -180,7 +208,7 @@ export default class MyProfile extends React.Component {
           <Button
             style={{ backgroundColor: "#3EB1D6" }}
             title="Save"
-            onPress={console.log("BUTTTON PRESSED")}
+            onPress={this.handleUpdate}
           />
         </View>
       </TouchableWithoutFeedback>
