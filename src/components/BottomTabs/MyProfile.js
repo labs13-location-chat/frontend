@@ -21,7 +21,6 @@ const URL = "https://labs13-localchat.herokuapp.com";
 export default class MyProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.fetchUser();
     this.state = {
       updateUser: false,
       first_name: "",
@@ -98,26 +97,30 @@ export default class MyProfile extends React.Component {
   };
 
   componentDidUpdate(prevState) {
+    const id = this.props.navigation.state.params.id;
     if (this.state.updateUser !== prevState.updateUser) {
-      return this.getUser();
+      return this.getUser(id);
     } else {
       return;
     }
   }
 
   updateUser = updateUser => {
-    console.log(updateUser);
-    axios
-      .put(`${URL}/api/users/${updateUser.id}`, updateUser)
-      .then(res => {
-        this.setState({
-          updateUser: !this.state.updateUser
-        });
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (this.state.first_name === "") {
+      this.fetchUser().then(
+        axios
+          .put(`${URL}/api/users/${updateUser.id}`, updateUser)
+          .then(res => {
+            this.setState({
+              updateUser: !this.state.updateUser
+            });
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      );
+    }
   };
 
   handleUpdate = e => {
@@ -134,9 +137,9 @@ export default class MyProfile extends React.Component {
     this.updateUser(updatedUser);
   };
 
-  getUser = () => {
+  getUser = id => {
     axios
-      .get(`${URL}/api/users/${this.state.id}`)
+      .get(`${URL}/api/users/${id}`)
       .then(res => {
         console.log(res);
       })
