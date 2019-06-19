@@ -7,7 +7,7 @@ import {
   Image,
   Button,
   Modal,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
