@@ -15,34 +15,37 @@ export default class JoinChat extends Component {
     constructor(props) {
         super(props);
         this.fetchUser();
-    
+        
         this.state = {
             mapToggle: false,
             firstname: '',
             lastname: '',
             email: '',
-            chatroom: []
+            chatroom: [],
+            userID: null
         }
     }
     
     
-componentDidMount() {
-    let userId = AsyncStorage.getItem('userID')
-    let name = AsyncStorage.getItem('firstname')
-    sb.connect(userId, function(user, error) {
-        console.log("Hello", userId, name)
-    })
-    // axios
-    //     .get(`${URL}/api/chatrooms/`)
-    //     .then(res => {
-    //         console.log(res)
-    //         this.setState({
-    //             chatroom: res.data
-    //         })
-    //     })
-    //     .catch(err => console.log(err))
+    componentDidMount() {
+        this.connectToSendbird()
 }
 
+    connectToSendbird = () => {
+        if (this.state.userID == null) {
+            return setTimeout(() => {
+                this.connectToSendbird()
+            }, 1000)
+        } else {
+            sb.connect(this.state.userID, (user, error) => {
+                if (error) {
+                    console.log("Error", error)
+                } else {
+                    console.log("Connected to Sendbird", user)
+                }
+            })
+        }
+    }
 
     static navigationOptions = {
         title: 'Join a Chat Room',
@@ -56,7 +59,6 @@ componentDidMount() {
                   mapToggle: !this.state.mapToggle
                 })
             }
-        //   console.log('toggled')
     }
 
     mapToggler = () => {
@@ -67,7 +69,6 @@ componentDidMount() {
                 mapToggle: !this.state.mapToggle
               })
           }
-        // console.log('toggled')
     }
     
     // viewSettingnav = () => {
@@ -80,17 +81,19 @@ componentDidMount() {
         const first = await AsyncStorage.getItem("firstname");
         const last = await AsyncStorage.getItem("lastname");
         const useremail = await AsyncStorage.getItem("email");
+        const userID = await AsyncStorage.getItem('userID')
         // console.log(first, last, useremail);
         this.setState({
             firstname: first,
             lastname: last,
-            email: useremail
+            email: useremail,
+            userID: userID
         })
     }
 
     render() {
         // console.log(object)
-        
+        console.log(this.state.userID)
         // console.log(this.state.mapToggle)
         // console.log('chat', this.props)
         return (

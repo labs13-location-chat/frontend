@@ -56,7 +56,7 @@ export default class ChatroomItemSelected extends Component {
 
   render() {
     
-    console.log(this.state.chatroom)
+   
     return (
       <View>
         <View>
