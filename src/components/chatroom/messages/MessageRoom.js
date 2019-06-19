@@ -220,7 +220,7 @@ export default class MessageRoom extends Component {
                             sendMessage={this.sendMessage} 
                             // style={styles.form}
                         />
-                    </V>
+                    </KeyboardAvoidingView>
                     :
                     <View>
                         <Button 
