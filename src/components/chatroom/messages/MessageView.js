@@ -22,24 +22,25 @@ export default class MessageView extends Component {
 
 
     
+    
     render() {
-        console.log(this.props.messages)
-        console.log(this.props.chatroomInfo)
+        // const messages = this.props.messages.reverse()
         return (
             <View>
                 <FlatList 
                     // style={}
-                    data={this.props.messages}
+                    inverted
+                    data={ this.props.messages }
                     renderItem={(info) =>
                         <Message 
                             message={info.item}
                             userID={this.props.userID}
-                            // chatroomInfo={this.props.chatroomInfo}
+                            
                         />
                     }
 
                 />
-                {/* <Message /> */}
+                
             </View>
         )
     }

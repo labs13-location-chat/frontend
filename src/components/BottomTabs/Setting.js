@@ -9,8 +9,12 @@ import {
 	Image,
 	StyleSheet
 } from 'react-native';
+import SendBird from 'sendbird'
+import Config from '../../config'
 
 import ImagePicker from 'react-native-image-picker';
+
+var sb = new SendBird({ appId: Config.appId })
 
 export default class Setting extends React.Component {
 	constructor(props) {
@@ -76,6 +80,10 @@ export default class Setting extends React.Component {
 			user: undefined
 		});
 		this.props.navigation.navigate('Login');
+		sb.disconnect(function() {
+			// A current user is discconected from SendBird server.
+		  });
+		  
 	};
 
 	render() {
