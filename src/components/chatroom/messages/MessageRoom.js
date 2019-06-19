@@ -13,7 +13,7 @@ import SendBird from 'sendbird'
 import Config from '../../../config'
 import MessageForm from './MessageForm'
 import MessageView from './MessageView'
-import HeaderBar from './HeaderBar'
+
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
@@ -38,9 +38,9 @@ export default class MessageRoom extends Component {
              userID: '',
              messageSentUpdate: false
         }
-        
     }
 
+    
     componentDidMount() {
         let chatInfo = this.props.navigation.getParam("user")
         this.setState({
@@ -55,6 +55,10 @@ export default class MessageRoom extends Component {
             })
         })
         this.getChannel();    
+    }
+
+    static navigationOptions = {
+        title: "Chatroom"
     }
 
     
@@ -174,10 +178,12 @@ export default class MessageRoom extends Component {
         // })
         
     }
+
+
     
     
     render() {
-        console.log("channel", this.state.channel)
+        console.log("channel", this.state.chatroomInfo)
         console.log(this.state.messages, "Messages State")
         // console.log("Userinfo", this.state.chatroomInfo)
         // console.log(this.state.userID)
@@ -185,16 +191,15 @@ export default class MessageRoom extends Component {
         return (
             <View>
                 {this.state.showChat ? 
-                    <View style={styles.messageContainer}>
-                        <HeaderBar 
-                            chatroomInfo={this.state.chatroomInfo} 
-                            style={styles.header}
-                        />
+                    <View 
+                        // style={styles.messageContainer}
+                    >
+                        
                         <MessageView
                             userID={this.state.userID} 
                             chatroomInfo={this.state.chatroomInfo} 
                             messages={this.state.messages} 
-                            style={styles.messageSection}
+                            // style={styles.messageSection}
                         /> 
                         <MessageForm 
                             sendMessage={this.sendMessage} 
@@ -216,13 +221,13 @@ const styles = StyleSheet.create({
     messageContainer: {
         height: 300
     },
-    messageSection: {
-        height: 250
-    },
-    form: {
-        paddingBottom: 50
-    },
-    header: {
-        height: 50
-    }
+    // messageSection: {
+    //     height: 250
+    // },
+    // form: {
+    //     paddingBottom: 50
+    // },
+    // header: {
+    //     height: 50
+    // }
 })
