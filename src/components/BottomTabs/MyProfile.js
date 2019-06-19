@@ -16,6 +16,8 @@ import ImagePicker from "react-native-image-picker";
 import DismissKeyboard from "dismissKeyboard";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
+const URL = "https://labs13-localchat.herokuapp.com";
+
 export default class MyProfile extends React.Component {
   constructor(props) {
     super(props);
@@ -27,9 +29,11 @@ export default class MyProfile extends React.Component {
       phonenumber: "",
       anonymous: true,
       user: "",
+      user_id: null,
       photo: "https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg"
     };
   }
+
   static navigationOptions = {
     title: "Edit Profile",
     headerTransparent: true
@@ -46,7 +50,9 @@ export default class MyProfile extends React.Component {
       firstname: first,
       lastname: last,
       email: useremail,
-      phonenumber: phonenumber
+      phonenumber: phonenumber,
+      user_id: id,
+      user: {}
     });
   };
 
@@ -87,6 +93,28 @@ export default class MyProfile extends React.Component {
         });
       }
     });
+  };
+
+  updateUser = id => {
+    axios
+      .put(`${URL}/api/users/${id}`)
+      .then(res => {
+        console.log(res.body);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  getUser = id => {
+    axios
+      .get(`${URL}/api/users/${id}`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   submit = () => {};
@@ -149,7 +177,11 @@ export default class MyProfile extends React.Component {
             />
           </View>
           {/* <KeyboardSpacer /> */}
-          <Button style={{ backgroundColor: "#3EB1D6" }} title="Save" />
+          <Button
+            style={{ backgroundColor: "#3EB1D6" }}
+            title="Save"
+            onPress={console.log("BUTTTON PRESSED")}
+          />
         </View>
       </TouchableWithoutFeedback>
     );
