@@ -8,7 +8,8 @@ import {
     Image,
     Button,
     Keyboard,
-    AsyncStorage
+    AsyncStorage,
+    KeyboardAvoidingView
   } from "react-native";
 import SendBird from 'sendbird'
 import Config from '../../../config'
@@ -155,7 +156,7 @@ export default class MessageRoom extends Component {
 
     sendMessage = (message, channel) => {
     // Successfully fetched the channel.
-        console.log("channel in send", channel);
+        // console.log("channel in send", channel);
         console.log("channelstate in send", this.state.channel)
         channel = this.state.channel
         channel.sendUserMessage(message, (message, error) => {
@@ -200,11 +201,12 @@ export default class MessageRoom extends Component {
         return (
             <View>
                 {this.state.showChat ? 
-                    <View 
+                    <KeyboardAvoidingView 
+                        behavior="padding"
                         style={{
                             // position: 'absolute',
-                        // bottom: this.state.keyboardOffset,
-                        height: 'auto'
+                            // bottom: this.state.keyboardOffset,
+                            // height: 300
                     }}
                     >
                         
@@ -216,9 +218,9 @@ export default class MessageRoom extends Component {
                         /> 
                         <MessageForm 
                             sendMessage={this.sendMessage} 
-                            style={styles.form}
+                            // style={styles.form}
                         />
-                    </View>
+                    </KeyboardAvoidingView>
                     :
                     <View>
                         <Button 
