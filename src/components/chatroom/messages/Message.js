@@ -14,6 +14,16 @@ export default class Message extends Component {
              
         }
     }
+
+    fetchUser = async () => {
+        const first = await AsyncStorage.getItem("firstname");
+        const last = await AsyncStorage.getItem("lastname");
+        // console.log(first, last, useremail);
+        this.setState({
+            firstname: first,
+            lastname: last
+        })
+    }
     
 
     inOrOutMessage = () => {

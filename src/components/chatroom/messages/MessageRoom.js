@@ -149,14 +149,11 @@ export default class MessageRoom extends Component {
 
     sendMessage = message => {
         console.log("Message", message)
-        sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
-            if (error) {
-                return;
-            }
         
             // Successfully fetched the channel.
             console.log(channel);
-            channel.sendUserMessage(message, (message, error) => {
+            
+            this.state.channel.sendUserMessage(message, (message, error) => {
                 if (error) {
                     return;
                 }
@@ -166,7 +163,7 @@ export default class MessageRoom extends Component {
                 
                 console.log(message);
             });
-            });
+            
     }
     
 
