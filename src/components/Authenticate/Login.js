@@ -19,6 +19,8 @@ import Config from "../../config";
 
 const URL = "https://labs13-localchat.herokuapp.com";
 
+var sb = new SendBird({ appId: Config.appId })
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);

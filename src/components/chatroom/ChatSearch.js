@@ -51,7 +51,7 @@ export default class ChatSearch extends Component {
   }
 
   render() {
-    console.log("this.state", this.state.chatroom);
+    // console.log("this.state", this.state.chatroom);
     return (
       // <ScrollView>
       //   {this.state.chatroom &&
