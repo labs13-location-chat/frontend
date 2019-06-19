@@ -6,7 +6,8 @@ import {
   Text,
   Image,
   Button,
-  Modal
+  Modal,
+  Dimensions
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
@@ -25,7 +26,9 @@ export default class ChatroomItemSelected extends Component {
     this.state = {
       location: {
         longitude: 0,
-        latitude: 0
+        latitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
       },
       chatroom: [],
       user: []
@@ -35,14 +38,19 @@ export default class ChatroomItemSelected extends Component {
   componentDidMount() {
     axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
-        console.log(res.data)
+        console.log('data',res.data)
         this.setState({
           location: {
-            longitude: res.data.coordinate.longitude,
-            latitude: res.data.coordinate.latitude
+            longitude: res.data.coordinate[0].longitude,
+            latitude: res.data.coordinate[0].latitude,
+            latitudeDelta: 0.0122,
+            longitudeDelta:
+              (Dimensions.get("window").width / Dimensions.get("window").height) *
+              0.0122
           },
           chatroom: res.data
         })
+        // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
   }
@@ -55,14 +63,16 @@ export default class ChatroomItemSelected extends Component {
 
 
   render() {
-    
-   
+    console.log('props', this.props)
+    console.log('location', this.state.location)
+    console.log('chatroom', this.state.chatroom)
     return (
       <View>
         <View>
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
+            region={this.state.location}
             // annotations={markers}
           /> 
           {/* <Marker coordinate={markers} /> */}
