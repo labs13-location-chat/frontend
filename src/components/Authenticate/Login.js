@@ -10,17 +10,16 @@ import {
   AsyncStorage,
   Image,
   Linking,
-  Platform
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import SafariView from "react-native-safari-view";
-import SendBird from "sendbird";
-import Config from "../../config";
+// import SendBird from "sendbird";
+// import Config from "../../config";
 
 const URL = "https://labs13-localchat.herokuapp.com";
 
-var sb = new SendBird({ appId: Config.appId })
-
+// var sb = new SendBird({ appId: Config.appId });
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +29,6 @@ export default class Login extends React.Component {
       userId: "",
       nickname: ""
     };
-    var sb = new SendBird({ appId: Config.appId });
   }
 
   // Set up Linking
@@ -95,16 +93,16 @@ export default class Login extends React.Component {
       Linking.openURL(url);
     }
   };
-  viewJoinChats = () => {
-    // AsyncStorage.setItem();
-    this.props.navigation.navigate("JoinChat", { id: this.state.user.id });
-  };
+  // viewJoinChats = () => {
+  //   // AsyncStorage.setItem();
+  //   this.props.navigation.navigate("JoinChat", { id: this.state.user.id });
+  // };
 
-  signOut = () => {
-    this.setState({
-      user: undefined
-    });
-  };
+  // signOut = () => {
+  //   this.setState({
+  //     user: undefined
+  //   });
+  // };
 
   signOut = () => {
     this.setState({
@@ -138,44 +136,54 @@ export default class Login extends React.Component {
           AsyncStorage.setItem("lastname", this.state.user.last_name) &&
           AsyncStorage.setItem("email", this.state.user.email) &&
           AsyncStorage.setItem("phonenumber", this.state.user.phone_num) && (
-            <View style={styles.content}>
-              <Text style={styles.header}>Welcome {user.first_name}!</Text>
-              <View style={styles.avatar}>
-                <Image
-                  source={{ uri: user.avatar }}
-                  style={styles.avatarImage}
-                />
-                <Button title="Join Chats" onPress={this.viewJoinChats} />
-                <Button title="Sign Out" onPress={this.signOut} color="red" />
-              </View>
-            </View>
+            this.props.navigation.navigate("JoinChat", { id: this.state.user.id })
+            // <View style={styles.content}>
+            //   <Text style={styles.header}>Welcome {user.first_name}!</Text>
+            //   <View style={styles.avatar}>
+            //     <Image
+            //       source={{ uri: user.avatar }}
+            //       style={styles.avatarImage}
+            //     />
+            //     <Button title="Join Chats" onPress={this.viewJoinChats} />
+            //     <Button title="Sign Out" onPress={this.signOut} color="red" />
+            //   </View>
+            // </View>
           )
         ) : (
           // Show Please log in message if not
           <View style={styles.content}>
-            <Text style={styles.header}>Welcome Stranger!</Text>
-            <View style={styles.avatar}>
+            <Image 
+              source={require("./CMLogo.png")}
+            />
+            {/* <View style={styles.avatar}>
               <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
-            </View>
-            <Text style={styles.text}>Please log in to continue {"\n"}</Text>
+              </View>
+            <Text style={styles.text}>Please log in to continue {"\n"}</Text> */}
             {/* Login buttons */}
-            <View style={styles.buttons}>
-              <Icon.Button
-                name="facebook"
-                backgroundColor="#3b5998"
-                onPress={this.loginWithFacebook}
-                {...iconStyles}
-              >
-                Login with Facebook
-              </Icon.Button>
-              <Icon.Button
-                name="google"
-                backgroundColor="#DD4B39"
-                onPress={this.loginWithGoogle}
-                {...iconStyles}
-              >
-                Login with Google
-              </Icon.Button>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Welcome to chatmaps!</Text>
+            </View>
+            <View>
+              <View style={styles.buttons}>
+                <Icon.Button
+                  name="facebook"
+                  backgroundColor="#3b5998"
+                  onPress={this.loginWithFacebook}
+                  {...iconStyles}
+                >
+                  Login with Facebook
+                </Icon.Button>
+              </View>
+              <View style={styles.buttons}>
+                <Icon.Button
+                  name="google"
+                  backgroundColor="#DD4B39"
+                  onPress={this.loginWithGoogle}
+                  {...iconStyles}
+                >
+                  Login with Google
+                </Icon.Button>
+              </View>
             </View>
           </View>
         )}
@@ -195,22 +203,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF"
   },
   content: {
-    flex: 1,
     justifyContent: "center",
-    alignItems: "center"
-  },
-  avatar: {
-    margin: 20
-  },
-  avatarImage: {
-    borderRadius: 50,
-    height: 100,
-    width: 100
+    alignItems: "center",
+    marginTop: "10%",
   },
   header: {
-    fontSize: 20,
     textAlign: "center",
-    margin: 10
+    marginTop: "20%"
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "600"
   },
   text: {
     textAlign: "center",
@@ -218,36 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   buttons: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    margin: 20,
-    marginBottom: 30
-  }
+    marginTop: 30,
+  },
 });
 
-// const styles = StyleSheet.create({
-//   loginContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-//   google: {
-//     height: 50,
-//     backgroundColor: '#4285F4',
-//     justifyContent: 'center',
-//   },
-//   facebook: {
-//     height: 50,
-//     backgroundColor: '#3B5998',
-//     justifyContent: 'center',
-//   },
-//   buttonText: {
-//     color: 'white',
-//     textAlign: 'center',
-//     fontSize: 20,
-//     fontWeight: '300',
-//   },
-//   notRegistered: {
-//       margin: 10,
-//       alignItems: 'center',
-//   }
-// });

@@ -7,7 +7,7 @@ import {
   Image,
   Button,
   Modal,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
@@ -74,7 +74,14 @@ export default class ChatroomItemSelected extends Component {
             style={styles.map}
             region={this.state.location}
             // annotations={markers}
-          /> 
+          >
+            <Marker
+              coordinate={{
+                latitude: this.state.location.latitude,
+                longitude: this.state.location.longitude
+              }}
+            />
+          </MapView> 
           {/* <Marker coordinate={markers} /> */}
             </View>
         <View>
@@ -85,7 +92,7 @@ export default class ChatroomItemSelected extends Component {
           <Text>{this.props.chat.total_users} users in chat</Text>
         </View>
         <View>
-          <Text>`Chatroom created @ ${this.props.chat.created_at}`</Text>
+          <Text>Chatroom created {this.props.chat.created_at}</Text>
           <Text>{this.props.chat.description}</Text>
         </View>
       </View>
