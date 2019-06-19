@@ -63,7 +63,7 @@ export default class MessageForm extends Component {
 
     _keyboardDidShow = (event) => {
         this.setState({
-            keyboardOffset: event.endCoordinates.height,
+            keyboardOffset: event.endCoordinates.height - 275,
         })
     }
 
@@ -87,6 +87,7 @@ export default class MessageForm extends Component {
                     style={styles.textInput}
                     onChangeText={this.messageInputHandler}
                     placeholder="Type message"
+                    value={this.state.message}
                 />
                 <Button title="Send" onPress={this.messageSendHandler}/>
             </View>
@@ -102,6 +103,6 @@ const styles = StyleSheet.create({
     }, 
     button: {
         width: "10%",
-        marginLeft: 10
+        marginLeft: 20
     }
 })
