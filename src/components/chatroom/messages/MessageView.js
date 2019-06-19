@@ -22,6 +22,7 @@ export default class MessageView extends Component {
 
 
     
+    
     render() {
         // const messages = this.props.messages.reverse()
         return (

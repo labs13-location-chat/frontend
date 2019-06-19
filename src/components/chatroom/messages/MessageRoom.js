@@ -7,6 +7,7 @@ import {
     Text,
     Image,
     Button,
+    Keyboard,
     AsyncStorage
   } from "react-native";
 import SendBird from 'sendbird'
@@ -36,7 +37,8 @@ export default class MessageRoom extends Component {
              loading: true,
              channel: [],
              userID: '',
-             messageSentUpdate: false
+             messageSentUpdate: false,
+             keyboardOffset: 0
         }
     }
 
@@ -55,6 +57,15 @@ export default class MessageRoom extends Component {
             })
         })
         this.getChannel();    
+
+        this.keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            this._keyboardDidShow,
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            this._keyboardDidHide,
+        );
     }
 
     static navigationOptions = {
@@ -93,7 +104,6 @@ export default class MessageRoom extends Component {
         this.setState({
             channel: channel
         })
-        // channel.markAsRead();
         var messageQuery = channel.createPreviousMessageListQuery()
         messageQuery.load(20, true, (messageList, error) => {
             channel.messageList = messageList
@@ -109,9 +119,6 @@ export default class MessageRoom extends Component {
                     messages: messages.concat(this.state.messages)
                 });
                 this.state.lastMessage = message;
-                // if (this.state.channel.channelType == 'open') {
-                //     this.state.channel.markAsRead();
-                // }
             }
         }
         sb.addChannelHandler('MessageView', ChannelHandler);
@@ -146,19 +153,8 @@ export default class MessageRoom extends Component {
         ChannelHandler.onMessageReceived()
     }
 
-
-    componentWillUnmount() {
-        // sb.disconnect(function(){
-        //     // A current user is discconected from SendBird server.
-        //     console.log("Disconnecting from Sendbird")
-        // });
-    }
-    
-
-
     sendMessage = (message, channel) => {
-        
-        // Successfully fetched the channel.
+    // Successfully fetched the channel.
         console.log("channel in send", channel);
         console.log("channelstate in send", this.state.channel)
         channel = this.state.channel
@@ -173,12 +169,25 @@ export default class MessageRoom extends Component {
             
             console.log(message);
         });
-        // this.setState({
-        //     messageSentUpdate: !this.state.messageSentUpdate
-        // })
-        
     }
 
+
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+
+    _keyboardDidShow = (event) => {
+        this.setState({
+            keyboardOffset: event.endCoordinates.height,
+        })
+    }
+
+    _keyboardDidHide = () => {
+        this.setState({
+            keyboardOffset: 0,
+        })
+    }
 
     
     
@@ -192,7 +201,11 @@ export default class MessageRoom extends Component {
             <View>
                 {this.state.showChat ? 
                     <View 
-                        // style={styles.messageContainer}
+                        style={{
+                            // position: 'absolute',
+                        // bottom: this.state.keyboardOffset,
+                        height: 'auto'
+                    }}
                     >
                         
                         <MessageView

@@ -100,9 +100,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#3EB1D6',
         width: "85%",
-    }, 
-    button: {
-        width: "10%",
-        marginLeft: 20
-    }
+    } 
 })
