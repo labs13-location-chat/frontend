@@ -12,6 +12,7 @@ import Notifications from './BottomTabs/Notifications';
 import ChatApp from '../components/chatroom/twilio/ChatApp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage, View, Text } from 'react-native';
+import MessageRoom from './chatroom/messages/MessageRoom';
 import {
 	createAppContainer,
 	createStackNavigator,
@@ -48,6 +49,7 @@ const Settings = createStackNavigator({
 
 const JoinChats = createStackNavigator({
     'JoinChat': { screen: JoinChat },
+    "Chatroom" : { screen: MessageRoom }
     },
         {
         navigationOptions: {
@@ -102,7 +104,7 @@ const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
                 fontWeight: '600'
             },
             style: {
-                height: 60,
+                height: 50,
                 padding: 5,
                 // backgroundColor: '#3EB1D6',
             }
