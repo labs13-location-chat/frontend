@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import ChatroomItemMap from "./ChatroomItemMap";
 import ChatroomItemSelected from "./ChatroomItemSelected";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const pic = {
   uri:
@@ -58,14 +59,12 @@ export default class ChatroomItem extends Component {
             />
           </View>
           <View style={styles.nameAddress}>
-            <Text>{this.props.chat.name}</Text>
+            <Text style={styles.name}>{this.props.chat.name}</Text>
             <Text>{this.props.chat.description}</Text>
           </View>
           <View style={styles.distance}>
             <Text>{this.props.chat.radius} mi</Text>
-            <Text style={styles.expandOperators}>
-              {this.state.expanded ? "-" : "+"}
-            </Text>
+              {this.state.expanded ? <Icon name="md-arrow-dropup" size={30} /> : <Icon name="md-arrow-dropdown" size={30}/> }
           </View>
         </TouchableOpacity>
         {this.state.expanded ? (
@@ -101,7 +100,8 @@ const styles = StyleSheet.create({
     width: "70%"
   },
   name: {
-    fontSize: 15
+    fontSize: 15,
+    fontWeight: "bold"
   },
   // address: {
   //     fontSize: 12
@@ -110,14 +110,8 @@ const styles = StyleSheet.create({
     width: 25,
     borderRadius: 5
   },
-  // distance: {
-  //     alignItems: 'flex-end'
-  // }
-  expandOperators: {
-    backgroundColor: "#d9e257",
-    textAlign: "center",
-    fontSize: 20,
-    margin: 10
+  distance: {
+      alignItems: 'center'
   }
 });
 
