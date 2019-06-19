@@ -13,6 +13,7 @@ import SendBird from 'sendbird'
 import Config from '../../../config'
 import MessageForm from './MessageForm'
 import MessageView from './MessageView'
+import HeaderBar from './HeaderBar'
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
@@ -173,13 +174,25 @@ export default class MessageRoom extends Component {
         console.log(this.state.messages, "Messages State")
         // console.log("Userinfo", this.state.chatroomInfo)
         // console.log(this.state.userID)
-        console.log(this.state.arrMessage)
+        // console.log(this.state.arrMessage)
         return (
             <View>
                 {this.state.showChat ? 
-                    <View>
-                        <MessageView chatroomInfo={this.state.chatroomInfo} messages={this.state.messages} /> 
-                        <MessageForm sendMessage={this.sendMessage} />
+                    <View style={styles.messageContainer}>
+                        <HeaderBar 
+                            chatroomInfo={this.state.chatroomInfo} 
+                            style={styles.header}
+                        />
+                        <MessageView
+                            userID={this.state.userID} 
+                            chatroomInfo={this.state.chatroomInfo} 
+                            messages={this.state.messages} 
+                            style={styles.messageSection}
+                        /> 
+                        <MessageForm 
+                            sendMessage={this.sendMessage} 
+                            style={styles.form}
+                        />
                     </View>
                     :
                     <View>
@@ -191,3 +204,18 @@ export default class MessageRoom extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    messageContainer: {
+        height: 300
+    },
+    messageSection: {
+        height: 250
+    },
+    form: {
+        paddingBottom: 50
+    },
+    header: {
+        height: 50
+    }
+})
