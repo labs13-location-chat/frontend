@@ -103,6 +103,7 @@ const tabNavigator = createBottomTabNavigator({ JoinChats, Cameras, Settings },
                 fontSize: 14,
                 fontWeight: '600'
             },
+            keyboardHidesTabBar: true,
             style: {
                 height: 50,
                 padding: 5,

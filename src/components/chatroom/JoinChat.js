@@ -5,7 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Button,
+  ActivityIndicator,
   AsyncStorage
 } from "react-native";
 import ChatMap from "./ChatMap";
@@ -29,13 +29,26 @@ export default class JoinChat extends Component {
             lastname: '',
             email: '',
             chatroom: [],
-            userID: null
+            userID: null,
+            loadingChatRooms: true
         }
     }
     
     
     componentDidMount() {
         this.connectToSendbird()
+        axios
+          .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+          .then(res => {
+        // console.log("res data", res);
+            this.setState({
+              chatroom: res.data,
+              loadingChatRooms: false
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
 }
 
     connectToSendbird = () => {
@@ -103,10 +116,8 @@ export default class JoinChat extends Component {
   };
 
   render() {
-    // console.log(object)
+  
 
-    // console.log(this.state.mapToggle)
-    // console.log('chat', this.props)
     return (
       <View style={styles.container}>
         <View>
@@ -128,18 +139,23 @@ export default class JoinChat extends Component {
             <Text>MAP</Text>
           </TouchableOpacity>
         </View>
-        {this.state.mapToggle ? (
+        {this.state.mapToggle ? 
           <View>
             <ChatMap />
           </View>
-        ) : (
+         : 
+        this.state.loadingChatRooms ? 
           <View>
-            <ChatSearch
-              chatroomList={this.state.chatroom}
-              navigation={this.props.navigation}
-            />
+              <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
           </View>
-        )}
+          :
+        <View>
+          <ChatSearch
+            chatroomList={this.state.chatroom}
+            navigation={this.props.navigation}
+          />
+        </View>}
+          
       </View>
     );
   }
@@ -173,5 +189,9 @@ const styles = StyleSheet.create({
   condSearch: {
     borderBottomWidth: 6,
     borderBottomColor: "#d9e257"
+  },
+  loader: {
+      flex: 1,
+      marginTop: '50%'
   }
 });
