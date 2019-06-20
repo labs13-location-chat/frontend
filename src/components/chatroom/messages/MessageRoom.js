@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import {
     View,
     StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Text,
-    Image,
-    Button,
+    ActivityIndicator,
     Keyboard,
     AsyncStorage,
     KeyboardAvoidingView
@@ -60,15 +56,6 @@ export default class MessageRoom extends Component {
             })
         })
         this.getChannel();    
-
-        this.keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            this._keyboardDidShow,
-        );
-        this.keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            this._keyboardDidHide,
-        );
     }
 
     static navigationOptions = {
@@ -79,7 +66,6 @@ export default class MessageRoom extends Component {
 
     fetchUser = async () => {
         const user_id = await AsyncStorage.getItem('userID')
-        // console.log(first, last, useremail);
         this.setState({
             userID: user_id
         })
@@ -103,7 +89,6 @@ export default class MessageRoom extends Component {
     }
 
     handleMounting = (channel, error) => {
-        console.log("channel in handlemounting", channel)
         this.setState({
             channel: channel
         })
@@ -112,10 +97,8 @@ export default class MessageRoom extends Component {
             channel.messageList = messageList
             this.setState({ messages: messageList, channel, error, messageQuery, fetchedOld: true, loading: false, fetched: true, })
         })
-        console.log("Hello from get Mounting")
         var ChannelHandler = new sb.ChannelHandler();
         ChannelHandler.onMessageReceived = (channel, message) => {
-            console.log(channel)
             if (channel.url == this.state.channel.url) {
                 var messages = [message];
                 this.setState({
@@ -126,8 +109,6 @@ export default class MessageRoom extends Component {
         }
         sb.addChannelHandler('MessageView', ChannelHandler);
     }
-
-
 
     joinChannel = () => {
         sb.connect(this.state.userID, (user, error) => {
@@ -141,10 +122,8 @@ export default class MessageRoom extends Component {
             if (error) {
               return ("top", console.log(error))
             }
-    
             channel.enter(function(response, error) {
               console.log("Welcome to the Channel", channel)
-            
               if (error) {
                 }
             });
@@ -152,14 +131,10 @@ export default class MessageRoom extends Component {
         this.setState({
             showChat: !this.state.showChat
         })
-
         ChannelHandler.onMessageReceived()
     }
 
     sendMessage = (message, channel) => {
-    // Successfully fetched the channel.
-        // console.log("channel in send", channel);
-        console.log("channelstate in send", this.state.channel)
         channel = this.state.channel
         channel.sendUserMessage(message, (message, error) => {
             if (error) {
@@ -169,72 +144,33 @@ export default class MessageRoom extends Component {
             this.setState({
                 messages: messages.concat(this.state.messages)
             });
-            
-            console.log(message);
         });
     }
 
-
-    componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
-    }
-
-    _keyboardDidShow = () => {
-        this.setState({
-            keyboardShown: !this.state.keyboardShown
-        })
-      }
-
-    _keyboardDidHide = () => {
-        this.setState({
-            keyboardShown: !this.state.keyboardShown
-        })
-    }
-
-    keyboardFixForTyping = () => {
-        if (this.state.keyboardShown) {
-            return styles.messageSectionKeyboard
-        } else {
-            return styles.messageSection
-        }
-    }
     
     render() {
-        console.log("channel", this.state.chatroomInfo)
-        // console.log(this._keyboardDidShow())
-        console.log(this.state.messages, "Messages State")
-        // console.log("Userinfo", this.state.chatroomInfo)
-        // console.log(this.state.userID)
-        // console.log(this.state.arrMessage)
-
         return (
             <View>
-                {this.state.showChat ? 
-                    <View 
-                        // behavior="padding" this.keyboardFixForTyping()
-                        style={styles.messageSection} 
-                    >
-                        <View >
-                            <MessageView
-                                userID={this.state.userID} 
-                                chatroomInfo={this.state.chatroomInfo} 
-                                messages={this.state.messages} 
-                                // style={styles.messageSection}
-                                /> 
-                            <MessageForm 
-                                sendMessage={this.sendMessage} 
-                                style={styles.form}
-                                style={styles.messageSection} 
-                                />
-                        </View>
-
+                {this.state.loading ? 
+                <View>
+                    <ActivityIndicator size="large" color="#3EB1D6" />
+                </View>
+                :
+                <View style={styles.messageSection}>
+                    <View >
+                        <MessageView
+                            userID={this.state.userID} 
+                            chatroomInfo={this.state.chatroomInfo} 
+                            messages={this.state.messages} 
+                            // style={styles.messageSection}
+                            /> 
+                        <MessageForm 
+                            sendMessage={this.sendMessage} 
+                            style={styles.form}
+                            style={styles.messageSection} 
+                            />
                     </View>
-                    :
-                    <View>
-                        <Button 
-                        title={`Join the ${this.state.chatroomInfo.name} Channel`}      onPress={this.joinChannel} />
-                    </View>
+                </View>
                 }
             </View>
         )
@@ -259,7 +195,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center'
     },
-    // header: {
-    //     height: 50
-    // }
+    loader: {
+        flex: 1,
+
+    }
 })
