@@ -45,34 +45,6 @@ export default class MessageForm extends Component {
         }
     }
 
-    componentDidMount() {
-        this.keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            this._keyboardDidShow,
-        );
-        this.keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            this._keyboardDidHide,
-        );
-    }
-
-    componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
-    }
-
-    _keyboardDidShow = (event) => {
-        this.setState({
-            keyboardOffset: event.endCoordinates.height - 275,
-        })
-    }
-
-    _keyboardDidHide = () => {
-        this.setState({
-            keyboardOffset: 0,
-        })
-    }
-
     render() {
         console.log(this.state.message)
         return (
