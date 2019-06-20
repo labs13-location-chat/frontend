@@ -26,43 +26,20 @@ import ChatroomItem from "./ChatroomItem";
 // ];
 
 export default class ChatSearch extends Component {
-  constructor() {
-    super();
-    this.state = {
-      chatroom: []
-    };
-  }
-
-  getChatroom = () => {
-    axios
-      .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
-      .then(res => {
-        // console.log("res data", res);
-        this.setState({
-          chatroom: res.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-  componentDidMount() {
-    this.getChatroom();
+  constructor(props) {
+    super(props);
   }
 
   render() {
-    // console.log("this.state", this.state.chatroom);
     return (
-      // <ScrollView>
-      //   {this.state.chatroom &&
-      //     this.state.chatroom.map(chat => {
-      //       return <ChatroomItem navigation={this.props.navigation} key={chat.id} chat={chat} />;
-      //     })}
-      // </ScrollView>
-
         <FlatList
-          data={this.state.chatroom}
-          renderItem={info => <ChatroomItem navigation={this.props.navigation} key={info.index} chat={info.item} />}
+          data={this.props.chatroomList}
+          renderItem={info => 
+            <ChatroomItem 
+              navigation={this.props.navigation} 
+              key={info.index} 
+              chat={info.item}
+            />}
         />
     );
   }

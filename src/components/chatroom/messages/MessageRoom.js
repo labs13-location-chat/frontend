@@ -42,19 +42,22 @@ export default class MessageRoom extends Component {
 
     
     componentDidMount() {
+
         let chatInfo = this.props.navigation.getParam("user")
         this.setState({
             chatroomInfo: chatInfo,
             keyboardShown: false
         })
-        sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
-            if (error) {
-                return;
-            }
-            this.setState({
-                channel: channel
-            })
-        })
+        // console.log("chatroomURL", this.state.chatroomInfo.chatroom_url)
+        // sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
+        //     if (error) {
+        //         console.log("getting channel error", error);
+        //     }
+        //     this.setState({
+        //         channel: channel
+        //     })
+        // })
+        
         this.getChannel();    
     }
 
@@ -72,7 +75,7 @@ export default class MessageRoom extends Component {
     }
 
     
-
+    // Fetches the channel from SendBird.  Also connects 
     getChannel = () => {
         if (sb == null) return setTimeout(() => {
             this.getChannel()
@@ -83,11 +86,26 @@ export default class MessageRoom extends Component {
                     return this.getChannel()
                 }, 1000)
             } else {
+                // sb.connect(this.state.userID, (user, error) => {
+                //     if (error) {
+                //         console.log("Error", error)
+                //     } else {
+                //         console.log("Joining Channel", user)
+                //     }
+                // })
+                channel.enter(function(response, error) {
+                    console.log("Welcome to the Channel", channel)
+                    if (error) {
+                      }
+                  });
+                console.log("Mounting being handled, thats what she said")
                 this.handleMounting(channel, error)
             }
         })
     }
 
+
+    // Receives messages from the server
     handleMounting = (channel, error) => {
         this.setState({
             channel: channel
@@ -138,13 +156,14 @@ export default class MessageRoom extends Component {
         channel = this.state.channel
         channel.sendUserMessage(message, (message, error) => {
             if (error) {
-                return;
+                console.log("error in message", error)
             }
             var messages = [message];
             this.setState({
                 messages: messages.concat(this.state.messages)
             });
         });
+        console.log(message)
     }
 
     
@@ -153,7 +172,7 @@ export default class MessageRoom extends Component {
             <View>
                 {this.state.loading ? 
                 <View>
-                    <ActivityIndicator size="large" color="#3EB1D6" />
+                    <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
                 </View>
                 :
                 <View style={styles.messageSection}>
@@ -197,6 +216,6 @@ const styles = StyleSheet.create({
     },
     loader: {
         flex: 1,
-
+        marginTop: '50%'
     }
 })
