@@ -168,7 +168,7 @@ export default class Login extends React.Component {
                     source={require("./GLiteLogo.png")}
                     style={styles.btnIcon}
                   />
-                <Text style={styles.btnText}>Log In with Google</Text>
+                <Text style={styles.btnText}>Sign In with Google</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -179,7 +179,7 @@ export default class Login extends React.Component {
                     source={require("./FBLogo.png")}
                     style={styles.btnIcon}
                   />
-                <Text style={styles.btnText}>Log In with Facebook</Text>
+                <Text style={styles.btnText}>Sign In with Facebook</Text>
               </View>
             </TouchableOpacity>     
           </View>
