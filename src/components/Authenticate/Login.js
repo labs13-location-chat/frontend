@@ -164,7 +164,31 @@ export default class Login extends React.Component {
             <View style={styles.header}>
               <Text style={styles.headerText}>Welcome to chatmaps!</Text>
             </View>
-            <View>
+            <TouchableOpacity
+              onPress={this.loginWithGoogle} style={styles.btnClickContain}>
+              <View
+                style={styles.btnContainer}>
+                <Icon
+                  name='google'
+                  size={25}
+                  color='#4285F4'
+                  style={styles.btnIcon}/>
+                <Text style={styles.btnText}>Sign In with Google +</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.loginWithFacebook} style={styles.btnClickContain}>
+              <View
+                style={styles.btnContainer}>
+                <Icon
+                  name='facebook-square'
+                  size={25}
+                  color='#3b5998'
+                  style={styles.btnIcon}/>
+                <Text style={styles.btnText}>Sign In with Facebook</Text>
+              </View>
+            </TouchableOpacity>
+            {/* <View>
               <View style={styles.buttons}>
                 <Icon.Button
                   name="facebook"
@@ -185,7 +209,8 @@ export default class Login extends React.Component {
                   Login with Google
                 </Icon.Button>
               </View>
-            </View>
+            </View> */}
+            
           </View>
         )}
       </View>
@@ -210,19 +235,42 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    marginTop: "20%"
+    marginVertical: "20%"
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "600"
   },
-  text: {
-    textAlign: "center",
-    color: "#333",
-    marginBottom: 5
+  // text: {
+  //   textAlign: "center",
+  //   color: "#333",
+  //   marginBottom: 5
+  // },
+  // buttons: {
+  //   marginTop: 30,
+  // },
+  btnClickContain: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderWidth: .75,
+    borderRadius: 25,
+    padding: 10,
+    width: "75%",
+    // marginTop: 20,
+    marginBottom: 20,
   },
-  buttons: {
-    marginTop: 30,
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
+  btnIcon: {
+    height: 25,
+    width: 25,
+  },
+  btnText: {
+    fontSize: 15,
+    fontWeight: "600",
+    marginLeft: "15%"
+  }
 });
 
