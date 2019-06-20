@@ -39,7 +39,8 @@ export default class MessageRoom extends Component {
              channel: [],
              userID: '',
              messageSentUpdate: false,
-             keyboardOffset: 0
+             keyboardOffset: 0,
+             keyboardShown: false
         }
     }
 
@@ -47,7 +48,8 @@ export default class MessageRoom extends Component {
     componentDidMount() {
         let chatInfo = this.props.navigation.getParam("user")
         this.setState({
-            chatroomInfo: chatInfo
+            chatroomInfo: chatInfo,
+            keyboardShown: false
         })
         sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
             if (error) {
@@ -178,49 +180,56 @@ export default class MessageRoom extends Component {
         this.keyboardDidHideListener.remove();
     }
 
-    _keyboardDidShow = (event) => {
+    _keyboardDidShow = () => {
         this.setState({
-            keyboardOffset: event.endCoordinates.height,
+            keyboardShown: !this.state.keyboardShown
         })
-    }
+      }
 
     _keyboardDidHide = () => {
         this.setState({
-            keyboardOffset: 0,
+            keyboardShown: !this.state.keyboardShown
         })
     }
 
-    
+    keyboardFixForTyping = () => {
+        if (this.state.keyboardShown) {
+            return styles.messageSectionKeyboard
+        } else {
+            return styles.messageSection
+        }
+    }
     
     render() {
         console.log("channel", this.state.chatroomInfo)
+        // console.log(this._keyboardDidShow())
         console.log(this.state.messages, "Messages State")
         // console.log("Userinfo", this.state.chatroomInfo)
         // console.log(this.state.userID)
         // console.log(this.state.arrMessage)
+
         return (
             <View>
                 {this.state.showChat ? 
-                    <KeyboardAvoidingView 
-                        behavior="padding"
-                        style={{
-                            // position: 'absolute',
-                            // bottom: this.state.keyboardOffset,
-                            // height: 300
-                    }}
+                    <View 
+                        // behavior="padding" this.keyboardFixForTyping()
+                        style={styles.messageSection} 
                     >
-                        
-                        <MessageView
-                            userID={this.state.userID} 
-                            chatroomInfo={this.state.chatroomInfo} 
-                            messages={this.state.messages} 
-                            // style={styles.messageSection}
-                        /> 
-                        <MessageForm 
-                            sendMessage={this.sendMessage} 
-                            // style={styles.form}
-                        />
-                    </KeyboardAvoidingView>
+                        <View >
+                            <MessageView
+                                userID={this.state.userID} 
+                                chatroomInfo={this.state.chatroomInfo} 
+                                messages={this.state.messages} 
+                                // style={styles.messageSection}
+                                /> 
+                            <MessageForm 
+                                sendMessage={this.sendMessage} 
+                                style={styles.form}
+                                style={styles.messageSection} 
+                                />
+                        </View>
+
+                    </View>
                     :
                     <View>
                         <Button 
@@ -236,12 +245,20 @@ const styles = StyleSheet.create({
     messageContainer: {
         height: 300
     },
-    // messageSection: {
-    //     height: 250
-    // },
-    // form: {
-    //     paddingBottom: 50
-    // },
+    messageSection: {
+        paddingBottom: 210,
+        display: 'flex',
+                            flexDirection: "column"
+    },
+    messageSectionKeyboard: {
+        marginBottom: 100,
+        display: 'flex',
+                            flexDirection: "column"
+    },
+    form: {
+        display: 'flex',
+        alignItems: 'center'
+    },
     // header: {
     //     height: 50
     // }

@@ -78,8 +78,8 @@ export default class MessageForm extends Component {
         return (
             <View
                 style={{
-                    position: 'absolute',
-                    bottom: this.state.keyboardOffset,
+                    // position: 'absolute',
+                    // bottom: this.state.keyboardOffset,
                     display: 'flex',
                     flexDirection: 'row'
                 }} >
