@@ -156,36 +156,32 @@ export default class Login extends React.Component {
             <Image 
               source={require("./CMLogo.png")}
             />
-            {/* <View style={styles.avatar}>
-              <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
-              </View>
-            <Text style={styles.text}>Please log in to continue {"\n"}</Text> */}
             {/* Login buttons */}
             <View style={styles.header}>
-              <Text style={styles.headerText}>Welcome to chatmaps!</Text>
+              <Text style={styles.headerText}>Welcome to chat maps!</Text>
             </View>
-            <View>
-              <View style={styles.buttons}>
-                <Icon.Button
-                  name="facebook"
-                  backgroundColor="#3b5998"
-                  onPress={this.loginWithFacebook}
-                  {...iconStyles}
-                >
-                  Login with Facebook
-                </Icon.Button>
+            <TouchableOpacity
+              onPress={this.loginWithGoogle} style={styles.btnClickContain}>
+              <View
+                style={styles.btnContainer}>
+                  <Image
+                    source={require("./GLiteLogo.png")}
+                    style={styles.btnIcon}
+                  />
+                <Text style={styles.btnText}>Sign In with Google</Text>
               </View>
-              <View style={styles.buttons}>
-                <Icon.Button
-                  name="google"
-                  backgroundColor="#DD4B39"
-                  onPress={this.loginWithGoogle}
-                  {...iconStyles}
-                >
-                  Login with Google
-                </Icon.Button>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.loginWithFacebook} style={styles.btnClickContain}>
+              <View
+                style={styles.btnContainer}>
+                  <Image
+                    source={require("./FBLogo.png")}
+                    style={styles.btnIcon}
+                  />
+                <Text style={styles.btnText}>Sign In with Facebook</Text>
               </View>
-            </View>
+            </TouchableOpacity>     
           </View>
         )}
       </View>
@@ -210,19 +206,38 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    marginTop: "20%"
+    marginTop: "20%",
+    marginBottom: "10%"
   },
   headerText: {
-    fontSize: 20,
-    fontWeight: "600"
+    fontSize: 22,
+    fontWeight: "600",
+    color: "#4A4A4A"
   },
-  text: {
-    textAlign: "center",
-    color: "#333",
-    marginBottom: 5
+  btnClickContain: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderWidth: .75,
+    borderRadius: 50,
+    padding: 10,
+    width: "75%",
+    // marginTop: 20,
+    marginBottom: 20,
   },
-  buttons: {
-    marginTop: 30,
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
+  btnIcon: {
+    height: 25,
+    width: 25,
+  },
+  btnText: {
+    fontSize: 15,
+    fontWeight: "600",
+    marginLeft: "15%",
+    color: "#4A4A4A"
+  }
 });
 
