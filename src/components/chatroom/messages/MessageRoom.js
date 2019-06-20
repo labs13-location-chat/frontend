@@ -152,7 +152,8 @@ export default class MessageRoom extends Component {
         ChannelHandler.onMessageReceived()
     }
 
-    sendMessage = (message, channel) => {
+    sendMessage = (message, channel) => 
+
         channel = this.state.channel
         channel.sendUserMessage(message, (message, error) => {
             if (error) {
@@ -170,6 +171,8 @@ export default class MessageRoom extends Component {
     render() {
         return (
             <View>
+              
+
                 {this.state.loading ? 
                 <View>
                     <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
@@ -177,6 +180,7 @@ export default class MessageRoom extends Component {
                 :
                 <View style={styles.messageSection}>
                     <View >
+
                         <MessageView
                             userID={this.state.userID} 
                             chatroomInfo={this.state.chatroomInfo} 
@@ -185,9 +189,11 @@ export default class MessageRoom extends Component {
                             /> 
                         <MessageForm 
                             sendMessage={this.sendMessage} 
+
                             style={styles.form}
                             style={styles.messageSection} 
                             />
+
                     </View>
                 </View>
                 }
