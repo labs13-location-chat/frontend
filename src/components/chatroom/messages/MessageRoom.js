@@ -6,12 +6,16 @@ import {
     TouchableOpacity,
     Text,
     Image,
-    Button
+    Button,
+    Keyboard,
+    AsyncStorage,
+    KeyboardAvoidingView
   } from "react-native";
 import SendBird from 'sendbird'
 import Config from '../../../config'
 import MessageForm from './MessageForm'
 import MessageView from './MessageView'
+
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
@@ -22,97 +26,240 @@ const params = new sb.UserMessageParams();
 export default class MessageRoom extends Component {
     constructor(props) {
         super(props)
+        this.fetchUser()
     
         this.state = {
-             user: [],
+             chatroomInfo: [],
              showChat: false,
-             channelInfo: []
+             channelInfo: [],
+             messages: [],
+             fetchedOld: false,
+             fetched: false,
+             loading: true,
+             channel: [],
+             userID: '',
+             messageSentUpdate: false,
+             keyboardOffset: 0,
+             keyboardShown: false
         }
     }
 
+    
     componentDidMount() {
-        let userInfo = this.props.navigation.getParam("user")
+        let chatInfo = this.props.navigation.getParam("user")
         this.setState({
-            user: userInfo
+            chatroomInfo: chatInfo,
+            keyboardShown: false
         })
-     
+        sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
+            if (error) {
+                return;
+            }
+            this.setState({
+                channel: channel
+            })
+        })
+        this.getChannel();    
+
+        this.keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            this._keyboardDidShow,
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            this._keyboardDidHide,
+        );
     }
-    
-    // registerCommonHandler = (channelHandler, channelUrl) => {
-    //     channelHandler.onMessageReceived = (channel, message) => {
 
-    //     }
-    // }
+    static navigationOptions = {
+        title: "Chatroom"
+    }
 
-    // registerChannelHandler = () => {
-    //     const sbinstance = SendBird.getInstance()
-    //     let channelHandler = new sb.ChannelHandler();
-    // }
     
+
+    fetchUser = async () => {
+        const user_id = await AsyncStorage.getItem('userID')
+        // console.log(first, last, useremail);
+        this.setState({
+            userID: user_id
+        })
+    }
+
+    
+
+    getChannel = () => {
+        if (sb == null) return setTimeout(() => {
+            this.getChannel()
+        }, 1000)
+        const channel = sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
+            if (error) {
+                setTimeout(() => {
+                    return this.getChannel()
+                }, 1000)
+            } else {
+                this.handleMounting(channel, error)
+            }
+        })
+    }
+
+    handleMounting = (channel, error) => {
+        console.log("channel in handlemounting", channel)
+        this.setState({
+            channel: channel
+        })
+        var messageQuery = channel.createPreviousMessageListQuery()
+        messageQuery.load(20, true, (messageList, error) => {
+            channel.messageList = messageList
+            this.setState({ messages: messageList, channel, error, messageQuery, fetchedOld: true, loading: false, fetched: true, })
+        })
+        console.log("Hello from get Mounting")
+        var ChannelHandler = new sb.ChannelHandler();
+        ChannelHandler.onMessageReceived = (channel, message) => {
+            console.log(channel)
+            if (channel.url == this.state.channel.url) {
+                var messages = [message];
+                this.setState({
+                    messages: messages.concat(this.state.messages)
+                });
+                this.state.lastMessage = message;
+            }
+        }
+        sb.addChannelHandler('MessageView', ChannelHandler);
+    }
+
+
+
     joinChannel = () => {
-        sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
+        sb.connect(this.state.userID, (user, error) => {
+            if (error) {
+                console.log("Error", error)
+            } else {
+                console.log("Joining Channel", user)
+            }
+        })
+        sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
             if (error) {
               return ("top", console.log(error))
             }
-            //this code needs to be put somewhere to fetch previous messages if we want that functionality
-            // var messageListQuery = channel.createPreviousMessageListQuery();
-            // messageListQuery.limit = 30;
-            // messageListQuery.reverse = true;
-        
+    
             channel.enter(function(response, error) {
               console.log("Welcome to the Channel", channel)
             
               if (error) {
-                //   return (console.log(error))
                 }
             });
         });
         this.setState({
             showChat: !this.state.showChat
         })
+
+        ChannelHandler.onMessageReceived()
     }
 
-
-    sendMessage = message => {
-        console.log("Message", message)
-        sb.OpenChannel.getChannel(this.state.user.chatroom_url, function(channel, error) {
+    sendMessage = (message, channel) => {
+    // Successfully fetched the channel.
+        // console.log("channel in send", channel);
+        console.log("channelstate in send", this.state.channel)
+        channel = this.state.channel
+        channel.sendUserMessage(message, (message, error) => {
             if (error) {
                 return;
             }
-        
-            // Successfully fetched the channel.
-            // console.log(channel);
-            channel.sendUserMessage(message, function(message, error) {
-                if (error) {
-                    return;
-                }
-                
-                console.log(message);
+            var messages = [message];
+            this.setState({
+                messages: messages.concat(this.state.messages)
             });
-            });
+            
+            console.log(message);
+        });
+    }
+
+
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+
+    _keyboardDidShow = () => {
+        this.setState({
+            keyboardShown: !this.state.keyboardShown
+        })
+      }
+
+    _keyboardDidHide = () => {
+        this.setState({
+            keyboardShown: !this.state.keyboardShown
+        })
+    }
+
+    keyboardFixForTyping = () => {
+        if (this.state.keyboardShown) {
+            return styles.messageSectionKeyboard
+        } else {
+            return styles.messageSection
+        }
     }
     
-
     render() {
+        console.log("channel", this.state.chatroomInfo)
+        // console.log(this._keyboardDidShow())
+        console.log(this.state.messages, "Messages State")
+        // console.log("Userinfo", this.state.chatroomInfo)
+        // console.log(this.state.userID)
+        // console.log(this.state.arrMessage)
 
-        console.log(params.message)
-        // ChannelHandler.onMessageReceived = function(channel, message) {
-        //     console.log(channel, message)
-        // }
         return (
             <View>
                 {this.state.showChat ? 
-                    <View>
-                        <MessageView chatroomInfo={this.state.user} /> 
-                        <MessageForm sendMessage={this.sendMessage} />
+                    <View 
+                        // behavior="padding" this.keyboardFixForTyping()
+                        style={styles.messageSection} 
+                    >
+                        <View >
+                            <MessageView
+                                userID={this.state.userID} 
+                                chatroomInfo={this.state.chatroomInfo} 
+                                messages={this.state.messages} 
+                                // style={styles.messageSection}
+                                /> 
+                            <MessageForm 
+                                sendMessage={this.sendMessage} 
+                                style={styles.form}
+                                style={styles.messageSection} 
+                                />
+                        </View>
+
                     </View>
                     :
                     <View>
                         <Button 
-                        title={`Join the ${this.state.user.name} Channel`}      onPress={this.joinChannel} />
+                        title={`Join the ${this.state.chatroomInfo.name} Channel`}      onPress={this.joinChannel} />
                     </View>
                 }
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    messageContainer: {
+        height: 300
+    },
+    messageSection: {
+        paddingBottom: 210,
+        display: 'flex',
+                            flexDirection: "column"
+    },
+    messageSectionKeyboard: {
+        marginBottom: 100,
+        display: 'flex',
+                            flexDirection: "column"
+    },
+    form: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    // header: {
+    //     height: 50
+    // }
+})

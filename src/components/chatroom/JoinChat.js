@@ -19,50 +19,56 @@ var sb = new SendBird({ appId: Config.appId });
 const URL = "https://labs13-localchat.herokuapp.com";
 
 export default class JoinChat extends Component {
-  constructor(props) {
-    super(props);
-    this.fetchUser();
+    constructor(props) {
+        super(props);
+        this.fetchUser();
+        
+        this.state = {
+            mapToggle: false,
+            firstname: '',
+            lastname: '',
+            email: '',
+            chatroom: [],
+            userID: null
+        }
+    }
+    
+    
+    componentDidMount() {
+        this.connectToSendbird()
+}
 
-    this.state = {
-      mapToggle: false,
-      firstname: "",
-      lastname: "",
-      email: "",
-      chatroom: []
-    };
-  }
+    connectToSendbird = () => {
+        if (this.state.userID == null) {
+            return setTimeout(() => {
+                this.connectToSendbird()
+            }, 1000)
+        } else {
+            sb.connect(this.state.userID, (user, error) => {
+                if (error) {
+                    console.log("Error", error)
+                } else {
+                    console.log("Connected to Sendbird", user)
+                }
+            })
+        }
+    }
 
-  componentDidMount() {
-    let userId = AsyncStorage.getItem("userID");
-    let name = AsyncStorage.getItem("firstname");
-    sb.connect(userId, function(user, error) {
-      console.log("Hello", userId, name);
-    });
-    // axios
-    //     .get(`${URL}/api/chatrooms/`)
-    //     .then(res => {
-    //         console.log(res)
-    //         this.setState({
-    //             chatroom: res.data
-    //         })
-    //     })
-    //     .catch(err => console.log(err))
-  }
-
-  static navigationOptions = {
-    title: "Join a Chat Room"
-  };
-
-  searchToggler = () => {
-    if (!this.state.mapToggle) {
-      return;
-    } else {
-      this.setState({
-        mapToggle: !this.state.mapToggle
-      });
+    static navigationOptions = {
+        title: 'Join a Chat Room',
+    }
+      
+    searchToggler = () => {
+          if (!this.state.mapToggle) {
+              return
+          } else {
+              this.setState({
+                  mapToggle: !this.state.mapToggle
+                })
+            }
     }
     //   console.log('toggled')
-  };
+  ;
 
   mapToggler = () => {
     if (this.state.mapToggle) {
@@ -86,11 +92,13 @@ export default class JoinChat extends Component {
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
+    let user_id = await AsyncStorage.getItem("userID")
     console.log(first, last, useremail, id);
     this.setState({
       firstname: first,
       lastname: last,
-      email: useremail
+      email: useremail,
+      userID: user_id
     });
   };
 
@@ -100,7 +108,7 @@ export default class JoinChat extends Component {
     // console.log(this.state.mapToggle)
     // console.log('chat', this.props)
     return (
-      <View>
+      <View style={styles.container}>
         <View>
           {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
@@ -142,6 +150,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     margin: 10
+  },
+  container: {
+      height: '90%'
   },
   topText: {
     marginLeft: 10,

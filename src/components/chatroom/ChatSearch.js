@@ -51,19 +51,19 @@ export default class ChatSearch extends Component {
   }
 
   render() {
-    console.log("this.state", this.state.chatroom);
+    // console.log("this.state", this.state.chatroom);
     return (
-      <ScrollView>
-        {this.state.chatroom &&
-          this.state.chatroom.map(chat => {
-            return <ChatroomItem navigation={this.props.navigation} key={chat.id} chat={chat} />;
-          })}
-      </ScrollView>
+      // <ScrollView>
+      //   {this.state.chatroom &&
+      //     this.state.chatroom.map(chat => {
+      //       return <ChatroomItem navigation={this.props.navigation} key={chat.id} chat={chat} />;
+      //     })}
+      // </ScrollView>
 
-      //   <FlatList
-      //     data={this.state.chatroom}
-      //     renderItem={info => <ChatroomItem key={info.id} chat={info} />}
-      //   />
+        <FlatList
+          data={this.state.chatroom}
+          renderItem={info => <ChatroomItem navigation={this.props.navigation} key={info.index} chat={info.item} />}
+        />
     );
   }
 }

@@ -16,54 +16,45 @@ import ImagePicker from 'react-native-image-picker';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
+const URL = 'https://labs13-localchat.herokuapp.com';
+
 export default class MyProfile extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fetchUser();
 		this.state = {
-			firstname: '',
-			lastname: '',
-			phonenumber: '',
+			updateUser: false,
+			first_name: '',
+			last_name: '',
+			email: '',
+			phone_num: '',
 			anonymous: true,
-			user: '',
+			user_type: 'user',
+			id: null,
 			photo:
 				'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
 		};
 	}
+
 	static navigationOptions = {
 		title: 'Edit Profile',
 		headerTransparent: true
 	};
 
 	fetchUser = async () => {
-		const id = await this.props.navigation.state.params.id;
-		const first = await this.props.navigation.state.params.firstname;
-		const last = await this.props.navigation.state.params.lastname;
-		const phonenumber = await this.props.navigation.state.params
-			.phonenumber;
-		const anonymous = await this.props.navigation.state.params.anonymous;
-		// const first = await AsyncStorage.getItem('firstname');
-		// const last = await AsyncStorage.getItem('lastname');
-		// const useremail = await AsyncStorage.getItem('email');
-		// const phonenumber = await AsyncStorage.getItem('phonenumber');
-		console.log(
-			'users from state:',
-			'first name:',
-			first,
-			',',
-			'last name:',
-			last,
-			',',
-			'phone number:',
-			phonenumber,
-			',',
-			'user id:',
-			id
-		);
+		const id = this.props.navigation.state.params.id;
+		const first = await AsyncStorage.getItem('firstname');
+		const last = await AsyncStorage.getItem('lastname');
+		const useremail = await AsyncStorage.getItem('email');
+		const phone_num = await AsyncStorage.getItem('phone_num');
+		console.log('users from state:', first, last, useremail, phone_num, id);
 		this.setState({
-			firstname: first,
-			lastname: last,
-			phonenumber: phonenumber
+			first_name: first,
+			last_name: last,
+			email: useremail,
+			phone_num: phone_num,
+			id: id,
+			anonymous: true,
+			user_type: 'user'
 		});
 	};
 
@@ -106,31 +97,59 @@ export default class MyProfile extends React.Component {
 		});
 	};
 
-	submit = user => {
-		const user_id = this.props.navigation.state.params.id;
-		const first = this.props.navigation.state.params.firstname;
-		const last = this.props.navigation.state.params.lastname;
-		const phonenumber = this.props.navigation.state.params.phonenumber;
-		const anonymous = this.props.navigation.state.params.anonymous;
-		console.log(user_id);
+	componentDidUpdate(prevState) {
+		const id = this.props.navigation.state.params.id;
+		if (this.state.updateUser !== prevState.updateUser) {
+			return this.getUser(id);
+		} else {
+			return;
+		}
+	}
+
+	updateUser = updateUser => {
+		if (this.state.first_name === '') {
+			this.fetchUser().then(
+				axios
+					.put(`${URL}/api/users/${updateUser.id}`, updateUser)
+					.then(res => {
+						this.setState({
+							updateUser: !this.state.updateUser
+						});
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					})
+			);
+		}
+	};
+
+	handleUpdate = e => {
+		e.preventDefault();
+		const updatedUser = {
+			id: this.state.id,
+			first_name: this.state.first_name,
+			last_name: this.state.last_name,
+			email: this.state.email,
+			phone_num: this.state.phone_num,
+			anonymous: this.state.anonymous,
+			user_type: this.state.user_type
+		};
+		this.updateUser(updatedUser);
+	};
+
+	getUser = id => {
 		axios
-			.put(
-				`https://labs13-localchat.herokuapp.com/api/users/${user_id}`,
-				user
-			)
+			.get(`${URL}/api/users/${id}`)
 			.then(res => {
-				console.log('user:', res.data);
-				this.setState({
-					firstname: first,
-					lastname: last,
-					phonenumber: phonenumber,
-					anonymous: anonymous
-				});
+				console.log(res);
 			})
 			.catch(err => {
-				console.error(err);
+				console.log(err);
 			});
 	};
+
+	submit = () => {};
 
 	render() {
 		const { photo } = this.state;
@@ -172,18 +191,18 @@ export default class MyProfile extends React.Component {
 						<TextInput
 							style={styles.inputBox}
 							onChangeText={val =>
-								this.handleChange('firstname', val)}
-							value={this.state.firstname}
-							name='firstname'
+								this.handleChange('first_name', val)}
+							value={this.state.first_name}
+							name='first_name'
 						/>
 						<Text style={styles.text}>Phone Number</Text>
 						<TextInput
 							style={styles.inputBox}
 							keyboardType='phone-pad'
-							name='phonenumber'
+							name='phone_num'
 							onChangeText={val =>
-								this.handleChange('phonenumber', val)}
-							value={this.state.phonenumber}
+								this.handleChange('phone_num', val)}
+							value={this.state.phone_num}
 						/>
 						<Text style={styles.text}>Anonymous</Text>
 						<CheckBox
@@ -193,9 +212,9 @@ export default class MyProfile extends React.Component {
 					</View>
 					{/* <KeyboardSpacer /> */}
 					<Button
-						onPress={this.submit}
 						style={{ backgroundColor: '#3EB1D6' }}
 						title='Save'
+						onPress={this.handleUpdate}
 					/>
 				</View>
 			</TouchableWithoutFeedback>

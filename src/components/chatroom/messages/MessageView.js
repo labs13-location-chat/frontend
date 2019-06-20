@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import {
     View,
     StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Text,
-    Image,
-    Button
+    FlatList
   } from "react-native";
 import SendBird from 'sendbird'
 import Config from '../../../config'
+import Message from './Message'
 
 var sb = new SendBird({appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler()
@@ -24,22 +21,28 @@ export default class MessageView extends Component {
     }
 
 
-    componentDidMount() {
-        ChannelHandler.onMessageReceived = function(channel, message) {
-            console.log(channel, message);
-        };
-        
-    }
     
     
     render() {
-        // ChannelHandler.onMessageReceived = function(channel, message) {
-        //     console.log(channel, message);
-        // };
+        // const messages = this.props.messages.reverse()
         return (
             <View>
+                <FlatList 
+                    // style={}
+                    inverted
+                    data={ this.props.messages }
+                    renderItem={(info) =>
+                        <Message 
+                            message={info.item}
+                            userID={this.props.userID}
+                            
+                        />
+                    }
+
+                />
                 
             </View>
         )
     }
 }
+

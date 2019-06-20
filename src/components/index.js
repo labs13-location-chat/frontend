@@ -108,7 +108,7 @@ const tabNavigator = createBottomTabNavigator(
 				fontWeight: '600'
 			},
 			style: {
-				height: 60,
+				height: 50,
 				padding: 5
 				// backgroundColor: '#3EB1D6',
 			}
