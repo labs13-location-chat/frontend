@@ -152,7 +152,7 @@ export default class MessageRoom extends Component {
         ChannelHandler.onMessageReceived()
     }
 
-    sendMessage = (message, channel) => 
+    sendMessage = (message, channel) => {
 
         channel = this.state.channel
         channel.sendUserMessage(message, (message, error) => {
