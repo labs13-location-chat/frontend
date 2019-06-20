@@ -1,6 +1,5 @@
-
 export default class Config {
-	static get appId() {
-		return '';
-	}
+  static get appId() {
+    return "";
+  }
 }
