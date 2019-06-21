@@ -9,7 +9,6 @@ import {
   AsyncStorage,
   Dimensions
 } from "react-native";
-import { getDistance } from 'geolib'
 import ChatMap from "./ChatMap";
 import ChatSearch from "./ChatSearch";
 import SendBird from "sendbird";
@@ -52,28 +51,22 @@ export default class JoinChat extends Component {
         }
     
     componentDidMount() {
-        this.connectToSendbird()
-        axios
-          .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
-          .then(res => {
-            this.setState({
-              chatroom: res.data,
-              loadingChatRooms: false,
-              data: res.data
-              
-            });
-          })
-          .catch(err => {
-            console.log(err);
+      this.connectToSendbird()
+       axios
+        .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+        .then(res => {
+          this.setState({
+            chatroom: res.data,
+            data: res.data,
+            loadingChatRooms: false
           });
+        })
+        .catch(err => {
+          console.log(err);
+        });
       this.getGeoLocation()
-}
+    }
 
-componentDidUpdate(prevState) {
-  if (this.state.searchBackToNormal !== prevState.searchBackToNormal) {
-    return
-  }
-}
 
     getGeoLocation = () => {
       if (navigator.geolocation) {
@@ -191,7 +184,7 @@ componentDidUpdate(prevState) {
           <Text style={styles.topText}>Chat Nearby...</Text>
           <TextInput 
             style={styles.search} 
-            placeholder="Search by Name of City" 
+            placeholder="Search by Name" 
             onChangeText={text => this.searchText(text)}
           />
         </View>
@@ -222,6 +215,7 @@ componentDidUpdate(prevState) {
         <View>
           <ChatSearch
             // chatroomList={this.state.chatroom}
+            focusedLocation={this.state.focusedLocation}
             navigation={this.props.navigation}
             noData={this.state.noData}
             data={this.state.data}

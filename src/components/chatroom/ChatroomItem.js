@@ -70,7 +70,11 @@ export default class ChatroomItem extends Component {
         {this.state.expanded ? (
           <View>
             {/* <ChatroomItemMap style={styles.map} /> */}
-            <ChatroomItemSelected navigation={this.props.navigation} chat={this.props.chat} />
+            <ChatroomItemSelected 
+              navigation={this.props.navigation} 
+              chat={this.props.chat} 
+              focusedLocation={this.props.focusedLocation}
+            />
           </View>
         ) : null}
       </View>

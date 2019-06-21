@@ -19,8 +19,7 @@ export default class ChatSearch extends Component {
             noData={this.props.noData}
               key={info.index} 
               chat={info.item}
-              
-              
+              focusedLocation={this.props.focusedLocation}
             />}
         />
     );

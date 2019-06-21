@@ -14,6 +14,7 @@ import React, { Component } from "react";
 import axios from 'axios'
 import SendBird from 'sendbird'
 import Config from '../../config'
+import { getDistance } from "geolib";
 
 var sb = new SendBird({appId: Config.appId });
 
@@ -31,7 +32,8 @@ export default class ChatroomItemSelected extends Component {
         longitudeDelta: 0
       },
       chatroom: [],
-      user: []
+      user: [],
+      distance: 0
     }
   }
 
@@ -53,8 +55,27 @@ export default class ChatroomItemSelected extends Component {
         // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
-  }
+
+      this.getDistanceFromChat()
+    }
   
+    getDistanceFromChat = () => {
+      let distance = getDistance(
+        { latitude: this.state.location.latitude, longitude: this.state.location.latitude },
+        { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }
+        )
+      if (this.state.location.latitude === 0 ) {
+        return setTimeout(() => {
+          this.getDistanceFromChat()
+        }, 1000)
+      } else {
+        this.setState({
+          distance: distance
+        })
+          console.log("distance", distance)
+        }
+    }
+
   joinChannel = () => {
   this.props.navigation.navigate('Chatroom', {
     user: this.state.chatroom
@@ -64,6 +85,7 @@ export default class ChatroomItemSelected extends Component {
 
   render() {
     console.log('props', this.props)
+    console.log('focusedlocation', this.props.focusedLocation)
     console.log('location', this.state.location)
     console.log('chatroom', this.state.chatroom)
     return (
