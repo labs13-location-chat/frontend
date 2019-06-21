@@ -9,12 +9,13 @@ import {
 	Image,
 	StyleSheet
 } from 'react-native';
-import SendBird from 'sendbird'
-import Config from '../../config'
+import axios from 'axios';
+import SendBird from 'sendbird';
+import Config from '../../config';
 
 import ImagePicker from 'react-native-image-picker';
 
-var sb = new SendBird({ appId: Config.appId })
+var sb = new SendBird({ appId: Config.appId });
 
 export default class Setting extends React.Component {
 	constructor(props) {
@@ -24,12 +25,28 @@ export default class Setting extends React.Component {
 			firstname: '',
 			lastname: '',
 			email: '',
-			user: ''
+			user: [],
+			photo: null
 		};
 	}
 	static navigationOptions = {
 		title: 'Settings'
 	};
+
+	componentDidMount() {
+		axios
+			.get('https://labs13-localchat.herokuapp.com/api/users/')
+			.then(res => {
+				console.log('users did mount:', res.data);
+
+				this.setState({
+					user: res.data
+				});
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
 
 	// chooseFile = () => {
 	// 	const options = {
@@ -60,17 +77,17 @@ export default class Setting extends React.Component {
 	// 	});
 	// };
 
-    fetchUser = async () => {
-        const first = await AsyncStorage.getItem("firstname");
-        const last = await AsyncStorage.getItem("lastname");
-        const useremail = await AsyncStorage.getItem("email");
-        // console.log(first, last, useremail);
-        this.setState({
-            firstname: first,
-            lastname: last,
-            email: useremail
-        })
-    }
+	fetchUser = async () => {
+		const first = await AsyncStorage.getItem('firstname');
+		const last = await AsyncStorage.getItem('lastname');
+		const photo = await AsyncStorage.getItem('photo');
+		// console.log(first, last, useremail);
+		this.setState({
+			firstname: first,
+			lastname: last,
+			photo: photo
+		});
+	};
 
 	signOut = async () => {
 		const { user } = this.state;
@@ -82,20 +99,25 @@ export default class Setting extends React.Component {
 		this.props.navigation.navigate('Login');
 		sb.disconnect(function() {
 			// A current user is discconected from SendBird server.
-		  });
-		  
+		});
 	};
 
 	render() {
-		const { firstname, lastname } = this.state;
+		const { firstname, lastname, photo } = this.state;
 		return (
 			<View style={styles.container}>
 				<Image
 					style={styles.image}
-					source={{
-						uri:
-							'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
-					}}
+					source={
+						this.state.photo ? (
+							{ uri: photo }
+						) : (
+							{
+								uri:
+									'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
+							}
+						)
+					}
 				/>
 				<Text style={styles.name}>{`${firstname} ${lastname}`}</Text>
 				<View style={styles.display}>
@@ -107,26 +129,6 @@ export default class Setting extends React.Component {
 					>
 						<View>
 							<Text>Profile</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.touch}
-						onPress={() => {
-							this.props.navigation.navigate('MenuSettings');
-						}}
-					>
-						<View>
-							<Text>Settings</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.touch}
-						onPress={() => {
-							this.props.navigation.navigate('Notifications');
-						}}
-					>
-						<View>
-							<Text>Notifications</Text>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity
