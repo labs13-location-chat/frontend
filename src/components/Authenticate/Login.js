@@ -229,7 +229,9 @@ const styles = StyleSheet.create({
 		marginTop: '10%'
 	},
 	header: {
-		textAlign: 'center'
+		textAlign: 'center',
+		marginTop: '20%',
+		marginBottom: '10%'
 	},
 	headerText: {
 		fontSize: 22,
