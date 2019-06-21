@@ -37,9 +37,9 @@ export default class MyProfile extends React.Component {
 	componentDidMount() {
 		const user_id = this.props.navigation.state.params.id;
 		this.getUser(user_id);
-		this.props.navigation.setParams({
-			editButton: this.toggleEditButton
-		});
+		// this.props.navigation.setParams({
+		// 	editButton: this.toggleEditButton
+		// });
 		console.log('hi');
 	}
 
@@ -49,7 +49,12 @@ export default class MyProfile extends React.Component {
 		// const { edit } = this.state;
 		return {
 			headerLeft: (
-				<TouchableOpacity title='Edit Profile' color='#3EB1D6'>
+				<TouchableOpacity
+					onPress={() => {
+						// this.props.navigation.navigate('JoinChat');
+					}}
+					color='#3EB1D6'
+				>
 					<View>
 						<Text style={{ color: '#fff', marginLeft: 20 }}>
 							Edit Profile
@@ -59,29 +64,31 @@ export default class MyProfile extends React.Component {
 			),
 			headerTransparent: true,
 			headerRight: (
-				<Button
-					onPress={() => {}}
-					title={`${this.editButton}`}
-					color='#3EB1D6'
-				/>
+				<TouchableOpacity onPress={this.handleUpdate} color='#3EB1D6'>
+					<View>
+						<Text style={{ color: '#fff', marginRight: 20 }}>
+							Save
+						</Text>
+					</View>
+				</TouchableOpacity>
 			)
 		};
 	};
 
-	toggleEditButton = () => {
-		this.setState({
-			edit: !this.state.edit
-		});
-	};
+	// toggleEditButton = () => {
+	// 	this.setState({
+	// 		edit: !this.state.edit
+	// 	});
+	// };
 
-	editButton = () => {
-		// const { edit } = this.state;
-		if (this.state.edit) {
-			return 'Edit';
-		} else {
-			return 'Save';
-		}
-	};
+	// editButton = () => {
+	// 	// const { edit } = this.state;
+	// 	if (this.state.edit) {
+	// 		return 'Edit';
+	// 	} else {
+	// 		return 'Save';
+	// 	}
+	// };
 
 	handleNameChange = value => {
 		console.log('value change:', this.state);
@@ -215,6 +222,19 @@ export default class MyProfile extends React.Component {
 		} else return this.state.anonymous;
 	};
 
+	signOut = async () => {
+		const { user } = this.state;
+		// await AsyncStorage.clear();
+		// this.props.navigation.navigate('Login');
+		this.setState({
+			user: undefined
+		});
+		this.props.navigation.navigate('Login');
+		sb.disconnect(function() {
+			// A current user is discconected from SendBird server.
+		});
+	};
+
 	render() {
 		console.log(this.state.first_name);
 		const { photo, anonymous } = this.state;
@@ -263,7 +283,13 @@ export default class MyProfile extends React.Component {
 								name='phone_num'
 								onChangeText={this.handleNumChange}
 							/>
-							<View style={{ flex: 1, flexWrap: 'nowrap' }}>
+							<View
+							// style={{
+							// 	flex: 1,
+							// 	flexDirection: 'row',
+							// 	flexWrap: 'nowrap'
+							// }}
+							>
 								<View style={styles.anonymousStyle}>
 									<Text>Anonymous</Text>
 									<CheckBox
@@ -275,7 +301,9 @@ export default class MyProfile extends React.Component {
 						{/* <KeyboardSpacer /> */}
 						<TouchableOpacity title='Logout' onPress={this.signOut}>
 							<View>
-								<Text style={{ color: '#3EB1D6', top: 40 }}>
+								<Text
+									style={{ color: '#3EB1D6', marginTop: 70 }}
+								>
 									Logout
 								</Text>
 							</View>
@@ -345,9 +373,10 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	anonymousStyle: {
-		width: 300
-		// borderBottomWidth: 0.6
+		width: 300,
+		borderBottomWidth: 0.5
 		// flex: 1,
+		// flexDirection: 'row',
 		// flexWrap: 'nowrap'
 	}
 });
