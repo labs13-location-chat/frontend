@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from "react-native";
 import ChatMap from "./ChatMap";
 import ChatSearch from "./ChatSearch";
@@ -30,26 +31,61 @@ export default class JoinChat extends Component {
             email: '',
             chatroom: [],
             userID: null,
-            loadingChatRooms: true
+            loadingChatRooms: true,
+            noData: false,
+            data: [],
+            searchBackToNormal: false,
+            focusedLocation: {
+              latitude: 0,
+              longitude: 0,
+              latitudeDelta: 0.0122,
+              longitudeDelta:
+                (Dimensions.get("window").width / Dimensions.get("window").height) *
+                0.0122
+            }
+          }
         }
-    }
-    
+        
+        static navigationOptions = {
+            title: 'Join a Chat Room',
+        }
     
     componentDidMount() {
-        this.connectToSendbird()
-        axios
-          .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
-          .then(res => {
-        // console.log("res data", res);
-            this.setState({
-              chatroom: res.data,
-              loadingChatRooms: false
-            });
-          })
-          .catch(err => {
-            console.log(err);
+      this.connectToSendbird()
+       axios
+        .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+        .then(res => {
+          this.setState({
+            chatroom: res.data,
+            data: res.data,
+            loadingChatRooms: false
           });
-}
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this.getGeoLocation()
+    }
+
+
+    getGeoLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.setState({
+            ...this.state.focusedLocation,
+            focusedLocation: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.0122,
+              longitudeDelta:
+                (Dimensions.get("window").width /
+                  Dimensions.get("window").height) *
+                0.0122
+            }
+          });
+        });
+      }
+    };
 
     connectToSendbird = () => {
         if (this.state.userID == null) {
@@ -67,9 +103,6 @@ export default class JoinChat extends Component {
         }
     }
 
-    static navigationOptions = {
-        title: 'Join a Chat Room',
-    }
       
     searchToggler = () => {
           if (!this.state.mapToggle) {
@@ -115,15 +148,45 @@ export default class JoinChat extends Component {
     });
   };
 
-  render() {
+  searchText = (e) => {
+    let text = e.toLowerCase()
+    let chats = this.state.data
+    let filteredName = chats.filter((item) => {
+      return item.name.toLowerCase().match(text)
+    })
+    if (!text || text === '') {
+      this.setState({
+        data: this.state.chatroom,
+        // searchBackToNormal: !this.state.searchBackToNormal
+      })
+    } else if (!Array.isArray(filteredName) && !filteredName.length) {
+      // set no data flag to true so as to render flatlist conditionally
+      this.setState({
+        noData: true
+      })
+    } else if (Array.isArray(filteredName)) {
+      this.setState({
+        noData: false,
+        data: filteredName
+      })
+    }
+  }
   
+
+
+  render() {
+    console.log(this.state.focusedLocation)
 
     return (
       <View style={styles.container}>
         <View>
           {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
-          <TextInput style={styles.search} placeholder="Search by Zipcode" />
+          <TextInput 
+            style={styles.search} 
+            placeholder="Search by Name" 
+            onChangeText={text => this.searchText(text)}
+          />
         </View>
         <View style={styles.option}>
           <TouchableOpacity
@@ -151,9 +214,14 @@ export default class JoinChat extends Component {
           :
         <View>
           <ChatSearch
-            chatroomList={this.state.chatroom}
+            // chatroomList={this.state.chatroom}
+            focusedLocation={this.state.focusedLocation}
             navigation={this.props.navigation}
+            noData={this.state.noData}
+            data={this.state.data}
+            // style={styles.chats}
           />
+          <View style={styles.chats} />
         </View>}
           
       </View>
@@ -162,6 +230,9 @@ export default class JoinChat extends Component {
 }
 
 const styles = StyleSheet.create({
+  chats: {
+    paddingBottom: 80
+  },
   search: {
     borderWidth: 1,
     borderColor: "black",
