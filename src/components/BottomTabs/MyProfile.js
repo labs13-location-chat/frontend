@@ -30,21 +30,22 @@ export default class MyProfile extends React.Component {
 
 			photo: null,
 			anonymous: null,
-			edit: 'Edit'
+			edit: true
 		};
 	}
 
 	componentDidMount() {
 		const user_id = this.props.navigation.state.params.id;
 		this.getUser(user_id);
-		// this.props.navigation.setParams({
-		// 	editButton: this.editButton
-		// });
+		this.props.navigation.setParams({
+			editButton: this.toggleEditButton
+		});
 		console.log('hi');
 	}
 
 	static navigationOptions = ({ navigation }) => {
-		// const { params = {} } = navigation.state;
+		// const {params = {}} = navigation.state;
+		// const { params = {} } = navigation.getParams('editButton');
 		// const { edit } = this.state;
 		return {
 			headerLeft: (
@@ -58,27 +59,29 @@ export default class MyProfile extends React.Component {
 			),
 			headerTransparent: true,
 			headerRight: (
-				<TouchableOpacity
+				<Button
 					onPress={() => {}}
-					title='Save'
+					title={`${this.editButton}`}
 					color='#3EB1D6'
-				>
-					<View>
-						<Text style={{ color: '#fff', marginRight: 20 }}>
-							Edit
-						</Text>
-					</View>
-				</TouchableOpacity>
+				/>
 			)
 		};
 	};
 
-	// editButton = () => {
-	// 	const { edit } = this.state;
-	// 	this.setState({
-	// 		edit: 'Save'
-	// 	});
-	// };
+	toggleEditButton = () => {
+		this.setState({
+			edit: !this.state.edit
+		});
+	};
+
+	editButton = () => {
+		// const { edit } = this.state;
+		if (this.state.edit) {
+			return 'Edit';
+		} else {
+			return 'Save';
+		}
+	};
 
 	handleNameChange = value => {
 		console.log('value change:', this.state);
@@ -247,9 +250,9 @@ export default class MyProfile extends React.Component {
 						<View
 						// style={styles.display}
 						>
-							<Text style={styles.text}>Name</Text>
+							{/* <Text style={styles.text}>Name</Text> */}
 							<TextInput
-								style={styles.inputBox}
+								// style={styles.inputBox}
 								onChangeText={this.handleNameChange}
 								name='first_name'
 							/>
@@ -260,13 +263,21 @@ export default class MyProfile extends React.Component {
 								name='phone_num'
 								onChangeText={this.handleNumChange}
 							/>
-							<Text style={styles.text}>Anonymous</Text>
-							<CheckBox onValueChange={this.anonymousCheck} />
+							<View style={{ flex: 1, flexWrap: 'nowrap' }}>
+								<View style={styles.anonymousStyle}>
+									<Text>Anonymous</Text>
+									<CheckBox
+										onValueChange={this.anonymousCheck}
+									/>
+								</View>
+							</View>
 						</View>
 						{/* <KeyboardSpacer /> */}
 						<TouchableOpacity title='Logout' onPress={this.signOut}>
 							<View>
-								<Text style={{ color: '#3EB1D6' }}>Logout</Text>
+								<Text style={{ color: '#3EB1D6', top: 40 }}>
+									Logout
+								</Text>
 							</View>
 						</TouchableOpacity>
 						{/* <Button
@@ -302,7 +313,7 @@ const styles = StyleSheet.create({
 	},
 	display: {
 		marginTop: 175,
-		marginLeft: 30
+		marginLeft: 50
 		// alignItems: 'flex-start'
 	},
 	imageEdit: {
@@ -321,15 +332,22 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		// marginTop: 10,
-		width: 300
+		width: 300,
+		borderBottomWidth: 0.7
 		// backgroundColor: '#f4f4f4',
 		// borderColor: '#f4f4f4',
 		// paddingHorizontal: 20,
 		// padding: 10
 	},
 	inputBox: {
-		width: 320,
-		borderBottomWidth: 1,
+		width: 300,
+		// borderTopWidth: 0.7,
 		fontSize: 16
+	},
+	anonymousStyle: {
+		width: 300
+		// borderBottomWidth: 0.6
+		// flex: 1,
+		// flexWrap: 'nowrap'
 	}
 });
