@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import ChatroomItemMap from "./ChatroomItemMap";
 import ChatroomItemSelected from "./ChatroomItemSelected";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const pic = {
   uri:
@@ -40,8 +41,7 @@ export default class ChatroomItem extends Component {
   };
 
   render() {
-    // console.log(this.props.chatName)
-
+    let image = this.props.chat.img_url
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -51,27 +51,26 @@ export default class ChatroomItem extends Component {
           <View>
             <Image
               style={{ width: 35, height: 35, borderRadius: 35 }}
-              source={{
-                uri:
-                  "https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg"
-              }}
+              source={{uri: image}}
             />
           </View>
           <View style={styles.nameAddress}>
-            <Text>{this.props.chat.name}</Text>
+            <Text style={styles.name}>{this.props.chat.name}</Text>
             <Text>{this.props.chat.description}</Text>
           </View>
           <View style={styles.distance}>
             <Text>{this.props.chat.radius} mi</Text>
-            <Text style={styles.expandOperators}>
-              {this.state.expanded ? "-" : "+"}
-            </Text>
+              {this.state.expanded ? <Icon name="md-arrow-dropup" size={30} /> : <Icon name="md-arrow-dropdown" size={30}/> }
           </View>
         </TouchableOpacity>
         {this.state.expanded ? (
           <View>
             {/* <ChatroomItemMap style={styles.map} /> */}
-            <ChatroomItemSelected navigation={this.props.navigation} chat={this.props.chat} />
+            <ChatroomItemSelected 
+              navigation={this.props.navigation} 
+              chat={this.props.chat} 
+              focusedLocation={this.props.focusedLocation}
+            />
           </View>
         ) : null}
       </View>
@@ -101,7 +100,8 @@ const styles = StyleSheet.create({
     width: "70%"
   },
   name: {
-    fontSize: 15
+    fontSize: 15,
+    fontWeight: "bold"
   },
   // address: {
   //     fontSize: 12
@@ -110,14 +110,8 @@ const styles = StyleSheet.create({
     width: 25,
     borderRadius: 5
   },
-  // distance: {
-  //     alignItems: 'flex-end'
-  // }
-  expandOperators: {
-    backgroundColor: "#d9e257",
-    textAlign: "center",
-    fontSize: 20,
-    margin: 10
+  distance: {
+      alignItems: 'center'
   }
 });
 

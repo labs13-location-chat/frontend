@@ -6,13 +6,15 @@ import {
   Text,
   Image,
   Button,
-  Modal
+  Modal,
+  Dimensions,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
 import axios from 'axios'
 import SendBird from 'sendbird'
 import Config from '../../config'
+import { getDistance } from "geolib";
 
 var sb = new SendBird({appId: Config.appId });
 
@@ -25,46 +27,98 @@ export default class ChatroomItemSelected extends Component {
     this.state = {
       location: {
         longitude: 0,
-        latitude: 0
+        latitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
       },
       chatroom: [],
-      user: []
+      user: [],
+      distance: 0
     }
   }
 
   componentDidMount() {
     axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
-        console.log(res.data)
+        console.log('data',res.data)
         this.setState({
           location: {
-            longitude: res.data.coordinate.longitude,
-            latitude: res.data.coordinate.latitude
+            longitude: res.data.coordinate[0].longitude,
+            latitude: res.data.coordinate[0].latitude,
+            latitudeDelta: 0.0122,
+            longitudeDelta:
+              (Dimensions.get("window").width / Dimensions.get("window").height) *
+              0.0122
           },
           chatroom: res.data
         })
+        // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
-  }
+
+      this.getDistanceFromChat()
+    }
   
+    getDistanceFromChat = () => {
+      let distance = getDistance(
+        { latitude: this.state.location.latitude, longitude: this.state.location.latitude },
+        { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }
+        )
+      if (this.state.location.latitude === 0 ) {
+        return setTimeout(() => {
+          this.getDistanceFromChat()
+        }, 1000)
+      } else {
+        this.setState({
+          distance: distance
+        })
+          console.log("distance", distance)
+        }
+    }
+
   joinChannel = () => {
-  this.props.navigation.navigate('Chatroom', {
-    user: this.state.chatroom
-  })
+    if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance >= 0) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "big_city" && this.state.distance <= 80000) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "stadium" && this.state.distance <= 800) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else {
+      alert(`You aren't in or near ${this.state.chatroom.name}!`)
+    }
+  // this.props.navigation.navigate('Chatroom', {
+  //   user: this.state.chatroom
+  // })
   }
 
 
   render() {
-    
-    console.log(this.state.chatroom)
+    // console.log('props', this.props)
+    // console.log('focusedlocation', this.props.focusedLocation)
+    // console.log('location', this.state.location)
+    console.log('chatroom', this.state.chatroom)
     return (
       <View>
         <View>
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
+            region={this.state.location}
             // annotations={markers}
-          /> 
+          >
+            <Marker
+              coordinate={{
+                latitude: this.state.location.latitude,
+                longitude: this.state.location.longitude
+              }}
+            />
+          </MapView> 
           {/* <Marker coordinate={markers} /> */}
             </View>
         <View>
@@ -75,7 +129,7 @@ export default class ChatroomItemSelected extends Component {
           <Text>{this.props.chat.total_users} users in chat</Text>
         </View>
         <View>
-          <Text>`Chatroom created @ ${this.props.chat.created_at}`</Text>
+          <Text>Chatroom created {this.props.chat.created_at}</Text>
           <Text>{this.props.chat.description}</Text>
         </View>
       </View>
