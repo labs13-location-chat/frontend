@@ -41,8 +41,7 @@ export default class ChatroomItem extends Component {
   };
 
   render() {
-    // console.log(this.props.chatName)
-
+    let image = this.props.chat.img_url
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -52,10 +51,7 @@ export default class ChatroomItem extends Component {
           <View>
             <Image
               style={{ width: 35, height: 35, borderRadius: 35 }}
-              source={{
-                uri:
-                  "https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg"
-              }}
+              source={{uri: image}}
             />
           </View>
           <View style={styles.nameAddress}>
@@ -70,7 +66,11 @@ export default class ChatroomItem extends Component {
         {this.state.expanded ? (
           <View>
             {/* <ChatroomItemMap style={styles.map} /> */}
-            <ChatroomItemSelected navigation={this.props.navigation} chat={this.props.chat} />
+            <ChatroomItemSelected 
+              navigation={this.props.navigation} 
+              chat={this.props.chat} 
+              focusedLocation={this.props.focusedLocation}
+            />
           </View>
         ) : null}
       </View>
