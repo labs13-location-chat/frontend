@@ -77,16 +77,31 @@ export default class ChatroomItemSelected extends Component {
     }
 
   joinChannel = () => {
-  this.props.navigation.navigate('Chatroom', {
-    user: this.state.chatroom
-  })
+    if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance >= 0) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "big_city" && this.state.distance <= 80000) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "big_city" && this.state.distance <= 800) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else {
+      alert(`You aren't in or near ${this.state.chatroom.name}!`)
+    }
+  // this.props.navigation.navigate('Chatroom', {
+  //   user: this.state.chatroom
+  // })
   }
 
 
   render() {
-    console.log('props', this.props)
-    console.log('focusedlocation', this.props.focusedLocation)
-    console.log('location', this.state.location)
+    // console.log('props', this.props)
+    // console.log('focusedlocation', this.props.focusedLocation)
+    // console.log('location', this.state.location)
     console.log('chatroom', this.state.chatroom)
     return (
       <View>

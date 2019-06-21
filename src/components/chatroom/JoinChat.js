@@ -219,7 +219,9 @@ export default class JoinChat extends Component {
             navigation={this.props.navigation}
             noData={this.state.noData}
             data={this.state.data}
+            // style={styles.chats}
           />
+          <View style={styles.chats} />
         </View>}
           
       </View>
@@ -228,6 +230,9 @@ export default class JoinChat extends Component {
 }
 
 const styles = StyleSheet.create({
+  chats: {
+    paddingBottom: 80
+  },
   search: {
     borderWidth: 1,
     borderColor: "black",
