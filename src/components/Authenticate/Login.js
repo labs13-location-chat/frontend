@@ -156,9 +156,12 @@ export default class Login extends React.Component {
             <Image 
               source={require("./CMLogo.png")}
             />
+
             {/* Login buttons */}
+            
             <View style={styles.header}>
               <Text style={styles.headerText}>Welcome to chat maps!</Text>
+
             </View>
             <TouchableOpacity
               onPress={this.loginWithGoogle} style={styles.btnClickContain}>
@@ -206,14 +209,14 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    marginTop: "20%",
-    marginBottom: "10%"
+
   },
   headerText: {
     fontSize: 22,
     fontWeight: "600",
     color: "#4A4A4A"
   },
+
   btnClickContain: {
     flexDirection: "row",
     justifyContent: "space-between",

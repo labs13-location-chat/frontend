@@ -9,7 +9,6 @@ import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
 import MenuSettings from './BottomTabs/Settings';
 import Notifications from './BottomTabs/Notifications';
-import ChatApp from '../components/chatroom/twilio/ChatApp';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage, View, Text } from 'react-native';
 import MessageRoom from './chatroom/messages/MessageRoom';

@@ -90,9 +90,11 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     outboundText: {
-        paddingRight: 5
+        paddingRight: 5,
+        paddingLeft: 5
     },
     inboundText: {
-        paddingLeft: 5
+        paddingLeft: 5,
+        paddingRight: 5
     }
 })
