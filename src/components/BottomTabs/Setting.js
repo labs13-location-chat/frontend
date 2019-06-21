@@ -9,6 +9,7 @@ import {
 	Image,
 	StyleSheet
 } from 'react-native';
+import axios from 'axios';
 import SendBird from 'sendbird';
 import Config from '../../config';
 
@@ -24,7 +25,8 @@ export default class Setting extends React.Component {
 			firstname: '',
 			lastname: '',
 			email: '',
-			user: []
+			user: [],
+			photo: null
 		};
 	}
 	static navigationOptions = {
@@ -78,12 +80,12 @@ export default class Setting extends React.Component {
 	fetchUser = async () => {
 		const first = await AsyncStorage.getItem('firstname');
 		const last = await AsyncStorage.getItem('lastname');
-		const useremail = await AsyncStorage.getItem('email');
+		const photo = await AsyncStorage.getItem('photo');
 		// console.log(first, last, useremail);
 		this.setState({
 			firstname: first,
 			lastname: last,
-			email: useremail
+			photo: photo
 		});
 	};
 
@@ -101,15 +103,21 @@ export default class Setting extends React.Component {
 	};
 
 	render() {
-		const { firstname, lastname } = this.state;
+		const { firstname, lastname, photo } = this.state;
 		return (
 			<View style={styles.container}>
 				<Image
 					style={styles.image}
-					source={{
-						uri:
-							'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
-					}}
+					source={
+						this.state.photo ? (
+							{ uri: photo }
+						) : (
+							{
+								uri:
+									'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
+							}
+						)
+					}
 				/>
 				<Text style={styles.name}>{`${firstname} ${lastname}`}</Text>
 				<View style={styles.display}>

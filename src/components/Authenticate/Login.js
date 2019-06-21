@@ -47,6 +47,7 @@ export default class Login extends React.Component {
 		// Remove event listener
 		Linking.removeEventListener('url', this.handleOpenURL);
 		this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
+		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
 		this.props.navigation.navigate('JoinChat');
 	}
 
@@ -146,9 +147,15 @@ export default class Login extends React.Component {
 						'phonenumber',
 						this.state.user.phone_num
 					) &&
+					AsyncStorage.setItem(
+						'anonymous',
+						this.state.user.anonymous
+					) &&
+					AsyncStorage.setItem('photo', this.state.user.photo) &&
 					this.props.navigation.navigate('JoinChat', {
 						id: this.state.user.id
 					})
+				) : (
 					// <View style={styles.content}>
 					//   <Text style={styles.header}>Welcome {user.first_name}!</Text>
 					//   <View style={styles.avatar}>
@@ -160,7 +167,6 @@ export default class Login extends React.Component {
 					//     <Button title="Sign Out" onPress={this.signOut} color="red" />
 					//   </View>
 					// </View>
-				) : (
 					// Show Please log in message if not
 					<View style={styles.content}>
 						<Image source={require('./CMLogo.png')} />

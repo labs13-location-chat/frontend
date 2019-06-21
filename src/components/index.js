@@ -22,17 +22,17 @@ import {
 
 const Settings = createStackNavigator(
 	{
-		Setting: { screen: Setting },
-		MyProfile: { screen: MyProfile },
-		MenuSettings: { screen: MenuSettings },
-		Notifications: { screen: Notifications }
+		// Setting: { screen: Setting },
+		MyProfile: { screen: MyProfile }
+		// MenuSettings: { screen: MenuSettings },
+		// Notifications: { screen: Notifications }
 	},
 	{
 		navigationOptions: {
-			tabBarLabel: 'Settings',
+			tabBarLabel: 'Profile',
 			tabBarIcon: <Icon name='md-settings' size={25} />
 		},
-		initialRouteName: 'Setting',
+		// initialRouteName: 'Setting',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
