@@ -57,46 +57,37 @@ export default class MyProfile extends React.Component {
       phone_num: value
     });
   };
-  anonymousCheck = () => {
-    if (this.state.user.anonymous === true) {
-      this.setState({
-        user: {
-          anonymous: false
-        }
-      });
-    } else {
-      this.setState({
-        user: {
-          anonymous: true
-        }
-      });
-    }
-    console.log("anonymous:", this.state.user.anonymous);
+  CheckBox = () => {
+    this.setState({
+      user: {
+        anonymous: !this.state.user.anonymous
+      }
+    });
   };
 
-  // chooseFile = () => {
-  //   const options = {
-  //     title: "Select Photo",
-  //     // customButtons: [{ name: 'gallery', title: 'Choose an Image from your Gallery' }],
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: "images"
-  //     }
-  //   };
-  //   ImagePicker.showImagePicker(options, response => {
-  //     console.log("Response = ", response);
-  //     if (response.didCancel) {
-  //       console.log("User canceled image picker");
-  //     } else if (response.error) {
-  //       console.log("ImagePicker Error: ", response.error);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       this.setState({
-  //         photo: source
-  //       });
-  //     }
-  //   });
-  // };
+  chooseFile = () => {
+    const options = {
+      title: "Select Photo",
+      // customButtons: [{ name: 'gallery', title: 'Choose an Image from your Gallery' }],
+      storageOptions: {
+        skipBackup: true,
+        path: "images"
+      }
+    };
+    ImagePicker.showImagePicker(options, response => {
+      console.log("Response = ", response);
+      if (response.didCancel) {
+        console.log("User canceled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        const source = { uri: response.uri };
+        this.setState({
+          photo: source
+        });
+      }
+    });
+  };
 
   updateUser = updatedUser => {
     const user_id = this.props.navigation.state.params.id;
@@ -107,6 +98,7 @@ export default class MyProfile extends React.Component {
         if (res.status === 200) {
           alert("Update Successful");
         }
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
@@ -165,13 +157,13 @@ export default class MyProfile extends React.Component {
         <View style={styles.container}>
           <Image
             style={styles.image}
-            // source={{
-            //   uri: photo.uri
-            //   // 'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
-            // }}
+            source={{
+              uri: photo.uri
+              //'https://i.kym-cdn.com/photos/images/newsfeed/001/460/439/32f.jpg'
+            }}
           />
           <Text
-            // onPress={this.chooseFile.bind(this)}
+            onPress={this.chooseFile.bind(this)}
             style={{
               position: "absolute",
               fontSize: 20,
@@ -204,7 +196,10 @@ export default class MyProfile extends React.Component {
               onChangeText={this.handleNumChange}
             />
             <Text style={styles.text}>Anonymous</Text>
-            <CheckBox onValueChange={this.anonymousCheck} />
+            <CheckBox
+              value={this.state.user.anonymous}
+              onChange={() => this.CheckBox()}
+            />
           </View>
           {/* <KeyboardSpacer /> */}
           <Button
