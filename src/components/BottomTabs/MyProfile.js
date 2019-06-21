@@ -20,7 +20,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 const URL = 'https://labs13-localchat.herokuapp.com';
 
 export default class MyProfile extends React.Component {
-	constructor(props) {
+constructor(props) {
 		super(props);
 		this.state = {
 			user: {},
@@ -95,36 +95,13 @@ export default class MyProfile extends React.Component {
 			phone_num: value
 		});
 	};
-
-	// handleAnonChange = value => {
-	// 	console.log('value change:', this.state.anonymous);
-
-	// 	this.setState({
-	// 		anonymous: value
-	// 	});
-	// };
-
-	anonymousCheck = () => {
-		console.log('anonymous:', !this.state.anonymous);
-		const val = !this.state.anonymous;
-		this.setState({ anonymous: val });
-	};
-	// anonymousCheck = () => {
-	// 	if (this.state.user.anonymous === true) {
-	// 		this.setState({
-	// 			user: {
-	// 				anonymous: false
-	// 			}
-	// 		});
-	// 	} else {
-	// 		this.setState({
-	// 			user: {
-	// 				anonymous: true
-	// 			}
-	// 		});
-	// 	}
-	// 	console.log('anonymous:', this.state.user.anonymous);
-	// };
+ CheckBox = () => {
+    this.setState({
+      user: {
+        anonymous: !this.state.user.anonymous
+      }
+    });
+  };
 
 	chooseFile = () => {
 		const options = {
@@ -261,7 +238,11 @@ export default class MyProfile extends React.Component {
 								onChangeText={this.handleNumChange}
 							/>
 							<Text style={styles.text}>Anonymous</Text>
-							<CheckBox onValueChange={this.anonymousCheck} />
+							 <CheckBox
+              value={this.state.user.anonymous}
+              onChange={() => this.CheckBox()}
+            />
+         
 						</View>
 						{/* <KeyboardSpacer /> */}
 						<TouchableOpacity title='Logout' onPress={this.signOut}>
@@ -279,6 +260,7 @@ export default class MyProfile extends React.Component {
 			</TouchableWithoutFeedback>
 		);
 	}
+
 }
 
 const styles = StyleSheet.create({
