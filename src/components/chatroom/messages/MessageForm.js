@@ -10,6 +10,7 @@ import {
     Button,
     Keyboard
   } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 import SendBird from 'sendbird'
 import Config from '../../../config'
 
@@ -53,7 +54,9 @@ export default class MessageForm extends Component {
                     // position: 'absolute',
                     // bottom: this.state.keyboardOffset,
                     display: 'flex',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
+                    alignItems: 'center', 
+                    marginLeft: 10
                 }} >
                 <TextInput
                     style={styles.textInput}
@@ -61,7 +64,11 @@ export default class MessageForm extends Component {
                     placeholder="Type message"
                     value={this.state.message}
                 />
-                <Button title="Send" onPress={this.messageSendHandler}/>
+                <TouchableOpacity onPress={this.messageSendHandler}>
+                    <View style={styles.send}>
+                    <Icon name='md-send'size={25} style={{color:'white', padding: 10}}/>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -69,8 +76,15 @@ export default class MessageForm extends Component {
 
 const styles = StyleSheet.create({
     textInput: {
-        borderWidth: 1,
+        flex: 1,
+        borderWidth: 2,
         borderColor: '#3EB1D6',
-        width: "85%",
-    } 
+        borderRadius: 5,
+        padding: 10,
+    },
+    send: {
+        backgroundColor:'#3EB1D6', 
+        borderRadius:25, 
+        marginHorizontal:10
+    }
 })

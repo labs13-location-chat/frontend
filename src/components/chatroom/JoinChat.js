@@ -183,7 +183,7 @@ export default class JoinChat extends Component {
         <View>
           {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
-          <View style={{flexDirection:'row', alignItems: 'center', borderWidth: 1, marginHorizontal:20, marginTop:10}}>
+          <View style={styles.searchBar}>
             <Icon name='search' color='#A8A7A3' size={15} style={{paddingHorizontal:20}}/>
             <TextInput 
               style={styles.search} 
@@ -237,6 +237,13 @@ export default class JoinChat extends Component {
 const styles = StyleSheet.create({
   chats: {
     paddingBottom: 80
+  },
+  searchBar: {
+    flexDirection:'row', 
+    alignItems: 'center', 
+    borderWidth: 1,
+     marginHorizontal:20, 
+     marginTop:10
   },
   search: {
     flex: 1

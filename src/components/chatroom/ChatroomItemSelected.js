@@ -122,9 +122,8 @@ export default class ChatroomItemSelected extends Component {
           </MapView> 
           {/* <Marker coordinate={markers} /> */}
         </View>
-          {/* <Button onPress={this.joinChannel} title="Join Chat" /> */}
         <View style={styles.joinContainer}>
-          <TouchableOpacity style={styles.join}>
+          <TouchableOpacity style={styles.join} onPress={this.joinChannel}>
             <View>              
               <Text style={styles.joinText}>JOIN CHAT</Text>
             </View>
