@@ -14,6 +14,7 @@ import ChatSearch from "./ChatSearch";
 import SendBird from "sendbird";
 import Config from "../../config";
 import axios from "axios";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 var sb = new SendBird({ appId: Config.appId });
 
@@ -47,7 +48,7 @@ export default class JoinChat extends Component {
         }
         
         static navigationOptions = {
-            title: 'Join a Chat Room',
+            title: 'Chatrooms',
         }
     
     componentDidMount() {
@@ -182,24 +183,28 @@ export default class JoinChat extends Component {
         <View>
           {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
-          <TextInput 
-            style={styles.search} 
-            placeholder="Search by Name" 
-            onChangeText={text => this.searchText(text)}
-          />
+          <View style={{flexDirection:'row', alignItems: 'center', borderWidth: 1, marginHorizontal:20, marginTop:10}}>
+            <Icon name='search' color='#A8A7A3' size={15} style={{paddingHorizontal:20}}/>
+            <TextInput 
+              style={styles.search} 
+              placeholder="Search by Name" 
+              onChangeText={text => this.searchText(text)}
+            />
+            <Icon name='map-marker' color='#A8A7A3' size={20} style={{paddingHorizontal:20}}/>
+          </View>
         </View>
         <View style={styles.option}>
           <TouchableOpacity
             style={!this.state.mapToggle ? styles.condSearch : null}
             onPress={() => this.searchToggler()}
           >
-            <Text>SEARCH</Text>
+            <Text style={{fontWeight: "600"}}>SEARCH</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={this.state.mapToggle ? styles.condMap : null}
             onPress={() => this.mapToggler()}
           >
-            <Text>MAP</Text>
+            <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
         {this.state.mapToggle ? 
@@ -234,9 +239,10 @@ const styles = StyleSheet.create({
     paddingBottom: 80
   },
   search: {
-    borderWidth: 1,
-    borderColor: "black",
-    margin: 10
+    flex: 1
+    // borderWidth: 1,
+    // borderColor: "black",
+    // margin: 20
   },
   container: {
       height: '90%'
@@ -245,7 +251,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     fontSize: 15,
-    fontWeight: "400"
+    fontWeight: "600"
   },
   option: {
     marginTop: 10,

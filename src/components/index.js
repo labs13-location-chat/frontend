@@ -54,7 +54,7 @@ const JoinChats = createStackNavigator(
 	},
 	{
 		navigationOptions: {
-			tabBarLabel: 'Join Chat',
+			tabBarLabel: 'Chat',
 			tabBarIcon: <Icon name='md-chatboxes' size={25} />
 		},
 		headerLayoutPreset: 'center',
