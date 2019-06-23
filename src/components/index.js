@@ -27,11 +27,6 @@ const Settings = createStackNavigator(
 		// Notifications: { screen: Notifications }
 	},
 	{
-		navigationOptions: {
-			tabBarLabel: 'Profile',
-			tabBarIcon: <Icon name='md-settings' size={25} />
-		},
-		// initialRouteName: 'Setting',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
@@ -53,10 +48,6 @@ const JoinChats = createStackNavigator(
 		Chatroom: { screen: MessageRoom }
 	},
 	{
-		navigationOptions: {
-			tabBarLabel: 'Chat',
-			tabBarIcon: <Icon name='md-chatboxes' size={25} />
-		},
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
@@ -77,10 +68,6 @@ const Cameras = createStackNavigator(
 		Camera: { screen: Camera }
 	},
 	{
-		navigationOptions: {
-			tabBarLabel: 'Camera',
-			tabBarIcon: <Icon name='md-camera' size={25} />
-		},
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
@@ -99,6 +86,21 @@ const Cameras = createStackNavigator(
 const tabNavigator = createBottomTabNavigator(
 	{ JoinChats, Cameras, Settings },
 	{
+        defaultNavigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, horizontal, tintColor }) => {
+              const { routeName } = navigation.state;
+              let IconComponent = Icon;
+              let iconName;
+              if (routeName === 'JoinChats') {
+                iconName = `md-chatboxes`;
+              } else if (routeName === 'Cameras') {
+                iconName = `md-camera`;
+              } else if (routeName === 'Settings') {
+                  iconName = 'md-settings';
+              }
+              return <IconComponent name={iconName} size={25} color={tintColor} />;
+            },
+          }),
 		tabBarOptions: {
 			activeTintColor: '#3EB1D6',
 			labelStyle: {
@@ -115,6 +117,16 @@ const tabNavigator = createBottomTabNavigator(
 		}
 	}
 );
+JoinChats.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true;
+    if (navigation.state.index > 0) {
+      tabBarVisible = false;
+    }
+  
+    return {
+      tabBarVisible,
+    };
+};
 
 const LoginScreen = createStackNavigator({
 	Login: { screen: Login }
@@ -131,9 +143,4 @@ const LocalChat = createAppContainer(
 		// }
 	)
 );
-// const cat = createStackNavigator({
-//     "ChatApp": { screen: ChatApp },
-// })
-
-// const LocalChat = createAppContainer(cat)
 export default LocalChat;
