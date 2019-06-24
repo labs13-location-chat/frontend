@@ -62,7 +62,7 @@ export default class ChatroomItemSelected extends Component {
   
     getDistanceFromChat = () => {
       let distance = getDistance(
-        { latitude: this.state.location.latitude, longitude: this.state.location.latitude },
+        { latitude: this.state.location.latitude, longitude: this.state.location.longitude },
         { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }
         )
       if (this.state.location.latitude === 0 ) {
@@ -82,7 +82,7 @@ export default class ChatroomItemSelected extends Component {
       this.props.navigation.navigate('Chatroom', {
         user: this.state.chatroom
       })
-    } else if (this.state.chatroom.chatroom_type === "big_city" && this.state.distance <= 80000) {
+    } else if (this.state.chatroom.chatroom_type === "big city" && this.state.distance <= 80000) {
       this.props.navigation.navigate('Chatroom', {
         user: this.state.chatroom
       })
