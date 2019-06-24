@@ -76,7 +76,9 @@ export default class ChatroomItemSelected extends Component {
     }
 
   joinChannel = () => {
-    if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance >= 0) {
+    if (this.state.distance === 0) {
+      return alert("Distance still loading, please try again")
+    } else if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance > 0) {
       this.props.navigation.navigate('Chatroom', {
         user: this.state.chatroom
       })
