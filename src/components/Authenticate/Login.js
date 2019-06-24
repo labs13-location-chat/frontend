@@ -12,7 +12,6 @@ import {
 	Linking,
 	Platform
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 // import SendBird from "sendbird";
 // import Config from "../../config";

@@ -13,6 +13,9 @@ import {
   Button
 } from "react-native";
 import axios from "axios";
+import Icon from "react-native-vector-icons/AntDesign";
+import Icon2 from "react-native-vector-icons/Feather";
+import Icon3 from "react-native-vector-icons/SimpleLineIcons";
 import ImagePicker from "react-native-image-picker";
 import DismissKeyboard from "dismissKeyboard";
 import KeyboardSpacer from "react-native-keyboard-spacer";
@@ -22,54 +25,88 @@ const URL = "https://labs13-localchat.herokuapp.com";
 export default class MyProfile extends React.Component {
   constructor(props) {
     super(props);
+    // this.fetchUser();
     this.state = {
       user: {},
 
       first_name: "",
       phone_num: "",
 
-      photo: null,
+      photo: "",
       anonymous: null,
-      edit: "Edit"
+      edit: true
     };
   }
 
   componentDidMount() {
     const user_id = this.props.navigation.state.params.id;
     this.getUser(user_id);
-    // this.props.navigation.setParams({
-    // 	editButton: this.editButton
-    // });
+
+    this.props.navigation.setParams({
+      handleSave: this.handleUpdate
+      // 	editButton: this.toggleEditButton
+    });
     console.log("hi");
   }
 
-  static navigationOptions = ({ navigation }) => {
-    // const { params = {} } = navigation.state;
-    // const { edit } = this.state;
+  static navigationOptions = ({ navigation, screenProps }) => {
+    const { params = {} } = navigation.state;
     return {
+      // headerTitle: 'Profile',
       headerLeft: (
-        <TouchableOpacity title="Edit Profile" color="#3EB1D6">
-          <View>
-            <Text style={{ color: "#fff", marginLeft: 20 }}>Edit Profile</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("JoinChat");
+          }}
+          color="#3EB1D6"
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center"
+            }}
+          >
+            <Icon3 name="arrow-left" size={20} color="#fff" />
+            <Text
+              style={{
+                color: "#fff",
+                marginLeft: 20
+              }}
+            >
+              Edit Profile
+            </Text>
           </View>
         </TouchableOpacity>
       ),
       headerTransparent: true,
       headerRight: (
-        <TouchableOpacity onPress={() => {}} title="Save" color="#3EB1D6">
+        <TouchableOpacity
+          title="Save"
+          onPress={params.handleSave}
+          color="#3EB1D6"
+        >
           <View>
-            <Text style={{ color: "#fff", marginRight: 20 }}>Edit</Text>
+            <Text style={{ color: "#fff", marginRight: 20 }}>Save</Text>
           </View>
         </TouchableOpacity>
       )
     };
   };
 
-  // editButton = () => {
-  // 	const { edit } = this.state;
+  // toggleEditButton = () => {
   // 	this.setState({
-  // 		edit: 'Save'
+  // 		edit: !this.state.edit
   // 	});
+  // };
+
+  // editButton = () => {
+  // 	// const { edit } = this.state;
+  // 	if (this.state.edit) {
+  // 		return 'Edit';
+  // 	} else {
+  // 		return 'Save';
+  // 	}
   // };
 
   handleNameChange = value => {
@@ -142,7 +179,6 @@ export default class MyProfile extends React.Component {
       email: this.state.user.email,
       phone_num: this.phone_num(),
       anonymous: this.state.user.anonymous,
-      // anonymous: this.anonymous(),
       user_type: this.state.user.user_type,
       photo: this.state.user.photo
     };
@@ -158,7 +194,11 @@ export default class MyProfile extends React.Component {
         this.setState({
           user: res.data[0]
         });
-        console.log(this.state.user);
+        this.setState({
+          first_name: this.state.user.first_name,
+          phone_num: this.state.user.phone_num
+        });
+        console.log("getuser firstname", this.state.first_name);
       })
       .catch(err => {
         console.log(err);
@@ -181,6 +221,19 @@ export default class MyProfile extends React.Component {
     } else return this.state.anonymous;
   };
 
+  signOut = async ({ navigation, screenProps }) => {
+    const { user } = this.state;
+    // await AsyncStorage.clear();
+    // this.props.navigation.navigate('Login');
+    this.setState({
+      user: undefined
+    });
+    this.props.navigation.navigate("Login");
+    sb.disconnect(function() {
+      // A current user is discconected from SendBird server.
+    });
+  };
+
   render() {
     console.log(this.state.first_name);
     const { photo, anonymous } = this.state;
@@ -195,8 +248,8 @@ export default class MyProfile extends React.Component {
             <Image
               style={styles.image}
               source={
-                this.state.photo
-                  ? { uri: photo.uri }
+                photo
+                  ? { uri: photo.uri + "?" + new Date() }
                   : {
                       uri:
                         "https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png"
@@ -204,43 +257,86 @@ export default class MyProfile extends React.Component {
               }
             />
             <Text onPress={this.chooseFile.bind(this)} style={styles.imageEdit}>
-              Update
+              Edit
             </Text>
           </View>
-          <View style={styles.display}>
+          <View style={styles.inputDisplay}>
             <View
             // style={styles.display}
             >
-              <Text style={styles.text}>Name</Text>
+              <Text
+                style={{
+                  width: 300,
+                  marginLeft: 30,
+                  fontSize: 16
+                }}
+              >
+                Name
+              </Text>
+              <View
+              // style={{
+              // 	marginLeft: 30,
+              // 	marginRight: 20,
+              // 	width: 275,
+              // 	marginTop: 15,
+              // 	borderBottomWidth: 0.7
+              // }}
+              />
               <TextInput
                 style={styles.inputBox}
                 onChangeText={this.handleNameChange}
                 name="first_name"
+                value={this.state.first_name}
               />
-              <Text style={styles.text}>Phone Number</Text>
+              <View style={styles.phoneView}>
+                <Icon name="phone" size={20} />
+                <Text style={styles.text}>Phone Number</Text>
+              </View>
+              <View
+                style={{
+                  marginLeft: 30,
+                  marginRight: 20,
+                  width: 275,
+                  marginTop: 15,
+                  borderBottomWidth: 0.7
+                }}
+              />
               <TextInput
                 style={styles.inputBox}
                 keyboardType="phone-pad"
                 name="phone_num"
                 onChangeText={this.handleNumChange}
+                value={this.state.phone_num}
               />
-              <Text style={styles.text}>Anonymous</Text>
-              <CheckBox
-                value={this.state.user.anonymous}
-                onChange={() => this.CheckBox()}
+              <View>
+                <View style={styles.anonymousStyle}>
+                  <Icon2 name="user" size={20} />
+                  <Text style={{ marginLeft: 10 }}>Anonymous</Text>
+                  <CheckBox
+                    style={{
+                      marginLeft: 30
+                    }}
+                    value={this.state.user.anonymous}
+                    onChange={() => this.CheckBox()}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  marginLeft: 30,
+                  width: 275,
+                  marginTop: 15,
+                  borderBottomWidth: 0.7
+                }}
               />
             </View>
             {/* <KeyboardSpacer /> */}
             <TouchableOpacity title="Logout" onPress={this.signOut}>
-              <View>
-                <Text style={{ color: "#3EB1D6" }}>Logout</Text>
+              <View style={styles.logoutView}>
+                <Icon name="logout" size={20} />
+                <Text style={styles.logoutText}>Logout</Text>
               </View>
             </TouchableOpacity>
-            {/* <Button
-							style={{ backgroundColor: '#3EB1D6' }}
-							title='Save'
-							onPress={this.handleUpdate}
-						/> */}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -250,12 +346,7 @@ export default class MyProfile extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: 'row',
     top: 75
-    // flex: 4
-    // flexDirection: 'row',
-    // alignItems: 'center'
-    // justifyContent: 'center'
   },
   imageDisplay: {
     flex: 1,
@@ -267,36 +358,60 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center"
   },
-  display: {
-    marginTop: 175,
-    marginLeft: 30
-    // alignItems: 'flex-start'
-  },
   imageEdit: {
     position: "absolute",
-    fontSize: 20,
+    fontSize: 15,
     marginTop: 95,
     backgroundColor: "rgba(244, 244, 244, 0.5)",
-    // backgroundColor: 'red',
     width: 140,
     height: 50,
-    // paddingHorizontal: 25,
-    // paddingVertical: 10,
     textAlign: "center",
     borderBottomLeftRadius: 100,
     borderBottomRightRadius: 100
   },
+  inputDisplay: {
+    marginTop: 175,
+    marginLeft: 50
+  },
+  phoneView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  },
   text: {
     // marginTop: 10,
-    width: 300
+    width: 300,
+    marginLeft: 10,
+    // borderBottomWidth: 0.7,
+    fontSize: 15
     // backgroundColor: '#f4f4f4',
     // borderColor: '#f4f4f4',
     // paddingHorizontal: 20,
     // padding: 10
   },
   inputBox: {
-    width: 320,
-    borderBottomWidth: 1,
+    width: 300,
+    marginLeft: 30,
+    // borderTopWidth: 0.7,
     fontSize: 16
+  },
+  anonymousStyle: {
+    width: 300,
+    // borderBottomWidth: 0.6,
+    marginTop: 20,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+    // flexWrap: 'nowrap'
+  },
+  logoutView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 80
+  },
+  logoutText: {
+    color: "#3EB1D6",
+    marginLeft: 10
   }
 });
