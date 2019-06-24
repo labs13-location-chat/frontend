@@ -32,7 +32,7 @@ export default class MyProfile extends React.Component {
 			first_name: '',
 			phone_num: '',
 
-			photo: null,
+			photo: '',
 			anonymous: null,
 			edit: true
 		};
@@ -51,8 +51,6 @@ export default class MyProfile extends React.Component {
 
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const { params = {} } = navigation.state;
-		// const { params = {} } = navigation.getParams('editButton');
-
 		return {
 			// headerTitle: 'Profile',
 			headerLeft: (
@@ -97,18 +95,6 @@ export default class MyProfile extends React.Component {
 			)
 		};
 	};
-
-	// fetchUser = async () => {
-	// 	const first = await AsyncStorage.getItem('firstname');
-	// 	const last = await AsyncStorage.getItem('lastname');
-	// 	const photo = await AsyncStorage.getItem('photo');
-	// 	// console.log(first, last, useremail);
-	// 	this.setState({
-	// 		firstname: first,
-	// 		lastname: last,
-	// 		photo: photo
-	// 	});
-	// };
 
 	// toggleEditButton = () => {
 	// 	this.setState({
@@ -261,7 +247,7 @@ export default class MyProfile extends React.Component {
 							style={styles.image}
 							source={
 								photo ? (
-									{ uri: photo.uri }
+									{ uri: photo.uri + '?' + new Date() }
 								) : (
 									{
 										uri:
@@ -269,7 +255,6 @@ export default class MyProfile extends React.Component {
 									}
 								)
 							}
-							value={photo}
 						/>
 						<Text
 							onPress={this.chooseFile.bind(this)}
@@ -285,11 +270,11 @@ export default class MyProfile extends React.Component {
 							<Text
 								style={{
 									width: 300,
-									marginLeft: 10,
-									fontSize: 25
+									marginLeft: 30,
+									fontSize: 16
 								}}
 							>
-								USER NAME
+								Name
 							</Text>
 							<View
 							// style={{
@@ -355,11 +340,6 @@ export default class MyProfile extends React.Component {
 								<Text style={styles.logoutText}>Logout</Text>
 							</View>
 						</TouchableOpacity>
-						{/* <Button
-							style={{ backgroundColor: '#3EB1D6' }}
-							title='Save'
-							onPress={this.handleUpdate}
-						/> */}
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
