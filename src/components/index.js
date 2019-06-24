@@ -31,7 +31,7 @@ const Settings = createStackNavigator(
 			tabBarLabel: 'Profile',
 			tabBarIcon: <Icon name='md-settings' size={25} />
 		},
-		// initialRouteName: 'Setting',
+		initialRouteName: 'MyProfile',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
