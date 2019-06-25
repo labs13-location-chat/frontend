@@ -58,6 +58,8 @@ export default class ChatroomItemSelected extends Component {
     }
   
     getDistanceFromChat = () => {
+      
+      
       if (this.state.location.latitude === 0 ) {
         return setTimeout(() => {
           this.getDistanceFromChat()
