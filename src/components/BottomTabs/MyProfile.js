@@ -31,9 +31,8 @@ export default class MyProfile extends React.Component {
 
       first_name: "",
       phone_num: "",
-
+      email: "",
       photo: "",
-      anonymous: null,
       edit: true
     };
   }
@@ -124,11 +123,11 @@ export default class MyProfile extends React.Component {
       phone_num: value
     });
   };
-  CheckBox = () => {
+  handleEmailChange = value => {
+    console.log("value change:", this.state);
+
     this.setState({
-      user: {
-        anonymous: !this.state.user.anonymous
-      }
+      email: value
     });
   };
 
@@ -176,7 +175,7 @@ export default class MyProfile extends React.Component {
     const updatedUser = {
       first_name: this.first_name(),
       last_name: this.state.user.last_name,
-      email: this.state.user.email,
+      email: this.email(),
       phone_num: this.phone_num(),
       anonymous: this.state.user.anonymous,
       user_type: this.state.user.user_type,
@@ -186,7 +185,6 @@ export default class MyProfile extends React.Component {
   };
 
   getUser = () => {
-    console.log("getUser");
     const user_id = this.props.navigation.state.params.id;
     axios
       .get(`${URL}/api/users/${user_id}`)
@@ -196,9 +194,10 @@ export default class MyProfile extends React.Component {
         });
         this.setState({
           first_name: this.state.user.first_name,
-          phone_num: this.state.user.phone_num
+          phone_num: this.state.user.phone_num,
+          email: this.state.user.email
         });
-        console.log("getuser firstname", this.state.first_name);
+        console.log("getuser email", this.state.email);
       })
       .catch(err => {
         console.log(err);
@@ -215,10 +214,10 @@ export default class MyProfile extends React.Component {
       return this.state.user.phone_num;
     } else return this.state.phone_num;
   };
-  anonymous = () => {
-    if (this.state.anonymous) {
-      return this.state.user.anonymous;
-    } else return this.state.anonymous;
+  email = () => {
+    if (this.state.email.length === 0) {
+      return this.state.user.email;
+    } else return this.state.email;
   };
 
   signOut = async ({ navigation, screenProps }) => {
@@ -235,7 +234,6 @@ export default class MyProfile extends React.Component {
   };
 
   render() {
-    console.log(this.state.first_name);
     const { photo, anonymous } = this.state;
     return (
       <TouchableWithoutFeedback
@@ -264,26 +262,8 @@ export default class MyProfile extends React.Component {
             <View
             // style={styles.display}
             >
-              <Text
-                style={{
-                  width: 300,
-                  marginLeft: 30,
-                  fontSize: 16
-                }}
-              >
-                Name
-              </Text>
-              <View
-              // style={{
-              // 	marginLeft: 30,
-              // 	marginRight: 20,
-              // 	width: 275,
-              // 	marginTop: 15,
-              // 	borderBottomWidth: 0.7
-              // }}
-              />
               <TextInput
-                style={styles.inputBox}
+                style={styles.nameInputBox}
                 onChangeText={this.handleNameChange}
                 name="first_name"
                 value={this.state.first_name}
@@ -308,35 +288,33 @@ export default class MyProfile extends React.Component {
                 onChangeText={this.handleNumChange}
                 value={this.state.phone_num}
               />
-              <View>
-                <View style={styles.anonymousStyle}>
-                  <Icon2 name="user" size={20} />
-                  <Text style={{ marginLeft: 10 }}>Anonymous</Text>
-                  <CheckBox
-                    style={{
-                      marginLeft: 30
-                    }}
-                    value={this.state.user.anonymous}
-                    onChange={() => this.CheckBox()}
-                  />
-                </View>
+              <View style={styles.emailStyle}>
+                <Icon2 name="user" size={20} />
+                <Text style={styles.text}>Email</Text>
               </View>
               <View
                 style={{
                   marginLeft: 30,
+                  marginRight: 20,
                   width: 275,
                   marginTop: 15,
                   borderBottomWidth: 0.7
                 }}
               />
+              <TextInput
+                style={styles.inputBox}
+                name="phone_num"
+                onChangeText={this.handleEmailChange}
+                value={this.state.email}
+              />
             </View>
             {/* <KeyboardSpacer /> */}
-            <TouchableOpacity title="Logout" onPress={this.signOut}>
+            {/* <TouchableOpacity title="Logout" onPress={this.signOut}>
               <View style={styles.logoutView}>
                 <Icon name="logout" size={20} />
                 <Text style={styles.logoutText}>Logout</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -392,16 +370,22 @@ const styles = StyleSheet.create({
   inputBox: {
     width: 300,
     marginLeft: 30,
-    // borderTopWidth: 0.7,
     fontSize: 16
   },
-  anonymousStyle: {
+  nameInputBox: {
+    width: 300,
+    marginLeft: 30,
+    fontSize: 16,
+    marginBottom: 20
+  },
+  emailStyle: {
     width: 300,
     // borderBottomWidth: 0.6,
     marginTop: 20,
     flex: 1,
     flexDirection: "row",
     alignItems: "center"
+
     // flexWrap: 'nowrap'
   },
   logoutView: {
