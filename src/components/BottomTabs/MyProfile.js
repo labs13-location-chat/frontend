@@ -17,6 +17,7 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
 import Icon3 from 'react-native-vector-icons/SimpleLineIcons';
+import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImagePicker from 'react-native-image-picker';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -33,10 +34,11 @@ export default class MyProfile extends React.Component {
 
 			first_name: '',
 			phone_num: '',
-
+			email: '',
 			photo: '',
-			anonymous: null,
-			edit: true
+			edit: true,
+			keyboardOffset: 0,
+			keyboardshown: false
 		};
 	}
 
@@ -45,7 +47,8 @@ export default class MyProfile extends React.Component {
 		this.getUser(user_id);
 
 		this.props.navigation.setParams({
-			handleSave: this.handleUpdate
+			handleSave: this.handleUpdate,
+			keyboardShown: false
 			// 	editButton: this.toggleEditButton
 		});
 		console.log('hi');
@@ -128,11 +131,11 @@ export default class MyProfile extends React.Component {
 			phone_num: value
 		});
 	};
-	CheckBox = () => {
+	handleEmailChange = value => {
+		console.log('value change:', this.state);
+
 		this.setState({
-			user: {
-				anonymous: !this.state.user.anonymous
-			}
+			email: value
 		});
 	};
 
@@ -169,6 +172,7 @@ export default class MyProfile extends React.Component {
 				if (res.status === 200) {
 					alert('Update Successful');
 				}
+				AsyncStorage.setItem('anonymous', this.state.user.anonymous);
 			})
 			.catch(err => {
 				console.log(err);
@@ -180,7 +184,7 @@ export default class MyProfile extends React.Component {
 		const updatedUser = {
 			first_name: this.first_name(),
 			last_name: this.state.user.last_name,
-			email: this.state.user.email,
+			email: this.email(),
 			phone_num: this.phone_num(),
 			anonymous: this.state.user.anonymous,
 			user_type: this.state.user.user_type,
@@ -200,7 +204,8 @@ export default class MyProfile extends React.Component {
 				});
 				this.setState({
 					first_name: this.state.user.first_name,
-					phone_num: this.state.user.phone_num
+					phone_num: this.state.user.phone_num,
+					email: this.state.user.email
 				});
 				console.log('getuser firstname', this.state.first_name);
 			})
@@ -215,14 +220,18 @@ export default class MyProfile extends React.Component {
 		} else return this.state.first_name;
 	};
 	phone_num = () => {
-		if (this.state.phone_num.length === 0) {
+		if (this.state.phone_num == null) {
+			this.setState({
+				phone_num: 0
+			});
+		} else if (this.state.phone_num.length === 0) {
 			return this.state.user.phone_num;
 		} else return this.state.phone_num;
 	};
-	anonymous = () => {
-		if (this.state.anonymous) {
-			return this.state.user.anonymous;
-		} else return this.state.anonymous;
+	email = () => {
+		if (this.state.email.length === 0) {
+			return this.state.user.email;
+		} else return this.state.email;
 	};
 
 	signOut = async ({ navigation, screenProps }) => {
@@ -240,116 +249,124 @@ export default class MyProfile extends React.Component {
 
 	render() {
 		console.log(this.state.first_name);
-		const { photo, anonymous } = this.state;
+		const { photo } = this.state;
 		return (
-			// <TouchableWithoutFeedback
-			// 	onPress={() => {
-			// 		DismissKeyboard();
-			// 	}}
-			// >
-			<View style={styles.container}>
-				<View style={styles.imageDisplay}>
-					<Image
-						style={styles.image}
-						source={
-							photo ? (
-								{ uri: photo.uri + '?' + new Date() }
-							) : (
-								{
-									uri:
-										'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
-								}
-							)
-						}
-					/>
-					<Text
-						onPress={this.chooseFile.bind(this)}
-						style={styles.imageEdit}
-					>
-						Edit
-					</Text>
-				</View>
-				<View style={styles.inputDisplay}>
-					<View
-					// style={styles.display}
-					>
+			<TouchableWithoutFeedback
+				onPress={() => {
+					DismissKeyboard();
+				}}
+			>
+				<View style={styles.container}>
+					<View style={styles.imageDisplay}>
+						<Image
+							style={styles.image}
+							source={
+								photo ? (
+									{ uri: photo.uri + '?' + new Date() }
+								) : (
+									{
+										uri:
+											'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
+									}
+								)
+							}
+						/>
 						<Text
-							style={{
-								width: 300,
-								marginLeft: 30,
-								fontSize: 16
-							}}
+							onPress={this.chooseFile.bind(this)}
+							style={styles.imageEdit}
 						>
-							Name
+							Edit
 						</Text>
-						<View
-						// style={{
-						// 	marginLeft: 30,
-						// 	marginRight: 20,
-						// 	width: 275,
-						// 	marginTop: 15,
-						// 	borderBottomWidth: 0.7
-						// }}
-						/>
-						<TextInput
-							style={styles.inputBox}
-							onChangeText={this.handleNameChange}
-							name='first_name'
-							value={this.state.first_name}
-						/>
-						<View style={styles.phoneView}>
-							<Icon name='phone' size={20} />
-							<Text style={styles.text}>Phone Number</Text>
-						</View>
-						<View
-							style={{
-								marginLeft: 30,
-								marginRight: 20,
-								width: 275,
-								marginTop: 15,
-								borderBottomWidth: 0.7
-							}}
-						/>
-						<TextInput
-							style={styles.inputBox}
-							keyboardType='phone-pad'
-							name='phone_num'
-							onChangeText={this.handleNumChange}
-							value={this.state.phone_num}
-						/>
-						<View>
-							<View style={styles.anonymousStyle}>
-								<Icon2 name='user' size={20} />
-								<Text style={{ marginLeft: 10 }}>
-									Anonymous
-								</Text>
-								<CheckBox
-									style={{
-										marginLeft: 30
-									}}
-									value={this.state.user.anonymous}
-									onChange={() => this.CheckBox()}
-								/>
-							</View>
-						</View>
-						<View
-							style={{
-								marginLeft: 30,
-								width: 275,
-								marginTop: 15,
-								borderBottomWidth: 0.7
-							}}
-						/>
 					</View>
-					{/* <KeyboardSpacer /> */}
-					<TouchableOpacity title='Logout' onPress={this.signOut}>
-						<View style={styles.logoutView}>
-							<Icon name='logout' size={20} />
-							<Text style={styles.logoutText}>Logout</Text>
+					<View style={styles.inputDisplay}>
+						<View
+						// style={styles.display}
+						>
+							<Text
+								style={{
+									width: 300,
+									marginLeft: 30,
+									fontSize: 16
+								}}
+							>
+								Name
+							</Text>
+							<View
+							// style={{
+							// 	marginLeft: 30,
+							// 	marginRight: 20,
+							// 	width: 275,
+							// 	marginTop: 15,
+							// 	borderBottomWidth: 0.7
+							// }}
+							/>
+							<TextInput
+								style={styles.inputBox}
+								onChangeText={this.handleNameChange}
+								name='first_name'
+								value={this.state.first_name}
+							/>
+							<View style={styles.phoneView}>
+								<Icon name='phone' size={20} />
+								<Text style={styles.text}>Phone Number</Text>
+							</View>
+							<View
+								style={{
+									marginLeft: 30,
+									marginRight: 20,
+									width: 275,
+									marginTop: 15,
+									borderBottomWidth: 0.7
+								}}
+							/>
+							<TextInput
+								style={styles.inputBox}
+								type='tel'
+								keyboardType='phone-pad'
+								name='phone_num'
+								onChangeText={this.handleNumChange}
+								value={this.state.phone_num}
+							/>
+
+							<View style={styles.emailStyle}>
+								<Icon4 name='email-outline' size={20} />
+								<Text style={{ marginLeft: 10 }}>Email</Text>
+							</View>
+							<View
+								style={{
+									marginLeft: 30,
+									marginRight: 20,
+									width: 275,
+									marginTop: 15,
+									borderBottomWidth: 0.7
+								}}
+							/>
+							<TextInput
+								name='email'
+								keyboardType='email-address'
+								style={styles.inputBox}
+								onChangeText={this.handleEmailChange}
+								value={this.state.email}
+							/>
+							{/* <View
+								style={{
+									marginLeft: 30,
+									width: 275,
+									marginTop: 15,
+									borderBottomWidth: 0.7
+								}}
+							/> */}
 						</View>
-					</TouchableOpacity>
+						{/* <KeyboardSpacer /> */}
+						<TouchableOpacity title='Logout' onPress={this.signOut}>
+							<View style={styles.logoutView}>
+								<Icon name='logout' size={20} />
+								<Text style={styles.logoutText}>Logout</Text>
+							</View>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }
@@ -405,7 +422,7 @@ const styles = StyleSheet.create({
 		// borderTopWidth: 0.7,
 		fontSize: 16
 	},
-	anonymousStyle: {
+	emailStyle: {
 		width: 300,
 		// borderBottomWidth: 0.6,
 		marginTop: 20,
