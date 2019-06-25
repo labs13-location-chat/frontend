@@ -275,17 +275,7 @@ export default class MyProfile extends React.Component {
               />
               <View style={styles.phoneView}>
                 <Icon name="phone" size={20} />
-                <Text style={styles.text}>Phone Number</Text>
               </View>
-              <View
-                style={{
-                  marginLeft: 30,
-                  marginRight: 20,
-                  width: 275,
-                  marginTop: 15,
-                  borderBottomWidth: 0.7
-                }}
-              />
               <TextInput
                 style={styles.inputBox}
                 keyboardType="phone-pad"
@@ -293,24 +283,31 @@ export default class MyProfile extends React.Component {
                 onChangeText={this.handleNumChange}
                 value={this.state.phone_num}
               />
-              <View style={styles.emailStyle}>
-                <Icon2 name="user" size={20} />
-                <Text style={styles.text}>Email</Text>
-              </View>
               <View
                 style={{
                   marginLeft: 30,
                   marginRight: 20,
                   width: 275,
-                  marginTop: 15,
                   borderBottomWidth: 0.7
                 }}
               />
+
+              <View style={styles.emailStyle}>
+                <Icon2 name="user" size={20} />
+              </View>
               <TextInput
                 style={styles.inputBox}
                 name="phone_num"
                 onChangeText={this.handleEmailChange}
                 value={this.state.email}
+              />
+              <View
+                style={{
+                  marginLeft: 30,
+                  marginRight: 20,
+                  width: 275,
+                  borderBottomWidth: 0.7
+                }}
               />
             </View>
             {/* <KeyboardSpacer /> */}
@@ -375,12 +372,16 @@ const styles = StyleSheet.create({
   inputBox: {
     width: 300,
     marginLeft: 30,
-    fontSize: 16
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#4A4A4A"
   },
   nameInputBox: {
     width: 300,
     marginLeft: 30,
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#4A4A4A",
     marginBottom: 20
   },
   emailStyle: {
