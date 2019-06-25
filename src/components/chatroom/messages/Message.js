@@ -43,6 +43,13 @@ export default class Message extends Component {
             return styles.inboundText
         }
     }
+    inOrOutUser = () => {
+        if (this.props.userID === this.props.message.sender.userId) {
+            return styles.outboundUser
+        } else {
+            return styles.inboundUser
+        }
+    }
     
     render() {
         {/* <Image
@@ -57,7 +64,7 @@ export default class Message extends Component {
         return (
             <View >
                 <View style={this.inOrOutMessage()}>
-                    <Text style={this.inOrOutText()} >{this.props.message.messageType}</Text>
+                    <Text style={this.inOrOutUser()} >{this.props.message.messageType}</Text>
                     <Text style={this.inOrOutText()}>{this.props.message.message}</Text>
                 </View>
             </View>
@@ -70,31 +77,54 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'flex-start',
         height: 'auto',
-        paddingBottom: 12,
+        padding:10,
         marginLeft: 30,
-        marginRight: 170,
-        marginBottom: 5,
-        borderWidth: 1,
-        borderRadius: 5
+        marginRight: 'auto',
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor:'white',
+        // borderColor: '#FFFAFA',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+
+        elevation: 10,
     },
     outbound: {
         display: 'flex',
-        // width: 20,
         marginRight: 30,
-        marginLeft: 170,
-        marginBottom: 5,
+        marginLeft: 'auto',
+        marginBottom: 10,
         alignItems: "flex-end",
         height: 'auto',
         backgroundColor: '#3EB1D6',
-        paddingBottom: 12,
-        borderRadius: 5
+        padding:10,
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+
+        elevation: 10,
     },
     outboundText: {
-        paddingRight: 5,
-        paddingLeft: 5
+        paddingHorizontal: 5,
+        color: 'white'
     },
     inboundText: {
-        paddingLeft: 5,
-        paddingRight: 5
+        paddingHorizontal: 5,
+    },
+    outboundUser: {
+        display:'none'
+    },
+    inboundUser: {
+        color: '#FFD55B',
+        fontWeight:'400'
     }
 })
