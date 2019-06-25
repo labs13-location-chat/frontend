@@ -9,6 +9,7 @@ import {
   AsyncStorage,
   Dimensions
 } from "react-native";
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import ChatMap from "./ChatMap";
 import ChatSearch from "./ChatSearch";
 import SendBird from "sendbird";
@@ -125,8 +126,27 @@ export default class JoinChat extends Component {
         mapToggle: !this.state.mapToggle
       });
     }
-    // console.log('toggled')
   };
+
+  onSwipeRight(gestureState) {
+    if (!this.state.mapToggle) {
+      return
+  } else {
+      this.setState({
+          mapToggle: !this.state.mapToggle
+        })
+    }
+  }
+
+  onSwipeLeft(gestureState) {
+    if (this.state.mapToggle) {
+      return
+  } else {
+      this.setState({
+          mapToggle: !this.state.mapToggle
+        })
+    }
+  }
 
   // viewSettingnav = () => {
   //     this.props.navigation.navigate('Setting',
@@ -176,7 +196,10 @@ export default class JoinChat extends Component {
 
 
   render() {
-    console.log(this.state.focusedLocation)
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
 
     return (
       <View style={styles.container}>
@@ -207,17 +230,23 @@ export default class JoinChat extends Component {
             <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
+
+
+    <GestureRecognizer 
+      onSwipeLeft={(state) => this.onSwipeLeft(state)}
+      onSwipeRight={(state) => this.onSwipeRight(state)}
+      config={config}>
         {this.state.mapToggle ? 
           <View>
             <ChatMap />
           </View>
          : 
-        this.state.loadingChatRooms ? 
-          <View>
+         this.state.loadingChatRooms ? 
+         <View>
               <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
           </View>
           :
-        <View>
+          <View>
           <ChatSearch
             // chatroomList={this.state.chatroom}
             focusedLocation={this.state.focusedLocation}
@@ -225,9 +254,12 @@ export default class JoinChat extends Component {
             noData={this.state.noData}
             data={this.state.data}
             // style={styles.chats}
-          />
+            />
           <View style={styles.chats} />
         </View>}
+      
+      </GestureRecognizer>
+          
           
       </View>
     );
