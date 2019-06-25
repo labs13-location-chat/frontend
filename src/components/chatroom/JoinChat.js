@@ -9,6 +9,7 @@ import {
   AsyncStorage,
   Dimensions
 } from "react-native";
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import ChatMap from "./ChatMap";
 import ChatSearch from "./ChatSearch";
 import SendBird from "sendbird";
@@ -22,49 +23,50 @@ const URL = "https://labs13-localchat.herokuapp.com";
 
 export default class JoinChat extends Component {
     constructor(props) {
-        super(props);
-        this.fetchUser();
-        
+      super(props);
+      this.fetchUser();
+      
         this.state = {
-            mapToggle: false,
-            firstname: '',
-            lastname: '',
-            email: '',
-            chatroom: [],
-            userID: null,
-            loadingChatRooms: true,
-            noData: false,
-            data: [],
-            searchBackToNormal: false,
-            focusedLocation: {
-              latitude: 0,
-              longitude: 0,
-              latitudeDelta: 0.0122,
-              longitudeDelta:
-                (Dimensions.get("window").width / Dimensions.get("window").height) *
-                0.0122
-            }
+          mapToggle: false,
+          firstname: '',
+          lastname: '',
+          email: '',
+          chatroom: [],
+          userID: null,
+          loadingChatRooms: true,
+          noData: false,
+          data: [],
+          searchBackToNormal: false,
+          focusedLocation: {
+            latitude: 0,
+            longitude: 0,
+            latitudeDelta: 0.0122,
+            longitudeDelta:
+            (Dimensions.get("window").width / Dimensions.get("window").height) *
+              0.0122
+            },
+          anonymous: null
           }
         }
         
         static navigationOptions = {
             title: 'Chatrooms',
-        }
+          }
     
     componentDidMount() {
       this.connectToSendbird()
-       axios
-        .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
-        .then(res => {
-          this.setState({
-            chatroom: res.data,
-            data: res.data,
-            loadingChatRooms: false
+        axios
+          .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+          .then(res => {
+            this.setState({
+              chatroom: res.data,
+              data: res.data,
+              loadingChatRooms: false
+              });
+            })
+          .catch(err => {
+            console.log(err);
           });
-        })
-        .catch(err => {
-          console.log(err);
-        });
       this.getGeoLocation()
     }
 
@@ -87,7 +89,19 @@ export default class JoinChat extends Component {
         });
       }
     };
-
+    
+    anonymousUserOrNot = () => {
+      let anonymous = this.props.navigation.state.params.anonymous;
+      let nickname = this.state.firstname
+      
+      if (anonymous) {
+        return "Anon"
+      } else {
+        return nickname
+      }
+    }
+    
+    // sendbird connection initiated
     connectToSendbird = () => {
         if (this.state.userID == null) {
             return setTimeout(() => {
@@ -99,20 +113,25 @@ export default class JoinChat extends Component {
                     console.log("Error", error)
                 } else {
                     console.log("Connected to Sendbird", user)
+                    sb.updateCurrentUserInfo(this.anonymousUserOrNot(), null, (user, err) => {
+                      if (err) {
+                        console.log(err)
+                      }
+                    })
                 }
             })
         }
     }
 
       
-    searchToggler = () => {
-          if (!this.state.mapToggle) {
-              return
-          } else {
-              this.setState({
-                  mapToggle: !this.state.mapToggle
-                })
-            }
+  searchToggler = () => {
+    if (!this.state.mapToggle) {
+      return
+      } else {
+        this.setState({
+          mapToggle: !this.state.mapToggle
+        })
+      }
     }
     //   console.log('toggled')
   ;
@@ -125,8 +144,27 @@ export default class JoinChat extends Component {
         mapToggle: !this.state.mapToggle
       });
     }
-    // console.log('toggled')
   };
+
+  onSwipeRight(gestureState) {
+    if (!this.state.mapToggle) {
+      return
+  } else {
+      this.setState({
+          mapToggle: !this.state.mapToggle
+        })
+    }
+  }
+
+  onSwipeLeft(gestureState) {
+    if (this.state.mapToggle) {
+      return
+  } else {
+      this.setState({
+          mapToggle: !this.state.mapToggle
+        })
+    }
+  }
 
   // viewSettingnav = () => {
   //     this.props.navigation.navigate('Setting',
@@ -135,17 +173,19 @@ export default class JoinChat extends Component {
   // }
 
   fetchUser = async () => {
+    const anon = await AsyncStorage.getItem('anonymous');
     const id = this.props.navigation.state.params.id;
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
-    let user_id = await AsyncStorage.getItem("userID")
+    let user_id = await AsyncStorage.getItem("userID");
     console.log(first, last, useremail, id);
     this.setState({
       firstname: first,
       lastname: last,
       email: useremail,
-      userID: user_id
+      userID: user_id,
+      anonymous: anon
     });
   };
 
@@ -176,7 +216,12 @@ export default class JoinChat extends Component {
 
 
   render() {
-    console.log(this.state.focusedLocation)
+    console.log(this.state.anonymous, "ANON")
+
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
 
     return (
       <View style={styles.container}>
@@ -207,27 +252,38 @@ export default class JoinChat extends Component {
             <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
+
+
+    <GestureRecognizer 
+      onSwipeLeft={(state) => this.onSwipeLeft(state)}
+      onSwipeRight={(state) => this.onSwipeRight(state)}
+      config={config}>
         {this.state.mapToggle ? 
           <View>
             <ChatMap />
           </View>
          : 
-        this.state.loadingChatRooms ? 
-          <View>
+         this.state.loadingChatRooms ? 
+         <View>
               <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
           </View>
           :
-        <View>
+          <View>
           <ChatSearch
             // chatroomList={this.state.chatroom}
             focusedLocation={this.state.focusedLocation}
             navigation={this.props.navigation}
             noData={this.state.noData}
             data={this.state.data}
+            anonymous={this.state.anonymous}
+
             // style={styles.chats}
-          />
+            />
           <View style={styles.chats} />
         </View>}
+      
+      </GestureRecognizer>
+          
           
       </View>
     );

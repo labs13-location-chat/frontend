@@ -60,11 +60,12 @@ export default class Message extends Component {
             }}
         /> */}
         
-        console.log(this.props.userID)
+        
+        console.log("message in message", this.props.message)
         return (
             <View >
                 <View style={this.inOrOutMessage()}>
-                    <Text style={this.inOrOutUser()} >{this.props.message.messageType}</Text>
+                    <Text style={this.inOrOutUser()} >{this.props.message._sender.nickname}</Text>
                     <Text style={this.inOrOutText()}>{this.props.message.message}</Text>
                 </View>
             </View>
@@ -79,11 +80,11 @@ const styles = StyleSheet.create({
         height: 'auto',
         padding:10,
         marginLeft: 30,
-        marginRight: 170,
+        marginRight: 'auto',
         marginBottom: 10,
         borderRadius: 10,
         backgroundColor:'white',
-        borderColor: '#FFFAFA',
+        // borderColor: '#FFFAFA',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -97,13 +98,21 @@ const styles = StyleSheet.create({
     outbound: {
         display: 'flex',
         marginRight: 30,
-        marginLeft: 170,
+        marginLeft: 'auto',
         marginBottom: 10,
         alignItems: "flex-end",
         height: 'auto',
         backgroundColor: '#3EB1D6',
         padding:10,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+
+        elevation: 10,
     },
     outboundText: {
         paddingHorizontal: 5,
