@@ -3,7 +3,8 @@ import {
   StyleSheet,  
   Text,
   Button,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
