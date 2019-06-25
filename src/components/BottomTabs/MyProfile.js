@@ -164,10 +164,7 @@ export default class MyProfile extends React.Component {
         if (res.status === 200) {
           alert("Update Successful");
         }
-        AsyncStorage.setItem(
-          'anonymous',
-          this.state.user.anonymous
-        )
+        AsyncStorage.setItem("anonymous", this.state.user.anonymous);
       })
       .catch(err => {
         console.log(err);
@@ -217,7 +214,7 @@ export default class MyProfile extends React.Component {
     if (this.state.phone_num == null) {
       this.setState({
         phone_num: 0
-      })
+      });
     } else if (this.state.phone_num.length === 0) {
       return this.state.user.phone_num;
     } else return this.state.phone_num;
@@ -242,10 +239,6 @@ export default class MyProfile extends React.Component {
   };
 
   render() {
-<<<<<<< HEAD
-=======
-    console.log(this.state.user);
->>>>>>> 27ef8171439c399e4814200a42d1638a3eccb0e7
     const { photo, anonymous } = this.state;
     return (
       <TouchableWithoutFeedback
