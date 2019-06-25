@@ -60,11 +60,12 @@ export default class Message extends Component {
             }}
         /> */}
         
-        console.log(this.props.userID)
+        
+        console.log("message in message", this.props.message)
         return (
             <View >
                 <View style={this.inOrOutMessage()}>
-                    <Text style={this.inOrOutUser()} >{this.props.message.messageType}</Text>
+                    <Text style={this.inOrOutUser()} >{this.props.message._sender.nickname}</Text>
                     <Text style={this.inOrOutText()}>{this.props.message.message}</Text>
                 </View>
             </View>
