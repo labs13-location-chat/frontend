@@ -33,7 +33,8 @@ export default class MessageRoom extends Component {
 			userID: '',
 			messageSentUpdate: false,
 			keyboardOffset: 0,
-			keyboardShown: false
+			keyboardShown: false,
+			name: ''
 		};
 	}
 
@@ -43,16 +44,6 @@ export default class MessageRoom extends Component {
 			chatroomInfo: chatInfo,
 			keyboardShown: false
 		});
-		// console.log("chatroomURL", this.state.chatroomInfo.chatroom_url)
-		// sb.OpenChannel.getChannel(this.state.chatroomInfo.chatroom_url, (channel, error) => {
-		//     if (error) {
-		//         console.log("getting channel error", error);
-		//     }
-		//     this.setState({
-		//         channel: channel
-		//     })
-		// })
-
 		this.getChannel();
 	}
 
@@ -62,6 +53,8 @@ export default class MessageRoom extends Component {
 
 	fetchUser = async () => {
 		const user_id = await AsyncStorage.getItem('userID');
+		const first_name = await AsyncStorage.getItem('name');
+		const anon = await AsyncStorage.getItem('anonymous');
 		this.setState({
 			userID: user_id
 		});
@@ -173,6 +166,7 @@ export default class MessageRoom extends Component {
 	};
 
 	render() {
+		console.log("Messages", this.state.messages)
 		return (
 			<View>
 				{this.state.loading ? (
