@@ -248,108 +248,106 @@ export default class MyProfile extends React.Component {
 			// 	}}
 			// >
 			<View style={styles.container}>
-				<View>
-					<View style={styles.imageDisplay}>
-						<Image
-							style={styles.image}
-							source={
-								photo ? (
-									{ uri: photo.uri + '?' + new Date() }
-								) : (
-									{
-										uri:
-											'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
-									}
-								)
-							}
-						/>
+				<View style={styles.imageDisplay}>
+					<Image
+						style={styles.image}
+						source={
+							photo ? (
+								{ uri: photo.uri + '?' + new Date() }
+							) : (
+								{
+									uri:
+										'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
+								}
+							)
+						}
+					/>
+					<Text
+						onPress={this.chooseFile.bind(this)}
+						style={styles.imageEdit}
+					>
+						Edit
+					</Text>
+				</View>
+				<View style={styles.inputDisplay}>
+					<View
+					// style={styles.display}
+					>
 						<Text
-							onPress={this.chooseFile.bind(this)}
-							style={styles.imageEdit}
+							style={{
+								width: 300,
+								marginLeft: 30,
+								fontSize: 16
+							}}
 						>
-							Edit
+							Name
 						</Text>
-					</View>
-					<View style={styles.inputDisplay}>
 						<View
-						// style={styles.display}
-						>
-							<Text
-								style={{
-									width: 300,
-									marginLeft: 30,
-									fontSize: 16
-								}}
-							>
-								Name
-							</Text>
-							<View
-							// style={{
-							// 	marginLeft: 30,
-							// 	marginRight: 20,
-							// 	width: 275,
-							// 	marginTop: 15,
-							// 	borderBottomWidth: 0.7
-							// }}
-							/>
-							<TextInput
-								style={styles.inputBox}
-								onChangeText={this.handleNameChange}
-								name='first_name'
-								value={this.state.first_name}
-							/>
-							<View style={styles.phoneView}>
-								<Icon name='phone' size={20} />
-								<Text style={styles.text}>Phone Number</Text>
-							</View>
-							<View
-								style={{
-									marginLeft: 30,
-									marginRight: 20,
-									width: 275,
-									marginTop: 15,
-									borderBottomWidth: 0.7
-								}}
-							/>
-							<TextInput
-								style={styles.inputBox}
-								keyboardType='phone-pad'
-								name='phone_num'
-								onChangeText={this.handleNumChange}
-								value={this.state.phone_num}
-							/>
-							<View>
-								<View style={styles.anonymousStyle}>
-									<Icon2 name='user' size={20} />
-									<Text style={{ marginLeft: 10 }}>
-										Anonymous
-									</Text>
-									<CheckBox
-										style={{
-											marginLeft: 30
-										}}
-										value={this.state.user.anonymous}
-										onChange={() => this.CheckBox()}
-									/>
-								</View>
-							</View>
-							<View
-								style={{
-									marginLeft: 30,
-									width: 275,
-									marginTop: 15,
-									borderBottomWidth: 0.7
-								}}
-							/>
+						// style={{
+						// 	marginLeft: 30,
+						// 	marginRight: 20,
+						// 	width: 275,
+						// 	marginTop: 15,
+						// 	borderBottomWidth: 0.7
+						// }}
+						/>
+						<TextInput
+							style={styles.inputBox}
+							onChangeText={this.handleNameChange}
+							name='first_name'
+							value={this.state.first_name}
+						/>
+						<View style={styles.phoneView}>
+							<Icon name='phone' size={20} />
+							<Text style={styles.text}>Phone Number</Text>
 						</View>
-						{/* <KeyboardSpacer /> */}
-						<TouchableOpacity title='Logout' onPress={this.signOut}>
-							<View style={styles.logoutView}>
-								<Icon name='logout' size={20} />
-								<Text style={styles.logoutText}>Logout</Text>
+						<View
+							style={{
+								marginLeft: 30,
+								marginRight: 20,
+								width: 275,
+								marginTop: 15,
+								borderBottomWidth: 0.7
+							}}
+						/>
+						<TextInput
+							style={styles.inputBox}
+							keyboardType='phone-pad'
+							name='phone_num'
+							onChangeText={this.handleNumChange}
+							value={this.state.phone_num}
+						/>
+						<View>
+							<View style={styles.anonymousStyle}>
+								<Icon2 name='user' size={20} />
+								<Text style={{ marginLeft: 10 }}>
+									Anonymous
+								</Text>
+								<CheckBox
+									style={{
+										marginLeft: 30
+									}}
+									value={this.state.user.anonymous}
+									onChange={() => this.CheckBox()}
+								/>
 							</View>
-						</TouchableOpacity>
+						</View>
+						<View
+							style={{
+								marginLeft: 30,
+								width: 275,
+								marginTop: 15,
+								borderBottomWidth: 0.7
+							}}
+						/>
 					</View>
+					{/* <KeyboardSpacer /> */}
+					<TouchableOpacity title='Logout' onPress={this.signOut}>
+						<View style={styles.logoutView}>
+							<Icon name='logout' size={20} />
+							<Text style={styles.logoutText}>Logout</Text>
+						</View>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
