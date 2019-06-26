@@ -216,7 +216,7 @@ export default class JoinChat extends Component {
 
 
   render() {
-    console.log(this.state.anonymous, "ANON")
+    
 
     const config = {
       velocityThreshold: 0.3,

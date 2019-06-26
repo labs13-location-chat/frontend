@@ -14,7 +14,8 @@ export default class ChatSearch extends Component {
         latitude: 99999,
         longitude: 0,
       },
-      orderedChatrooms: []
+      orderedChatrooms: [],
+      updating: false
     }
   }
 
@@ -34,6 +35,15 @@ export default class ChatSearch extends Component {
       this.getDistanceFromChat()
       // this.orderChats()
   }
+
+  componentDidUpdate(prevState) {
+    if (this.state.updating !== prevState.updating) {
+      console.log("Refresh!")
+    }
+  }
+  
+
+
   
   getGeoLocation = () => {
     if (navigator.geolocation) {
@@ -65,37 +75,22 @@ export default class ChatSearch extends Component {
           )
           console.log(distance)
           let deezNutz = {...chat, distance: distance}
-          return deez.push(deezNutz) && console.log(deez) && this.setState({ chatrooms: deez })
-          // this.setState({
-          //   ...chat,
-          //   chatrooms: {
-          //     deezNutz
-          //   }
-          // }) && 
+          return deez.push(deezNutz) 
+        })
+        return this.setState({
+          chatrooms: deez
         })
       }
-
-      
   }
 
-  // orderChats = () => {
-    
-  //     let closestChats = this.state.chatrooms.sort(eachChat => {
-  //       return eachChat.distance > 0
-  //     })
-  //     this.setState({
-  //       orderedChatrooms: closestChats
-  //     })
-  //   }
 
 
   render() {
-    console.log("deez nutz", this.state.chatrooms)
-    // console.log('filtered', this.state.orderedChatrooms)
-
     return (
         <FlatList
-          data={this.state.chatrooms}
+          data={this.state.chatrooms.sort(function (a, b) {
+            return a.distance - b.distance
+          })}
           renderItem={info => 
             <ChatroomItem 
             navigation={this.props.navigation} 
