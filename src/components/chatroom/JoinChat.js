@@ -216,7 +216,7 @@ export default class JoinChat extends Component {
 
 
   render() {
-    console.log(this.state.anonymous, "ANON")
+    
 
     const config = {
       velocityThreshold: 0.3,
@@ -252,6 +252,7 @@ export default class JoinChat extends Component {
             <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
+        
 
 
     <GestureRecognizer 
@@ -270,7 +271,7 @@ export default class JoinChat extends Component {
           :
           <View>
           <ChatSearch
-            // chatroomList={this.state.chatroom}
+            chatroomList={this.state.chatroom}
             focusedLocation={this.state.focusedLocation}
             navigation={this.props.navigation}
             noData={this.state.noData}

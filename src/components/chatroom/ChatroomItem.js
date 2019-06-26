@@ -40,7 +40,17 @@ export default class ChatroomItem extends Component {
     });
   };
 
+  ifDistanceIsLoading = () => {
+    if (this.props.chat.distance === undefined) {
+      return "Loading..."
+    } else {
+      let distanceCalc = this.props.chat.distance / 1609.34
+      return parseFloat(Math.round(distanceCalc * 100) /100).toFixed(2)
+    }
+  }
+
   render() {
+    console.log("Chat", this.props.chat)
     let image = this.props.chat.img_url
     return (
       <View style={styles.container}>
@@ -59,7 +69,7 @@ export default class ChatroomItem extends Component {
             <Text>{this.props.chat.description}</Text>
           </View>
           <View style={styles.distance}>
-            <Text>{this.props.chat.radius} mi</Text>
+            <Text>{this.ifDistanceIsLoading()} mi</Text>
               {this.state.expanded ? <Icon name="md-arrow-dropup" size={30} /> : <Icon name="md-arrow-dropdown" size={30}/> }
           </View>
         </TouchableOpacity>
