@@ -252,6 +252,7 @@ export default class JoinChat extends Component {
             <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
+        
 
 
     <GestureRecognizer 

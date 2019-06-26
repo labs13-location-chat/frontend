@@ -84,7 +84,6 @@ export default class ChatSearch extends Component {
   }
 
 
-
   render() {
     return (
         <FlatList

@@ -50,9 +50,6 @@ export default class ChatroomItem extends Component {
   }
 
   render() {
-    
-
-
     console.log("Chat", this.props.chat)
     let image = this.props.chat.img_url
     return (
