@@ -270,7 +270,7 @@ export default class JoinChat extends Component {
           :
           <View>
           <ChatSearch
-            // chatroomList={this.state.chatroom}
+            chatroomList={this.state.chatroom}
             focusedLocation={this.state.focusedLocation}
             navigation={this.props.navigation}
             noData={this.state.noData}

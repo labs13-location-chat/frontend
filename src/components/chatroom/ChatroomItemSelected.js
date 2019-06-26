@@ -82,7 +82,15 @@ export default class ChatroomItemSelected extends Component {
       this.props.navigation.navigate('Chatroom', {
         user: this.state.chatroom
       })
-    } else if (this.state.chatroom.chatroom_type === "big city" && this.state.distance <= 80000) {
+    } else if (this.state.chatroom.chatroom_type === "big city" && this.state.distance <= 40500) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "town" && this.state.distance <= 24500) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.state.chatroom
+      })
+    } else if (this.state.chatroom.chatroom_type === "beach" && this.state.distance <= 1600) {
       this.props.navigation.navigate('Chatroom', {
         user: this.state.chatroom
       })
