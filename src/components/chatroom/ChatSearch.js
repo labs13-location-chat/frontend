@@ -73,7 +73,7 @@ export default class ChatSearch extends Component {
           { latitude: this.state.location.latitude, longitude: this.state.location.longitude },
           1
           )
-          console.log(distance)
+          // console.log(distance)
           let deezNutz = {...chat, distance: distance}
           return deez.push(deezNutz) 
         })
