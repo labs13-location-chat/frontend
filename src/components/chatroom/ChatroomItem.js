@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 85
+    height: 70
   },
   nameAddress: {
     width: "70%"

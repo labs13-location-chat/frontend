@@ -293,7 +293,7 @@ export default class JoinChat extends Component {
 
 const styles = StyleSheet.create({
   chats: {
-    paddingBottom: 80
+    flex: 1
   },
   searchBar: {
     flexDirection:'row', 
