@@ -54,7 +54,12 @@ export default class CreateChatroom extends Component {
     }
 
     createChatroom = () => {
-        OpenChannel.createChannel(this.state.newChatroom.name, COVER_IMG, this.state.newChatroom.description, )
+        OpenChannel.createChannel(this.state.newChatroom.name, COVER_IMG, this.state.newChatroom.description, NEED_ID_OF_USER_HERE, CUSTOM_TYPE_NEEDS_TO_BE_STRING, function(openChannel, error) {
+            if (error) {
+                return console.log(error)
+            }
+            console.log(openChannel)
+        })
     }
     
     render() {
@@ -92,7 +97,7 @@ export default class CreateChatroom extends Component {
                 </Picker>   
                 <Button 
                     title="Create Channel" 
-                    onPress={}
+                    // onPress={}
                 />
             </View>
         )
