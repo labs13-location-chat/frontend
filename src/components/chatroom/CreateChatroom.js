@@ -28,11 +28,12 @@ export default class CreateChatroom extends Component {
         }
     }
 
-    handleNameInput = (key, val) => {
+    handleInput = (key, val) => {
         this.setState({
-            ...newChatroom, 
+            ...this.state.newChatroom, 
             newChatroom: {
-                name: val
+                ...this.state.newChatroom,
+                key: val
             }
         })
     }
@@ -51,6 +52,10 @@ export default class CreateChatroom extends Component {
 
         return images[Math.floor(Math.random() * images.length)]
     }
+
+    createChatroom = () => {
+        OpenChannel.createChannel(this.state.newChatroom.name, COVER_IMG, this.state.newChatroom.description, )
+    }
     
     render() {
         console.log(this.state.newChatroom)
@@ -61,39 +66,15 @@ export default class CreateChatroom extends Component {
                     placeholder="Name"
                     value={this.state.newChatroom.name}
                     onChangeText={val => this.handleInput(val)}
-
+                    name="name"
                 />
                 <TextInput
                     placeholder="Description"
                     value={this.state.newChatroom.description}
                     onChangeText={val => this.handleInput(val)}
-
+                    name="description"
                 />
-                {/* <TextInput
-                    placeholder=""
-                    value={name}
-                    // onChangeText={}
-
-                />
-                <TextInput
-                    placeholder=""
-                    value={name}
-                    // onChangeText={}
-
-                />
-                <TextInput
-                    placeholder=""
-                    value={name}
-                    // onChangeText={}
-
-                />
-                <TextInput
-                    placeholder=""
-                    value={name}
-                    // onChangeText={}
-
-                /> */}
-                
+               
                 <Picker
                     // selectedValue={this.state.chatroom_type}
                     onValueChange={(itemValue, itemIndex) => {
@@ -109,6 +90,10 @@ export default class CreateChatroom extends Component {
                 <Picker.Item label="Beach (2 mi radius)" value="beach" />
                 <Picker.Item label="Stadium (0.5 mi radius)" value="stadium" />
                 </Picker>   
+                <Button 
+                    title="Create Channel" 
+                    onPress={}
+                />
             </View>
         )
     }
