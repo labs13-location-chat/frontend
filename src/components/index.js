@@ -28,10 +28,10 @@ const Settings = createStackNavigator(
 		// Notifications: { screen: Notifications }
 	},
 	{
-		navigationOptions: {
-			tabBarLabel: 'Profile',
-			tabBarIcon: <Icon name='md-settings' size={25} />
-		},
+		// navigationOptions: {
+		// 	tabBarLabel: 'Profile',
+		// 	tabBarIcon: <Icon name='md-settings' size={25} />
+		// },
 		initialRouteName: 'MyProfile',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
@@ -48,7 +48,7 @@ const Settings = createStackNavigator(
 	}
 );
 
-const JoinChats = createStackNavigator(
+const Chats = createStackNavigator(
 	{
 		JoinChat: { screen: JoinChat },
 		Chatroom: { screen: MessageRoom }
@@ -90,17 +90,17 @@ const Create = createStackNavigator(
 );
 
 const tabNavigator = createBottomTabNavigator(
-	{ JoinChats, Create, Settings },
+	{ Chats, Create, Settings },
 	{
 		defaultNavigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused, horizontal, tintColor }) => {
 				const { routeName } = navigation.state;
 				let IconComponent = Icon;
 				let iconName;
-				if (routeName === 'JoinChats') {
+				if (routeName === 'Chats') {
 					iconName = `md-chatboxes`;
-				} else if (routeName === 'Cameras') {
-					iconName = `md-camera`;
+				} else if (routeName === 'Create') {
+					iconName = `md-add-circle-outline`;
 				} else if (routeName === 'Settings') {
 					iconName = 'md-settings';
 				}
@@ -129,7 +129,7 @@ const tabNavigator = createBottomTabNavigator(
 		}
 	}
 );
-JoinChats.navigationOptions = ({ navigation }) => {
+Chats.navigationOptions = ({ navigation }) => {
 	let tabBarVisible = true;
 	if (navigation.state.index > 0) {
 		tabBarVisible = false;
