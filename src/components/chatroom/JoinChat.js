@@ -305,6 +305,7 @@ export default class JoinChat extends Component {
             searchValue={this.state.searchValue}
             navigation={this.props.navigation}
             chatWithDistance={this.state.chatWithDistance}
+            focusedLocation={this.state.focusedLocation}
           />
           <View style={styles.chats} />
         </View>}
