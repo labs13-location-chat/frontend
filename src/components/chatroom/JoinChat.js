@@ -16,6 +16,7 @@ import SendBird from "sendbird";
 import Config from "../../config";
 import axios from "axios";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getDistance }  from "geolib";
 
 var sb = new SendBird({ appId: Config.appId });
 
@@ -38,14 +39,17 @@ export default class JoinChat extends Component {
           data: [],
           searchBackToNormal: false,
           focusedLocation: {
-            latitude: 0,
+            latitude: 99999,
             longitude: 0,
             latitudeDelta: 0.0122,
             longitudeDelta:
             (Dimensions.get("window").width / Dimensions.get("window").height) *
               0.0122
             },
-          anonymous: null
+          anonymous: null,
+          chatWithDistance: [],
+          chatWithDistanceFallbackForSearch: [],
+          searchValue: ''
           }
         }
         
@@ -53,27 +57,27 @@ export default class JoinChat extends Component {
             title: 'Chatrooms',
           }
     
-    componentDidMount() {
+    async componentDidMount() {
       this.connectToSendbird()
-        axios
-          .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
-          .then(res => {
-            this.setState({
-              chatroom: res.data,
-              data: res.data,
-              loadingChatRooms: false
-              });
-            })
-          .catch(err => {
-            console.log(err);
-          });
-      this.getGeoLocation()
+      await this.getGeoLocation()
+      await axios
+      .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+      .then(res => {
+        this.setState({
+          chatroom: res.data,
+          data: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      await this.getDistanceFromChat()
     }
 
 
-    getGeoLocation = () => {
+    getGeoLocation =  async () => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
+        await navigator.geolocation.getCurrentPosition(position => {
           this.setState({
             ...this.state.focusedLocation,
             focusedLocation: {
@@ -90,6 +94,50 @@ export default class JoinChat extends Component {
       }
     };
     
+    getDistanceFromChat = () => {
+      // if (this.state.focusedLocation.latitude === 99999 ) {
+      //   return setTimeout(() => {
+      //     this.getDistanceFromChat()
+      //   }, 1000)
+      // } else {
+        let deez = []
+        chatrooms = this.state.chatroom
+        const orderedResults = chatrooms.map((chat) => {
+          let distance = getDistance(
+            { latitude: chat.latitude, longitude: chat.longitude }, 
+            { latitude: this.state.focusedLocation.latitude, longitude: this.state.focusedLocation.longitude },
+            1
+            )
+            console.log(distance, deez)
+            let deezNutz = {...chat, distance: distance}
+            // return new Promise(function (resolve, reject) { 
+            //   if (error) {
+            //     return reject(error)
+            //   } else {
+                return deez.push(deezNutz)
+              // }
+            })
+          
+          // Promise.all(orderedResults)
+          //   .then(() => {
+              this.setState({
+                chatWithDistance: deez,
+                chatWithDistanceFallbackForSearch: deez,
+                loadingChatRooms: false
+              })
+            // })
+            // .catch(err => console.log(err))
+            }
+        
+    
+
+    checkForSortedChats = () => {
+        return this.setState({
+          loadingChatRooms: false
+        }) &&
+        console.log("Checking")
+    }
+
     anonymousUserOrNot = () => {
       let anonymous = this.props.navigation.state.params.anonymous;
       let nickname = this.state.firstname
@@ -133,7 +181,6 @@ export default class JoinChat extends Component {
         })
       }
     }
-    //   console.log('toggled')
   ;
 
   mapToggler = () => {
@@ -189,34 +236,17 @@ export default class JoinChat extends Component {
     });
   };
 
-  searchText = (e) => {
-    let text = e.toLowerCase()
-    let chats = this.state.data
-    let filteredName = chats.filter((item) => {
-      return item.name.toLowerCase().match(text)
+  searchText = (val) => {
+    this.setState({
+      searchValue: val
     })
-    if (!text || text === '') {
-      this.setState({
-        data: this.state.chatroom,
-        // searchBackToNormal: !this.state.searchBackToNormal
-      })
-    } else if (!Array.isArray(filteredName) && !filteredName.length) {
-      // set no data flag to true so as to render flatlist conditionally
-      this.setState({
-        noData: true
-      })
-    } else if (Array.isArray(filteredName)) {
-      this.setState({
-        noData: false,
-        data: filteredName
-      })
-    }
   }
+  
   
 
 
   render() {
-    
+
 
     const config = {
       velocityThreshold: 0.3,
@@ -233,7 +263,8 @@ export default class JoinChat extends Component {
             <TextInput 
               style={styles.search} 
               placeholder="Search by Name" 
-              onChangeText={text => this.searchText(text)}
+              onChangeText={val => this.searchText(val)}
+              value={this.state.searchValue}
             />
             <Icon name='map-marker' color='#A8A7A3' size={20} style={{paddingHorizontal:20}}/>
           </View>
@@ -252,7 +283,7 @@ export default class JoinChat extends Component {
             <Text style={{fontWeight: "600"}}>MAP</Text>
           </TouchableOpacity>
         </View>
-        
+
 
 
     <GestureRecognizer 
@@ -271,15 +302,10 @@ export default class JoinChat extends Component {
           :
           <View>
           <ChatSearch
-            chatroomList={this.state.chatroom}
-            focusedLocation={this.state.focusedLocation}
+            searchValue={this.state.searchValue}
             navigation={this.props.navigation}
-            noData={this.state.noData}
-            data={this.state.data}
-            anonymous={this.state.anonymous}
-
-            // style={styles.chats}
-            />
+            chatWithDistance={this.state.chatWithDistance}
+          />
           <View style={styles.chats} />
         </View>}
       
