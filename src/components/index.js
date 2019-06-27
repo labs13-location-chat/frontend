@@ -9,6 +9,7 @@ import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
 import MenuSettings from './BottomTabs/Settings';
 import Notifications from './BottomTabs/Notifications';
+import CreateChatroom from './chatroom/CreateChatroom'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage, View, Text } from 'react-native';
 import MessageRoom from './chatroom/messages/MessageRoom';
@@ -68,9 +69,9 @@ const JoinChats = createStackNavigator(
 	}
 );
 
-const Cameras = createStackNavigator(
+const Create = createStackNavigator(
 	{
-		Camera: { screen: Camera }
+		CreateChatroom: { screen: CreateChatroom }
 	},
 	{
 		headerLayoutPreset: 'center',
@@ -89,7 +90,7 @@ const Cameras = createStackNavigator(
 );
 
 const tabNavigator = createBottomTabNavigator(
-	{ JoinChats, Cameras, Settings },
+	{ JoinChats, Create, Settings },
 	{
 		defaultNavigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused, horizontal, tintColor }) => {
