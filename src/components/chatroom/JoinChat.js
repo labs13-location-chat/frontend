@@ -95,11 +95,6 @@ export default class JoinChat extends Component {
     };
     
     getDistanceFromChat = () => {
-      // if (this.state.focusedLocation.latitude === 99999 ) {
-      //   return setTimeout(() => {
-      //     this.getDistanceFromChat()
-      //   }, 1000)
-      // } else {
         let deez = []
         chatrooms = this.state.chatroom
         const orderedResults = chatrooms.map((chat) => {
@@ -110,33 +105,14 @@ export default class JoinChat extends Component {
             )
             console.log(distance, deez)
             let deezNutz = {...chat, distance: distance}
-            // return new Promise(function (resolve, reject) { 
-            //   if (error) {
-            //     return reject(error)
-            //   } else {
                 return deez.push(deezNutz)
-              // }
             })
-          
-          // Promise.all(orderedResults)
-          //   .then(() => {
               this.setState({
                 chatWithDistance: deez,
                 chatWithDistanceFallbackForSearch: deez,
                 loadingChatRooms: false
               })
-            // })
-            // .catch(err => console.log(err))
             }
-        
-    
-
-    checkForSortedChats = () => {
-        return this.setState({
-          loadingChatRooms: false
-        }) &&
-        console.log("Checking")
-    }
 
     anonymousUserOrNot = () => {
       let anonymous = this.props.navigation.state.params.anonymous;
