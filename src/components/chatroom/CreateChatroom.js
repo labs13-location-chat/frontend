@@ -66,7 +66,8 @@ export default class CreateChatroom extends Component {
         console.log(this.state.newChatroom)
         return (
             <View>
-                <Text>Please Fill Out All Information</Text>
+                <Text style={styles.text}>New Feature Coming Soon!</Text>
+                {/* <Text>Please Fill Out All Information</Text>
                 <TextInput
                     placeholder="Name"
                     value={this.state.newChatroom.name}
@@ -99,8 +100,18 @@ export default class CreateChatroom extends Component {
                 <Button 
                     title="Create Channel" 
                     // onPress={}
-                />
+                /> */}
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    text: {
+        fontSize: 20,
+        display: 'flex',
+        textAlign: "center",
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+})

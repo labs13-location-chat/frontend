@@ -58,7 +58,7 @@ export default class JoinChat extends Component {
           }
     
     async componentDidMount() {
-      await this.connectToSendbird()
+      this.connectToSendbird()
       await this.getGeoLocation()
       await axios
       .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
@@ -127,7 +127,11 @@ export default class JoinChat extends Component {
     
     // sendbird connection initiated
     connectToSendbird = () => {
-        
+        if (this.state.userID == null) {
+            return setTimeout(() => {
+                this.connectToSendbird()
+            }, 1000)
+        } else {
             sb.connect(this.state.userID, (user, error) => {
                 if (error) {
                     console.log("Error", error)

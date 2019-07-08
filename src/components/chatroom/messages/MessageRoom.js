@@ -38,7 +38,7 @@ export default class MessageRoom extends Component {
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		let chatInfo = this.props.navigation.getParam('user');
 		this.setState({
 			chatroomInfo: chatInfo,
@@ -166,6 +166,7 @@ export default class MessageRoom extends Component {
 	};
 
 	render() {
+		console.log(this.state.chatroomInfo)
 		console.log("Messages", this.state.messages)
 		return (
 			<View>
