@@ -50,7 +50,6 @@ export default class ChatroomItem extends Component {
   }
 
   render() {
-    console.log("Chat", this.props.chat)
     let image = this.props.chat.img_url
     return (
       <View style={styles.container}>
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 85
+    height: 70
   },
   nameAddress: {
     width: "70%"

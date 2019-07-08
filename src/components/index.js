@@ -9,6 +9,7 @@ import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
 import MenuSettings from './BottomTabs/Settings';
 import Notifications from './BottomTabs/Notifications';
+import CreateChatroom from './chatroom/CreateChatroom'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage, View, Text } from 'react-native';
 import MessageRoom from './chatroom/messages/MessageRoom';
@@ -27,10 +28,10 @@ const Settings = createStackNavigator(
 		// Notifications: { screen: Notifications }
 	},
 	{
-		navigationOptions: {
-			tabBarLabel: 'Profile',
-			tabBarIcon: <Icon name='md-settings' size={25} />
-		},
+		// navigationOptions: {
+		// 	tabBarLabel: 'Profile',
+		// 	tabBarIcon: <Icon name='md-settings' size={25} />
+		// },
 		initialRouteName: 'MyProfile',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
@@ -47,7 +48,7 @@ const Settings = createStackNavigator(
 	}
 );
 
-const JoinChats = createStackNavigator(
+const Chats = createStackNavigator(
 	{
 		JoinChat: { screen: JoinChat },
 		Chatroom: { screen: MessageRoom }
@@ -68,9 +69,9 @@ const JoinChats = createStackNavigator(
 	}
 );
 
-const Cameras = createStackNavigator(
+const Create = createStackNavigator(
 	{
-		Camera: { screen: Camera }
+		CreateChatroom: { screen: CreateChatroom }
 	},
 	{
 		headerLayoutPreset: 'center',
@@ -89,17 +90,17 @@ const Cameras = createStackNavigator(
 );
 
 const tabNavigator = createBottomTabNavigator(
-	{ JoinChats, Cameras, Settings },
+	{ Chats, Create, Settings },
 	{
 		defaultNavigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused, horizontal, tintColor }) => {
 				const { routeName } = navigation.state;
 				let IconComponent = Icon;
 				let iconName;
-				if (routeName === 'JoinChats') {
+				if (routeName === 'Chats') {
 					iconName = `md-chatboxes`;
-				} else if (routeName === 'Cameras') {
-					iconName = `md-camera`;
+				} else if (routeName === 'Create') {
+					iconName = `md-add-circle-outline`;
 				} else if (routeName === 'Settings') {
 					iconName = 'md-settings';
 				}
@@ -128,7 +129,7 @@ const tabNavigator = createBottomTabNavigator(
 		}
 	}
 );
-JoinChats.navigationOptions = ({ navigation }) => {
+Chats.navigationOptions = ({ navigation }) => {
 	let tabBarVisible = true;
 	if (navigation.state.index > 0) {
 		tabBarVisible = false;
