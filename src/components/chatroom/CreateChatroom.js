@@ -90,6 +90,7 @@ export default class CreateChatroom extends Component {
                         })
                     }}
                 >
+                <Picker.Item label="Rural City (100 mi radius)" value="rural city" />
                 <Picker.Item label="Big City (25 mi radius)" value="big city" />
                 <Picker.Item label="Town (15 mi radius)" value="town" />
                 <Picker.Item label="Beach (2 mi radius)" value="beach" />
