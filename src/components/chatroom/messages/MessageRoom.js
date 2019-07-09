@@ -86,7 +86,7 @@ export default class MessageRoom extends Component {
 						if (error) {
 						}
 					});
-					console.log('Mounting being handled, thats what she said');
+					// console.log('Mounting being handled, thats what she said');
 					this.handleMounting(channel, error);
 				}
 			}
@@ -162,11 +162,11 @@ export default class MessageRoom extends Component {
 				messages: messages.concat(this.state.messages)
 			});
 		});
-		console.log(message);
+		// console.log(message);
 	};
 
 	render() {
-		console.log("Messages", this.state.messages)
+		// console.log("Messages", this.state.messages)
 		return (
 			<View>
 				{this.state.loading ? (

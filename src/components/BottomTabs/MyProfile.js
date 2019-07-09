@@ -50,7 +50,6 @@ export default class MyProfile extends React.Component {
 			keyboardShown: false
 			// 	editButton: this.toggleEditButton
 		});
-		console.log('hi');
 	}
 
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -116,23 +115,17 @@ export default class MyProfile extends React.Component {
 	// };
 
 	handleNameChange = value => {
-		console.log('value change:', this.state);
-
 		this.setState({
 			first_name: value
 		});
 	};
 
 	handleNumChange = value => {
-		console.log('value change:', this.state);
-
 		this.setState({
 			phone_num: value
 		});
 	};
 	handleEmailChange = value => {
-		console.log('value change:', this.state);
-
 		this.setState({
 			email: value
 		});
@@ -239,7 +232,7 @@ export default class MyProfile extends React.Component {
 	};
 
 	getUser = () => {
-		console.log('getUser');
+		// console.log('getUser');
 		const user_id = this.props.navigation.state.params.id;
 		axios
 			.get(`${URL}/api/users/${user_id}`)
@@ -299,7 +292,6 @@ export default class MyProfile extends React.Component {
 	};
 
 	render() {
-		console.log(this.state.first_name);
 		const { photo } = this.state;
 		// let changePhoto = photo === null ? { uri: photo } : { uri: photo.uri };
 		return (
