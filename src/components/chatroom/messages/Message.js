@@ -61,7 +61,7 @@ export default class Message extends Component {
         /> */}
         
         
-        console.log("message in message", this.props.message)
+        // console.log("message in message", this.props.message)
         return (
             <View >
                 <View style={this.inOrOutMessage()}>

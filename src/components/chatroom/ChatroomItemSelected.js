@@ -32,14 +32,54 @@ export default class ChatroomItemSelected extends Component {
       },
       chatroom: [],
       user: [],
-      distance: 0
+      distance: 99999
     }
   }
 
-     
+
+  componentDidMount() {
+    axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
+      .then(res => {
+        // console.log('data',res.data)
+        this.setState({
+          location: {
+            longitude: res.data.longitude,
+            latitude: res.data.latitude,
+            latitudeDelta: 0.0122,
+            longitudeDelta:
+              (Dimensions.get("window").width / Dimensions.get("window").height) *
+              0.0122
+          },
+          chatroom: res.data
+        })
+        // console.log('location', this.state.location)
+      })
+      .catch(err => console.log(err))
+
+      this.getDistanceFromChat()
+    }
+  
+    getDistanceFromChat = () => {
+      if (this.state.location.latitude === 0 ) {
+        return setTimeout(() => {
+          this.getDistanceFromChat()
+        }, 1000)
+      } else {
+        let distance = getDistance(
+          { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }, 
+          { latitude: this.state.location.latitude, longitude: this.state.location.longitude },
+          1
+          )
+        this.setState({
+          distance: distance
+        })
+        // console.log("distance", distance)
+        }
+    }
+
 
   joinChannel = () => {
-    if (this.props.chat.distance === 0) {
+    if (this.props.chat.distance === 99999) {
       return alert("Distance still loading, please try again")
     } else if (this.props.chat.chatroom_type === "worldwide" && this.props.chat.distance > 0) {
       this.props.navigation.navigate('Chatroom', {
@@ -73,10 +113,10 @@ export default class ChatroomItemSelected extends Component {
 
 
   render() {
-    console.log(this.props.chat, "CHAT")
-    console.log("distance in state", this.state.distance)
-    console.log('focusedlocation', this.props.focusedLocation)
-    console.log('location', this.state.location)
+    // console.log("distance in state", this.state.distance)
+    // console.log('focusedlocation', this.props.focusedLocation)
+    // console.log('location', this.state.location)
+    // console.log('chatroom ', this.state.chatroom)
     return (
       <View>
         <View>

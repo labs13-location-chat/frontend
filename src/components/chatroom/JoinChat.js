@@ -103,7 +103,7 @@ export default class JoinChat extends Component {
             { latitude: this.state.focusedLocation.latitude, longitude: this.state.focusedLocation.longitude },
             1
             )
-            console.log(distance, deez)
+            // console.log(distance, deez)
             let deezNutz = {...chat, distance: distance}
                 return deez.push(deezNutz)
             })
@@ -202,7 +202,7 @@ export default class JoinChat extends Component {
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
     let user_id = await AsyncStorage.getItem("userID");
-    console.log(first, last, useremail, id);
+    // console.log(first, last, useremail, id);
     this.setState({
       firstname: first,
       lastname: last,
