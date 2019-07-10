@@ -11,13 +11,14 @@ import {
 	TouchableWithoutFeedback,
 	TouchableOpacity,
 	AsyncStorage,
-	Button
+	Button,
+	Platform
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
 import Icon3 from 'react-native-vector-icons/SimpleLineIcons';
-import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon4 from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-picker';
 import DismissKeyboard from 'dismissKeyboard';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -36,9 +37,7 @@ export default class MyProfile extends React.Component {
 			phone_num: '',
 			email: '',
 			photo: '',
-			edit: true,
-			keyboardOffset: 0,
-			keyboardshown: false
+			edit: true
 		};
 	}
 
@@ -131,24 +130,70 @@ export default class MyProfile extends React.Component {
 			email: value
 		});
 	};
+	handlePhotoChange = () => {
+		this.setState({
+			photo: this.state.user.photo
+		});
+	};
+
+	// createFormData = (photo, body) => {
+	// 	const data = new FormData();
+
+	// 	data.append('photo', {
+	// 		name: photo.fileName,
+	// 		type: photo.type,
+	// 		uri:
+	// 			Platform.OS === 'android'
+	// 				? photo.uri
+	// 				: photo.uri.replace('file://', '')
+	// 	});
+
+	// 	Object.keys(body).forEach(key => {
+	// 		data.append(key, body[key]);
+	// 	});
+
+	// 	return data;
+	// };
+
+	// handleUploadPhoto = () => {
+	// 	const user_id = this.props.navigation.state.params.id;
+	// 	axios
+	// 		.post(
+	// 			`${URL}/api/upload`,
+	// 			this.createFormData(this.state.photo, { user_id })
+	// 		)
+	// 		.then(res => {
+	// 			console.log(res.data);
+
+	// 			// res.json()
+	// 		})
+	// 		.then(res => {
+	// 			console.log('upload succes', res);
+	// 			alert('Upload success!');
+	// 			this.setState({ photo: null });
+	// 		})
+	// 		.catch(err => {
+	// 			console.log('upload error', err);
+	// 			alert('Upload failed!');
+	// 		});
+	// };
 
 	chooseFile = () => {
 		const options = {
-			title: 'Select Photo',
-			// customButtons: [{ name: 'gallery', title: 'Choose an Image from your Gallery' }],
-			storageOptions: {
-				skipBackup: true,
-				path: 'images'
-			}
+			title: 'Select Photo'
+			// storageOptions: {
+			// 	skipBackup: true,
+			// 	path: 'images'
+			// }
 		};
-		ImagePicker.showImagePicker(options, response => {
-			console.log('Response = ', response);
-			if (response.didCancel) {
+		ImagePicker.showImagePicker(options, res => {
+			console.log('Response = ', res);
+			if (res.didCancel) {
 				console.log('User canceled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
+			} else if (res.error) {
+				console.log('ImagePicker Error: ', res.error);
 			} else {
-				const source = { uri: response.uri };
+				const source = { uri: res.uri };
 				this.setState({
 					photo: source
 				});
@@ -181,7 +226,7 @@ export default class MyProfile extends React.Component {
 			phone_num: this.phone_num(),
 			anonymous: this.state.user.anonymous,
 			user_type: this.state.user.user_type,
-			photo: this.state.user.photo
+			photo: this.photo()
 		};
 		this.updateUser(updatedUser);
 	};
@@ -198,7 +243,8 @@ export default class MyProfile extends React.Component {
 				this.setState({
 					first_name: this.state.user.first_name,
 					phone_num: this.state.user.phone_num,
-					email: this.state.user.email
+					email: this.state.user.email,
+					photo: this.state.user.photo
 				});
 				console.log('getuser firstname', this.state.first_name);
 			})
@@ -226,6 +272,11 @@ export default class MyProfile extends React.Component {
 			return this.state.user.email;
 		} else return this.state.email;
 	};
+	photo = () => {
+		if (this.state.photo === null) {
+			return this.state.user.photo;
+		} else return this.state.photo;
+	};
 
 	signOut = async ({ navigation, screenProps }) => {
 		const { user } = this.state;
@@ -242,6 +293,7 @@ export default class MyProfile extends React.Component {
 
 	render() {
 		const { photo } = this.state;
+		// let changePhoto = photo === null ? { uri: photo } : { uri: photo.uri };
 		return (
 			<TouchableWithoutFeedback
 				onPress={() => {
@@ -252,29 +304,25 @@ export default class MyProfile extends React.Component {
 					<View style={styles.imageDisplay}>
 						<Image
 							style={styles.image}
-							source={
-								photo ? (
-									{ uri: photo.uri + '?' + new Date() }
-								) : (
-									{
-										uri:
-											'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
-									}
-								)
+							source={// changePhoto
+							{ uri: photo }
+							// photo ? { uri: photo.uri } : ''
 							}
 						/>
+						{/* 
 						<Text
 							onPress={this.chooseFile.bind(this)}
 							style={styles.imageEdit}
 						>
 							Edit
-						</Text>
+						</Text> */}
 					</View>
-					<View style={styles.inputDisplay}>
-						<View
-						// style={styles.display}
-						>
-							<Text
+					<View style={styles.displayContainer}>
+						<View style={styles.inputDisplay}>
+							<View
+							// style={styles.display}
+							>
+								{/* <Text
 								style={{
 									width: 300,
 									marginLeft: 30,
@@ -282,65 +330,69 @@ export default class MyProfile extends React.Component {
 								}}
 							>
 								Name
-							</Text>
-							<View
-							// style={{
-							// 	marginLeft: 30,
-							// 	marginRight: 20,
-							// 	width: 275,
-							// 	marginTop: 15,
-							// 	borderBottomWidth: 0.7
-							// }}
-							/>
-							<TextInput
-								style={styles.inputBox}
-								onChangeText={this.handleNameChange}
-								name='first_name'
-								value={this.state.first_name}
-							/>
-							<View style={styles.phoneView}>
-								<Icon name='phone' size={20} />
-								<Text style={styles.text}>Phone Number</Text>
-							</View>
-							<View
-								style={{
-									marginLeft: 30,
-									marginRight: 20,
-									width: 275,
-									marginTop: 15,
-									borderBottomWidth: 0.7
-								}}
-							/>
-							<TextInput
-								style={styles.inputBox}
-								type='tel'
-								keyboardType='phone-pad'
-								name='phone_num'
-								onChangeText={this.handleNumChange}
-								value={this.state.phone_num}
-							/>
+							</Text> */}
+								<View
+								// style={{
+								// 	marginLeft: 30,
+								// 	marginRight: 20,
+								// 	width: 275,
+								// 	marginTop: 15,
+								// 	borderBottomWidth: 0.7
+								// }}
+								/>
+								<TextInput
+									style={styles.nameInputBox}
+									onChangeText={this.handleNameChange}
+									name='first_name'
+									value={this.state.first_name.toUpperCase()}
+								/>
+								<View style={styles.phoneView}>
+									<Icon name='phone' size={20} />
+									<Text style={styles.text}>
+										Phone Number
+									</Text>
+								</View>
+								<View
+									style={{
+										marginLeft: 30,
+										marginRight: 20,
+										width: 275,
+										marginTop: 15,
+										borderBottomWidth: 0.7
+									}}
+								/>
+								<TextInput
+									style={styles.inputBox}
+									type='tel'
+									keyboardType='phone-pad'
+									name='phone_num'
+									onChangeText={this.handleNumChange}
+									value={this.state.phone_num}
+								/>
 
-							<View style={styles.emailStyle}>
-								<Icon4 name='email-outline' size={20} />
-								<Text style={{ marginLeft: 10 }}>Email</Text>
-							</View>
-							<View
-								style={{
-									marginLeft: 30,
-									marginRight: 20,
-									width: 275,
-									marginTop: 15,
-									borderBottomWidth: 0.7
-								}}
-							/>
-							<TextInput
-								name='email'
-								keyboardType='email-address'
-								style={styles.inputBox}
-								onChangeText={this.handleEmailChange}
-								value={this.state.email}
-							/>
-							{/* <View
+								<View style={styles.emailStyle}>
+									<Icon4 name='email' size={20} />
+									<Text style={{ marginLeft: 10 }}>
+										Email
+									</Text>
+								</View>
+								<View
+									style={{
+										marginLeft: 30,
+										marginRight: 20,
+										width: 275,
+										marginTop: 15,
+										borderBottomWidth: 0.7
+									}}
+								/>
+								<TextInput
+									name='email'
+									keyboardType='email-address'
+									style={styles.inputBox}
+									onChangeText={this.handleEmailChange}
+									value={this.state.email}
+								/>
+								{/* <View
 								style={{
 									marginLeft: 30,
 									width: 275,
@@ -348,14 +400,27 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-						</View>
-						{/* <KeyboardSpacer /> */}
-						<TouchableOpacity title='Logout' onPress={this.signOut}>
-							<View style={styles.logoutView}>
-								<Icon name='logout' size={20} />
-								<Text style={styles.logoutText}>Logout</Text>
+								<TouchableOpacity
+									title='Logout'
+									onPress={this.signOut}
+								>
+									<View style={styles.logoutView}>
+										<Icon name='logout' size={20} />
+										<Text style={styles.logoutText}>
+											Logout
+										</Text>
+									</View>
+								</TouchableOpacity>
 							</View>
-						</TouchableOpacity>
+							{/* <KeyboardSpacer /> */}
+						</View>
+						{/* <View
+							style={{
+								height: 225,
+								borderLeftWidth: 6,
+								borderLeftColor: '#3EB1D6'
+							}}
+						/> */}
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -388,9 +453,13 @@ const styles = StyleSheet.create({
 		borderBottomLeftRadius: 100,
 		borderBottomRightRadius: 100
 	},
+	// displayContainer: {
+	// 	// top: 75,
+	// 	flex: 1
+	// },
 	inputDisplay: {
 		marginTop: 175,
-		marginLeft: 50
+		marginLeft: 40
 	},
 	phoneView: {
 		flex: 1,
@@ -407,6 +476,13 @@ const styles = StyleSheet.create({
 		// borderColor: '#f4f4f4',
 		// paddingHorizontal: 20,
 		// padding: 10
+	},
+	nameInputBox: {
+		width: 300,
+		marginLeft: 0,
+		// borderTopWidth: 0.7,
+		marginBottom: 20,
+		fontSize: 25
 	},
 	inputBox: {
 		width: 300,
