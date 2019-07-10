@@ -23,7 +23,7 @@ export default class ChatSearch extends Component {
 
   render() {
 
-    console.log(this.props.chatWithDistance)
+    // console.log(this.props.chatWithDistance)
     return (
         <FlatList
           data={this.props.chatWithDistance.filter((item) => {
