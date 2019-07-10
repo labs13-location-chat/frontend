@@ -33,7 +33,7 @@ export default class MyProfile extends React.Component {
 		this.state = {
 			user: {},
 
-			first_name: 'Darrena',
+			first_name: '',
 			phone_num: '',
 			email: '',
 			photo: '',
