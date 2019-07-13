@@ -2,10 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import {
 	View,
-	Button,
 	TouchableOpacity,
 	Text,
-	TextInput,
+	ActivityIndicator,
 	StyleSheet,
 	AsyncStorage,
 	Image,
@@ -26,7 +25,8 @@ export default class Login extends React.Component {
 		this.state = {
 			user: undefined, // user has not logged in yet
 			userId: '',
-			nickname: ''
+			nickname: '',
+			loadingLoginCheck: true
 		};
 	}
 
@@ -66,7 +66,12 @@ export default class Login extends React.Component {
 					token: isUser,
 					phone_num: phonenum,
 					email: useremail
-				}
+				},
+				loadingLoginCheck: false
+			})
+		} else {
+			this.setState({
+				loadingLoginCheck: false
 			})
 		}
 	}
@@ -151,22 +156,27 @@ export default class Login extends React.Component {
 		// console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
-				{user ? (
+				{this.state.loadingLoginCheck ? 
+				<View>
+					<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
+				</View>
+				:
+				user ? (
 					// Show user info if already logged in
 					this.setGFId() &&
 					AsyncStorage.setItem(
 						'firstname',
 						this.state.user.first_name
-					) &&
-					AsyncStorage.setItem(
-						'lastname',
+						) &&
+						AsyncStorage.setItem(
+							'lastname',
 						this.state.user.last_name
-					) &&
-					AsyncStorage.setItem('email', this.state.user.email) &&
+						) &&
+						AsyncStorage.setItem('email', this.state.user.email) &&
 					AsyncStorage.setItem(
 						'phonenumber',
 						this.state.user.phone_num
-					) &&
+						) &&
 					AsyncStorage.setItem(
 						'token',
 						this.state.user.token
@@ -175,7 +185,8 @@ export default class Login extends React.Component {
 					this.props.navigation.navigate('JoinChat', {
 						id: this.state.user.id
 					})
-				) : (
+				
+					) : (
 					// <View style={styles.content}>
 					//   <Text style={styles.header}>Welcome {user.first_name}!</Text>
 					//   <View style={styles.avatar}>
@@ -243,6 +254,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#FFF'
+	},
+	loader: {
+		flex: 1,
+		marginTop: '50%'
 	},
 	content: {
 		justifyContent: 'center',
