@@ -31,7 +31,8 @@ export default class Login extends React.Component {
 	}
 
 	// Set up Linking
-	componentDidMount() {
+	componentDidMount = async () => {
+		await this.checkForUser()
 		// Add event listener to handle OAuthLogin:// URLs
 		Linking.addEventListener('url', this.handleOpenURL);
 		// Launched from an external URL
@@ -48,6 +49,26 @@ export default class Login extends React.Component {
 		this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
 		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
 		this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	}
+
+	checkForUser = async () => {
+		const isUser = await AsyncStorage.getItem('token')
+		console.log(isUser)
+		const first = await AsyncStorage.getItem("firstname");
+		const last = await AsyncStorage.getItem("lastname");
+		const useremail = await AsyncStorage.getItem("email");
+		const phonenum = await AsyncStorage.getItem("phonenumber")
+		if (isUser) {
+			this.setState({
+				user: {
+					first_name: first,
+					last_name: last,
+					token: isUser,
+					phone_num: phonenum,
+					email: useremail
+				}
+			})
+		}
 	}
 
 	handleOpenURL = ({ url }) => {
@@ -84,16 +105,16 @@ export default class Login extends React.Component {
 	// Open URL in a browser
 	openURL = url => {
 		// Use SafariView on iOS
-		if (Platform.OS === 'ios') {
-			SafariView.show({
-				url: url,
-				fromBottom: true
-			});
-		} else {
+		// if (Platform.OS === 'ios') {
+		// 	SafariView.show({
+		// 		url: url,
+		// 		fromBottom: true
+		// 	});
+		// } else {
 			// Or Linking.openURL on Android
 			Linking.openURL(url);
 		}
-	};
+	
 	// viewJoinChats = () => {
 	//   // AsyncStorage.setItem();
 	//   this.props.navigation.navigate("JoinChat", { id: this.state.user.id });
@@ -121,11 +142,11 @@ export default class Login extends React.Component {
 		} else {
 			return AsyncStorage.setItem('userID', this.state.user.facebook_id);
 		}
-	};
+	}
 
 	render() {
 		const { user } = this.state;
-		console.log(this.props);
+		console.log(this.state);
 		// console.log('THIS IS THE USER ID', this.state.user);
 		// console.log('loginstate', this.state);
 		return (
@@ -147,8 +168,8 @@ export default class Login extends React.Component {
 						this.state.user.phone_num
 					) &&
 					AsyncStorage.setItem(
-						'anonymous',
-						this.state.user.anonymous
+						'token',
+						this.state.user.token
 					) &&
 					AsyncStorage.setItem('photo', this.state.user.photo) &&
 					this.props.navigation.navigate('JoinChat', {
@@ -211,6 +232,7 @@ export default class Login extends React.Component {
 		);
 	}
 }
+
 
 const iconStyles = {
 	borderRadius: 10,
