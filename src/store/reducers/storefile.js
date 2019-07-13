@@ -1,0 +1,7 @@
+
+
+
+const initialState = {
+    user = undefined
+}
+
