@@ -24,25 +24,27 @@ export default class ChatroomItemSelected extends Component {
     super(props);
     this.state = {
       location: {
-        longitude: 0,
-        latitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
+        longitude: this.props.chat.longitude,
+        latitude: this.props.chat.latitude,
+        latitudeDelta: 0.0122,
+        longitudeDelta: (Dimensions.get("window").width / Dimensions.get("window").height) *
+        0.0122
       },
       chatroom: [],
       user: [],
-      distance: 0
+      distance: 99999
     }
   }
+
 
   componentDidMount() {
     axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
-        console.log('data',res.data)
+        // console.log('data',res.data)
         this.setState({
           location: {
-            longitude: res.data.coordinate[0].longitude,
-            latitude: res.data.coordinate[0].latitude,
+            longitude: res.data.longitude,
+            latitude: res.data.latitude,
             latitudeDelta: 0.0122,
             longitudeDelta:
               (Dimensions.get("window").width / Dimensions.get("window").height) *
@@ -71,47 +73,50 @@ export default class ChatroomItemSelected extends Component {
         this.setState({
           distance: distance
         })
-        console.log("distance", distance)
+        // console.log("distance", distance)
         }
     }
 
+
   joinChannel = () => {
-    if (this.state.distance === 0) {
+    if (this.props.chat.distance === 99999) {
       return alert("Distance still loading, please try again")
-    } else if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance > 0) {
+    } else if (this.props.chat.chatroom_type === "worldwide" && this.props.chat.distance > 0) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.state.chatroom
+        user: this.props.chat
       })
-    } else if (this.state.chatroom.chatroom_type === "big city" && this.state.distance <= 40500) {
+    } else if (this.props.chat.chatroom_type === "rural city" && this.props.chat.distance <= 161000) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.state.chatroom
+        user: this.props.chat
       })
-    } else if (this.state.chatroom.chatroom_type === "town" && this.state.distance <= 24500) {
+    }if (this.props.chat.chatroom_type === "big city" && this.props.chat.distance <= 40500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.state.chatroom
+        user: this.props.chat
       })
-    } else if (this.state.chatroom.chatroom_type === "beach" && this.state.distance <= 1600) {
+    } else if (this.props.chat.chatroom_type === "town" && this.props.chat.distance <= 24500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.state.chatroom
+        user: this.props.chat
       })
-    } else if (this.state.chatroom.chatroom_type === "stadium" && this.state.distance <= 800) {
+    } else if (this.props.chat.chatroom_type === "beach" && this.props.chat.distance <= 1600) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.state.chatroom
+        user: this.props.chat
+      })
+    } else if (this.props.chat.chatroom_type === "stadium" && this.props.chat.distance <= 800) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.props.chat
       })
     } else {
-      alert(`You aren't in or near ${this.state.chatroom.name}!`)
+      alert(`You aren't in or near ${this.props.chat.name}!`)
     }
-  // this.props.navigation.navigate('Chatroom', {
-  //   user: this.state.chatroom
-  // })
   }
+  
 
 
   render() {
-    console.log("distance in state", this.state.distance)
-    console.log('focusedlocation', this.props.focusedLocation)
-    console.log('location', this.state.location)
-    console.log('chatroom ', this.state.chatroom)
+    // console.log("distance in state", this.state.distance)
+    // console.log('focusedlocation', this.props.focusedLocation)
+    // console.log('location', this.state.location)
+    // console.log('chatroom ', this.state.chatroom)
     return (
       <View>
         <View>
@@ -123,8 +128,8 @@ export default class ChatroomItemSelected extends Component {
           >
             <Marker
               coordinate={{
-                latitude: this.state.location.latitude,
-                longitude: this.state.location.longitude
+                latitude: this.props.chat.latitude,
+                longitude: this.props.chat.longitude
               }}
             />
           </MapView> 
