@@ -36,7 +36,7 @@ export default class ChatMap extends Component {
   componentWillMount() {
     this.getGeoLocation();
     axios
-      .get("https://labs13-localchat.herokuapp.com/api/chatrooms/locations")
+      .get("https://labs13-localchat.herokuapp.com/api/chatrooms/")
       .then(res => {
         this.setState({
           chatLocations: res.data
