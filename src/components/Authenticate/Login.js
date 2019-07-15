@@ -2,10 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import {
 	View,
-	Button,
 	TouchableOpacity,
 	Text,
-	TextInput,
+	ActivityIndicator,
 	StyleSheet,
 	AsyncStorage,
 	Image,
@@ -26,12 +25,14 @@ export default class Login extends React.Component {
 		this.state = {
 			user: undefined, // user has not logged in yet
 			userId: '',
-			nickname: ''
+			nickname: '',
+			loadingLoginCheck: true
 		};
 	}
 
 	// Set up Linking
-	componentDidMount() {
+	componentDidMount = async () => {
+		await this.checkForUser()
 		// Add event listener to handle OAuthLogin:// URLs
 		Linking.addEventListener('url', this.handleOpenURL);
 		// Launched from an external URL
@@ -48,6 +49,31 @@ export default class Login extends React.Component {
 		this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
 		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
 		this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	}
+
+	checkForUser = async () => {
+		const isUser = await AsyncStorage.getItem('token')
+		console.log(isUser)
+		const first = await AsyncStorage.getItem("firstname");
+		const last = await AsyncStorage.getItem("lastname");
+		const useremail = await AsyncStorage.getItem("email");
+		const phonenum = await AsyncStorage.getItem("phonenumber")
+		if (isUser) {
+			this.setState({
+				user: {
+					first_name: first,
+					last_name: last,
+					token: isUser,
+					phone_num: phonenum,
+					email: useremail
+				},
+				loadingLoginCheck: false
+			})
+		} else {
+			this.setState({
+				loadingLoginCheck: false
+			})
+		}
 	}
 
 	handleOpenURL = ({ url }) => {
@@ -84,16 +110,16 @@ export default class Login extends React.Component {
 	// Open URL in a browser
 	openURL = url => {
 		// Use SafariView on iOS
-		if (Platform.OS === 'ios') {
-			SafariView.show({
-				url: url,
-				fromBottom: true
-			});
-		} else {
+		// if (Platform.OS === 'ios') {
+		// 	SafariView.show({
+		// 		url: url,
+		// 		fromBottom: true
+		// 	});
+		// } else {
 			// Or Linking.openURL on Android
 			Linking.openURL(url);
 		}
-	};
+	
 	// viewJoinChats = () => {
 	//   // AsyncStorage.setItem();
 	//   this.props.navigation.navigate("JoinChat", { id: this.state.user.id });
@@ -121,40 +147,45 @@ export default class Login extends React.Component {
 		} else {
 			return AsyncStorage.setItem('userID', this.state.user.facebook_id);
 		}
-	};
+	}
 
 	render() {
 		const { user } = this.state;
-		// console.log(this.props);
 		// console.log('THIS IS THE USER ID', this.state.user);
 		// console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
-				{user ? (
+				{this.state.loadingLoginCheck ? 
+				<View>
+					<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
+				</View>
+				:
+				user ? (
 					// Show user info if already logged in
 					this.setGFId() &&
 					AsyncStorage.setItem(
 						'firstname',
 						this.state.user.first_name
-					) &&
-					AsyncStorage.setItem(
-						'lastname',
+						) &&
+						AsyncStorage.setItem(
+							'lastname',
 						this.state.user.last_name
-					) &&
-					AsyncStorage.setItem('email', this.state.user.email) &&
+						) &&
+						AsyncStorage.setItem('email', this.state.user.email) &&
 					AsyncStorage.setItem(
 						'phonenumber',
 						this.state.user.phone_num
-					) &&
+						) &&
 					AsyncStorage.setItem(
-						'anonymous',
-						this.state.user.anonymous
+						'token',
+						this.state.user.token
 					) &&
 					AsyncStorage.setItem('photo', this.state.user.photo) &&
 					this.props.navigation.navigate('JoinChat', {
 						id: this.state.user.id
 					})
-				) : (
+				
+					) : (
 					// <View style={styles.content}>
 					//   <Text style={styles.header}>Welcome {user.first_name}!</Text>
 					//   <View style={styles.avatar}>
@@ -212,6 +243,7 @@ export default class Login extends React.Component {
 	}
 }
 
+
 const iconStyles = {
 	borderRadius: 10,
 	iconStyle: { paddingVertical: 5 }
@@ -221,6 +253,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#FFF'
+	},
+	loader: {
+		flex: 1,
+		marginTop: '50%'
 	},
 	content: {
 		justifyContent: 'center',

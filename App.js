@@ -5,6 +5,7 @@ import Sendbird from 'sendbird'
 import Config from './src/config'
 import LocalChat from './src/components/index';
 
+
 export default class App extends Component {
   constructor(props) {
     super(props)

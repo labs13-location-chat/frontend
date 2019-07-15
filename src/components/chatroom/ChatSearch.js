@@ -27,7 +27,7 @@ export default class ChatSearch extends Component {
     return (
         <FlatList
           data={this.props.chatWithDistance.filter((item) => {
-            return item.name.toLowerCase().match(this.props.searchValue)
+            return item.name.toLowerCase().match(this.props.searchValue.toLowerCase())
             }).sort(function (a, b) {
             return a.distance - b.distance
           })}
