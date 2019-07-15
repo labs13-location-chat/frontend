@@ -151,7 +151,6 @@ export default class Login extends React.Component {
 
 	render() {
 		const { user } = this.state;
-		console.log(this.state);
 		// console.log('THIS IS THE USER ID', this.state.user);
 		// console.log('loginstate', this.state);
 		return (

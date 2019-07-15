@@ -104,6 +104,7 @@ export default class CreateChatroom extends Component {
         return images[Math.floor(Math.random() * images.length)]
     }
 
+
     createChatroom = async (e) => {
         if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
             await alert("Please enter a Name and/or Description!")
@@ -121,8 +122,6 @@ export default class CreateChatroom extends Component {
                 console.log(openChannel)
             }) 
         }
-
-
     }
     
     render() {
