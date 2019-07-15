@@ -118,7 +118,7 @@ export default class CreateChatroom extends Component {
                         chatroom_url: openChannel.url
                     }
                 })
-                console.log(openChannel, this.state.newChatroom.chatroom_url)
+                console.log(openChannel)
             }) 
         }
 
@@ -129,8 +129,8 @@ export default class CreateChatroom extends Component {
         console.log(this.state.newChatroom)
         return (
             <View>
-                {/* <Text style={styles.text}>New Feature Coming Soon!</Text> */}
-                <Text>Please Fill Out All Information</Text>
+                <Text style={styles.text}>New Feature Coming Soon!</Text>
+                {/* <Text>Please Fill Out All Information</Text>
                 <TextInput
                     placeholder="Name"
                     value={this.state.newChatroom.name}
@@ -165,7 +165,7 @@ export default class CreateChatroom extends Component {
                     title="Create Channel" 
                     onPress={e => this.createChatroom(e)}
                 />
-            </View>
+            </View> */}
         )
     }
 }
