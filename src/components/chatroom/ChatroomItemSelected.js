@@ -112,6 +112,7 @@ export default class ChatroomItemSelected extends Component {
   
 
 
+
   render() {
     // console.log("distance in state", this.state.distance)
     // console.log('focusedlocation', this.props.focusedLocation)

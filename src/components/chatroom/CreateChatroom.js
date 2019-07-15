@@ -163,8 +163,8 @@ export default class CreateChatroom extends Component {
                 <Button 
                     title="Create Channel" 
                     onPress={e => this.createChatroom(e)}
-                />
-            </View> */}
+                /> */}
+            </View>
         )
     }
 }
