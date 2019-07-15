@@ -99,8 +99,8 @@ const tabNavigator = createBottomTabNavigator(
 				let iconName;
 				if (routeName === 'JoinChats') {
 					iconName = `md-chatboxes`;
-				} else if (routeName === 'Cameras') {
-					iconName = `md-camera`;
+				} else if (routeName === 'Create') {
+					iconName = `md-add-circle-outline`;
 				} else if (routeName === 'Settings') {
 					iconName = 'md-settings';
 				}

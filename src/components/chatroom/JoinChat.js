@@ -100,7 +100,7 @@ export default class JoinChat extends Component {
       //     this.getDistanceFromChat()
       //   }, 1000)
       // } else {
-        let deez = []
+        let newChatItem = []
         chatrooms = this.state.chatroom
         const orderedResults = chatrooms.map((chat) => {
           let distance = getDistance(
@@ -108,21 +108,21 @@ export default class JoinChat extends Component {
             { latitude: this.state.focusedLocation.latitude, longitude: this.state.focusedLocation.longitude },
             1
             )
-            // console.log(distance, deez)
-            let deezNutz = {...chat, distance: distance}
+            // console.log(distance, newChatItem)
+            let newChat = {...chat, distance: distance}
             // return new Promise(function (resolve, reject) { 
             //   if (error) {
             //     return reject(error)
             //   } else {
-                return deez.push(deezNutz)
+                return newChatItem.push(newChat)
               // }
             })
           
           // Promise.all(orderedResults)
           //   .then(() => {
               this.setState({
-                chatWithDistance: deez,
-                chatWithDistanceFallbackForSearch: deez,
+                chatWithDistance: newChatItem,
+                chatWithDistanceFallbackForSearch: newChatItem,
                 loadingChatRooms: false
               })
             // })
@@ -225,7 +225,7 @@ export default class JoinChat extends Component {
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
-    
+
     let user_id = await AsyncStorage.getItem("userID");
     // console.log(first, last, useremail, id);
     this.setState({
