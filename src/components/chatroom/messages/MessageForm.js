@@ -47,7 +47,7 @@ export default class MessageForm extends Component {
     }
 
     render() {
-        console.log(this.state.message)
+        // console.log(this.state.message)
         return (
             <View
                 style={{
