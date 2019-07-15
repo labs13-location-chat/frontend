@@ -54,6 +54,7 @@ export default class Login extends React.Component {
 	checkForUser = async () => {
 		const isUser = await AsyncStorage.getItem('token')
 		console.log(isUser)
+		const herokuId = await AsyncStorage.getItem("herokuID")
 		const first = await AsyncStorage.getItem("firstname");
 		const last = await AsyncStorage.getItem("lastname");
 		const useremail = await AsyncStorage.getItem("email");
@@ -61,6 +62,7 @@ export default class Login extends React.Component {
 		if (isUser) {
 			this.setState({
 				user: {
+					id: herokuId,
 					first_name: first,
 					last_name: last,
 					token: isUser,
@@ -163,6 +165,10 @@ export default class Login extends React.Component {
 				user ? (
 					// Show user info if already logged in
 					this.setGFId() &&
+					AsyncStorage.setItem(
+						'herokuID',
+						this.state.user.id
+						) &&
 					AsyncStorage.setItem(
 						'firstname',
 						this.state.user.first_name
