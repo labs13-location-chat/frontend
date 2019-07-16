@@ -1,23 +1,22 @@
 import {
   View,
-  StyleSheet,  
+  StyleSheet,
   Text,
   Button,
   Dimensions,
   TouchableOpacity
 } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
+import Icon from "react-native-vector-icons/FontAwesome";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import React, { Component } from "react";
-import axios from 'axios'
-import SendBird from 'sendbird'
-import Config from '../../config'
-import { getDistance }  from "geolib";
+import axios from "axios";
+import SendBird from "sendbird";
+import Config from "../../config";
+import { getDistance } from "geolib";
 
-var sb = new SendBird({appId: Config.appId });
+var sb = new SendBird({ appId: Config.appId });
 
-const URL = 'https://labs13-localchat.herokuapp.com';
-
+const URL = "https://labs13-localchat.herokuapp.com";
 
 export default class ChatroomItemSelected extends Component {
   constructor(props) {
@@ -32,78 +31,90 @@ export default class ChatroomItemSelected extends Component {
       chatroom: [],
       user: [],
       distance: 0
-    }
+    };
   }
 
   componentDidMount() {
-    axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
+    axios
+      .get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
-        console.log('data',res.data)
+        console.log("data", res.data);
         this.setState({
           location: {
             longitude: res.data.coordinate[0].longitude,
             latitude: res.data.coordinate[0].latitude,
             latitudeDelta: 0.0122,
             longitudeDelta:
-              (Dimensions.get("window").width / Dimensions.get("window").height) *
+              (Dimensions.get("window").width /
+                Dimensions.get("window").height) *
               0.0122
           },
           chatroom: res.data
-        })
+        });
         // console.log('location', this.state.location)
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
 
-      this.getDistanceFromChat()
+    this.getDistanceFromChat();
+  }
+
+  getDistanceFromChat = () => {
+    if (this.state.location.latitude === 0) {
+      return setTimeout(() => {
+        this.getDistanceFromChat();
+      }, 1000);
+    } else {
+      let distance = getDistance(
+        {
+          latitude: this.props.focusedLocation.latitude,
+          longitude: this.props.focusedLocation.longitude
+        },
+        {
+          latitude: this.state.location.latitude,
+          longitude: this.state.location.longitude
+        },
+        1
+      );
+      this.setState({
+        distance: distance
+      });
+      console.log("distance", distance);
     }
-  
-    getDistanceFromChat = () => {
-      if (this.state.location.latitude === 0 ) {
-        return setTimeout(() => {
-          this.getDistanceFromChat()
-        }, 1000)
-      } else {
-        let distance = getDistance(
-          { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }, 
-          { latitude: this.state.location.latitude, longitude: this.state.location.longitude },
-          1
-          )
-        this.setState({
-          distance: distance
-        })
-        console.log("distance", distance)
-        }
-    }
+  };
 
   joinChannel = () => {
     if (this.state.distance === 0) {
-      return alert("Distance still loading, please try again")
-    } else if (this.state.chatroom.chatroom_type === "worldwide" && this.state.distance > 0) {
-      this.props.navigation.navigate('Chatroom', {
+      return alert("Distance still loading, please try again");
+    } else if (
+      this.state.chatroom.chatroom_type === "worldwide" &&
+      this.state.distance > 0
+    ) {
+      this.props.navigation.navigate("Chatroom", {
         user: this.state.chatroom
-      })
-    } else if (this.state.chatroom.chatroom_type === "big city" && this.state.distance <= 80000) {
-      this.props.navigation.navigate('Chatroom', {
+      });
+    } else if (
+      this.state.chatroom.chatroom_type === "big city" &&
+      this.state.distance <= 80000
+    ) {
+      this.props.navigation.navigate("Chatroom", {
         user: this.state.chatroom
-      })
-    } else if (this.state.chatroom.chatroom_type === "stadium" && this.state.distance <= 800) {
-      this.props.navigation.navigate('Chatroom', {
+      });
+    } else if (
+      this.state.chatroom.chatroom_type === "stadium" &&
+      this.state.distance <= 800
+    ) {
+      this.props.navigation.navigate("Chatroom", {
         user: this.state.chatroom
-      })
+      });
     } else {
-      alert(`You aren't in or near ${this.state.chatroom.name}!`)
+      alert(`You aren't in or near ${this.state.chatroom.name}!`);
     }
-  // this.props.navigation.navigate('Chatroom', {
-  //   user: this.state.chatroom
-  // })
-  }
-
+    // this.props.navigation.navigate('Chatroom', {
+    //   user: this.state.chatroom
+    // })
+  };
 
   render() {
-    console.log("distance in state", this.state.distance)
-    console.log('focusedlocation', this.props.focusedLocation)
-    console.log('location', this.state.location)
-    console.log('chatroom ', this.state.chatroom)
     return (
       <View>
         <View>
@@ -119,12 +130,12 @@ export default class ChatroomItemSelected extends Component {
                 longitude: this.state.location.longitude
               }}
             />
-          </MapView> 
+          </MapView>
           {/* <Marker coordinate={markers} /> */}
         </View>
         <View style={styles.joinContainer}>
           <TouchableOpacity style={styles.join} onPress={this.joinChannel}>
-            <View>              
+            <View>
               <Text style={styles.joinText}>JOIN CHAT</Text>
             </View>
           </TouchableOpacity>
@@ -132,14 +143,22 @@ export default class ChatroomItemSelected extends Component {
         <View style={styles.dropdownContainer}>
           <View style={styles.dropdownHeader}>
             <Text style={styles.dropdownTitle}>{this.props.chat.name}</Text>
-            <Text style={{color:'#3EB1D6'}}>{this.props.chat.total_users} Members</Text>
+            <Text style={{ color: "#3EB1D6" }}>
+              {this.props.chat.total_users} Members
+            </Text>
           </View>
           <View>
             <View style={styles.dropdownText}>
-              <Icon name='circle' color='#A8A7A3'/><Text style={{marginLeft:5}}>Chatroom created {this.props.chat.created_at}</Text>
+              <Icon name="circle" color="#A8A7A3" />
+              <Text style={{ marginLeft: 5 }}>
+                Chatroom created {this.props.chat.created_at}
+              </Text>
             </View>
             <View style={styles.dropdownText}>
-              <Icon name='map-marker' color='#A8A7A3'/><Text style={{marginLeft:5}}>{this.props.chat.description}</Text>
+              <Icon name="map-marker" color="#A8A7A3" />
+              <Text style={{ marginLeft: 5 }}>
+                {this.props.chat.description}
+              </Text>
             </View>
           </View>
         </View>
@@ -157,33 +176,33 @@ const styles = StyleSheet.create({
   },
   join: {
     borderRadius: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#3EB1D6',
-    padding: 15,
+    flexDirection: "row",
+    justifyContent: "center",
+    backgroundColor: "#3EB1D6",
+    padding: 15
   },
   joinText: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: "center"
   },
   dropdownContainer: {
-    marginHorizontal:20, 
-    marginBottom:10
+    marginHorizontal: 20,
+    marginBottom: 10
   },
   dropdownHeader: {
-    justifyContent:'space-between', 
-    flexDirection: 'row', 
+    justifyContent: "space-between",
+    flexDirection: "row",
     marginVertical: 10
   },
   dropdownTitle: {
-    fontSize: 15, 
-    fontWeight:'600', 
-    color:'#4A4A4A'
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#4A4A4A"
   },
   dropdownText: {
-    flexDirection: 'row', 
-    alignItems:'center', 
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 5
-  },
+  }
 });
