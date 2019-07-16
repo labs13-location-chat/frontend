@@ -24,7 +24,7 @@ export default class Login extends React.Component {
 
 		this.state = {
 			user: undefined, // user has not logged in yet
-			userId: '',
+			userId: 4,
 			nickname: '',
 			loadingLoginCheck: true
 		};
@@ -152,6 +152,7 @@ export default class Login extends React.Component {
 	}
 
 	render() {
+		console.log(this.state)
 		const { user } = this.state;
 		// console.log('THIS IS THE USER ID', this.state.user);
 		// console.log('loginstate', this.state);
@@ -166,8 +167,8 @@ export default class Login extends React.Component {
 					// Show user info if already logged in
 					this.setGFId() &&
 					AsyncStorage.setItem(
-						'herokuID',
-						this.state.user.id
+						'ID',
+						this.state.userId
 						) &&
 					AsyncStorage.setItem(
 						'firstname',
@@ -177,7 +178,7 @@ export default class Login extends React.Component {
 							'lastname',
 						this.state.user.last_name
 						) &&
-						AsyncStorage.setItem('email', this.state.user.email) &&
+						// AsyncStorage.setItem('email', this.state.user.email) &&
 					AsyncStorage.setItem(
 						'phonenumber',
 						this.state.user.phone_num

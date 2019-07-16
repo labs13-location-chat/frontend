@@ -60,6 +60,8 @@ export default class JoinChat extends Component {
     async componentDidMount() {
       this.connectToSendbird()
       await this.getGeoLocation()
+      const userIDDD = await AsyncStorage.getItem('ID')
+      console.log("ID", userIDDD)
       await axios
       .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
       .then(res => {

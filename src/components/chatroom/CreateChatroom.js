@@ -34,7 +34,8 @@ export default class CreateChatroom extends Component {
                 permanent: true,
                 chatroom_type: 'rural city'
              },
-             userId: 0
+             userId: 0,
+             sendbirdChatroom: []
         }
     }
 
@@ -106,30 +107,34 @@ export default class CreateChatroom extends Component {
 
 
     createChatroom = async (e) => {
-        if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
-            await alert("Please enter a Name and/or Description!")
-        } else {
-            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  function(openChannel, error) {
+        let channel = []
+        // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
+        //     await alert("Please enter a Name and/or Description!")
+        // } else {
+            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  async function(openChannel, error) {
                 if (error) {
                     return console.log(error)
                 }
-                this.setState({
-                    newChatroom: {
-                        ...this.state.newChatroom, 
-                        chatroom_url: openChannel.url
-                    }
-                })
-                console.log(openChannel)
+                
+                channel = await openChannel
+                
+                console.log(openChannel, channel, this)
             }) 
-        }
+        
+        
+        this.setState({
+            sendbirdChatroom: channel
+        }, () => 
+        console.log(this.state.sendbirdChatroom)
+        ) 
     }
     
     render() {
         console.log(this.state.newChatroom)
         return (
             <View>
-                <Text style={styles.text}>New Feature Coming Soon!</Text>
-                {/* <Text>Please Fill Out All Information</Text>
+                {/* <Text style={styles.text}>New Feature Coming Soon!</Text> */}
+                <Text>Please Fill Out All Information</Text>
                 <TextInput
                     placeholder="Name"
                     value={this.state.newChatroom.name}
@@ -163,7 +168,7 @@ export default class CreateChatroom extends Component {
                 <Button 
                     title="Create Channel" 
                     onPress={e => this.createChatroom(e)}
-                /> */}
+                />
             </View>
         )
     }
