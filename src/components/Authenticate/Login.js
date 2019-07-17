@@ -32,7 +32,7 @@ export default class Login extends React.Component {
 
 	// Set up Linking
 	componentDidMount = async () => {
-		await this.checkForUser()
+		await this.checkForUser();
 		// Add event listener to handle OAuthLogin:// URLs
 		Linking.addEventListener('url', this.handleOpenURL);
 		// Launched from an external URL
@@ -51,30 +51,38 @@ export default class Login extends React.Component {
 		this.props.navigation.navigate('JoinChat', { user: this.state.user });
 	}
 
+	async storeUser(user) {
+		try {
+		   await AsyncStorage.setItem("userData", JSON.stringify(this.state.user));
+		} catch (error) {
+		  console.log("error storing", error);
+		}
+	}
+
 	checkForUser = async () => {
-		const isUser = await AsyncStorage.getItem('token')
-		console.log(isUser)
-		const herokuId = await AsyncStorage.getItem("herokuID")
-		const first = await AsyncStorage.getItem("firstname");
-		const last = await AsyncStorage.getItem("lastname");
-		const useremail = await AsyncStorage.getItem("email");
-		const phonenum = await AsyncStorage.getItem("phonenumber")
-		if (isUser) {
-			this.setState({
-				user: {
-					id: herokuId,
-					first_name: first,
-					last_name: last,
-					token: isUser,
-					phone_num: phonenum,
-					email: useremail
-				},
-				loadingLoginCheck: false
-			})
-		} else {
-			this.setState({
-				loadingLoginCheck: false
-			})
+		try {
+			let userData = await AsyncStorage.getItem("userData");
+			let data = JSON.parse(userData);
+			console.log('checkforuser', data);
+			if (data) {
+				this.setState({
+					user: {
+						id: data.id,
+						first_name: data.first_name,
+						last_name: data.last_name,
+						token: data.token,
+						phone_num: data.phone_num,
+						email: data.email
+					},
+					loadingLoginCheck: false
+				})
+			} else {
+				this.setState({
+					loadingLoginCheck: false
+				})
+			}
+		} catch (error) {
+			console.log("error check", error);
 		}
 	}
 
@@ -153,8 +161,8 @@ export default class Login extends React.Component {
 
 	render() {
 		const { user } = this.state;
-		// console.log('THIS IS THE USER ID', this.state.user);
-		// console.log('loginstate', this.state);
+		console.log('THIS IS THE USER ID', this.state.user);
+		console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
 				{this.state.loadingLoginCheck ? 
@@ -164,29 +172,31 @@ export default class Login extends React.Component {
 				:
 				user ? (
 					// Show user info if already logged in
-					this.setGFId() &&
-					AsyncStorage.setItem(
-						'herokuID',
-						this.state.user.id
-						) &&
-					AsyncStorage.setItem(
-						'firstname',
-						this.state.user.first_name
-						) &&
-						AsyncStorage.setItem(
-							'lastname',
-						this.state.user.last_name
-						) &&
-						AsyncStorage.setItem('email', this.state.user.email) &&
-					AsyncStorage.setItem(
-						'phonenumber',
-						this.state.user.phone_num
-						) &&
-					AsyncStorage.setItem(
-						'token',
-						this.state.user.token
-					) &&
-					AsyncStorage.setItem('photo', this.state.user.photo) &&
+					// this.setGFId() &&
+					// AsyncStorage.setItem(
+					// 	'herokuID',
+					// 	this.state.user.id
+					// 	) &&
+					// AsyncStorage.setItem(
+					// 	'firstname',
+					// 	this.state.user.first_name
+					// 	) &&
+					// 	AsyncStorage.setItem(
+					// 		'lastname',
+					// 	this.state.user.last_name
+					// 	) &&
+					// 	AsyncStorage.setItem('email', this.state.user.email) &&
+					// AsyncStorage.setItem(
+					// 	'phonenumber',
+					// 	this.state.user.phone_num
+					// 	) &&
+					// AsyncStorage.setItem(
+					// 	'token',
+					// 	this.state.user.token
+					// ) &&
+					// AsyncStorage.setItem('photo', this.state.user.photo) 
+					this.storeUser()
+					&&
 					this.props.navigation.navigate('JoinChat', {
 						id: this.state.user.id
 					})
