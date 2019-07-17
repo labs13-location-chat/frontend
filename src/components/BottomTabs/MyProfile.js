@@ -289,11 +289,11 @@ export default class MyProfile extends React.Component {
 
 	signOut = async ({ navigation, screenProps }) => {
 		const { user } = this.state;
-		// await AsyncStorage.clear();
+		await AsyncStorage.clear();
 		// this.props.navigation.navigate('Login');
-		this.setState({
-			user: undefined
-		});
+		// this.setState({
+		// 	user: undefined
+		// });
 		this.props.navigation.navigate('Login');
 		sb.disconnect(function() {
 			// A current user is discconected from SendBird server.
