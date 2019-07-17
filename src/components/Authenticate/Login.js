@@ -26,13 +26,13 @@ export default class Login extends React.Component {
 			user: undefined, // user has not logged in yet
 			userId: '',
 			nickname: '',
-			loadingLoginCheck: true
+			// loadingLoginCheck: true
 		};
 	}
 
 	// Set up Linking
 	componentDidMount = async () => {
-		await this.checkForUser()
+		// await this.checkForUser()
 		// Add event listener to handle OAuthLogin:// URLs
 		Linking.addEventListener('url', this.handleOpenURL);
 		// Launched from an external URL
@@ -51,32 +51,32 @@ export default class Login extends React.Component {
 		this.props.navigation.navigate('JoinChat', { user: this.state.user });
 	}
 
-	checkForUser = async () => {
-		const isUser = await AsyncStorage.getItem('token')
-		console.log(isUser)
-		const herokuId = await AsyncStorage.getItem("herokuID")
-		const first = await AsyncStorage.getItem("firstname");
-		const last = await AsyncStorage.getItem("lastname");
-		const useremail = await AsyncStorage.getItem("email");
-		const phonenum = await AsyncStorage.getItem("phonenumber")
-		if (isUser) {
-			this.setState({
-				user: {
-					id: herokuId,
-					first_name: first,
-					last_name: last,
-					token: isUser,
-					phone_num: phonenum,
-					email: useremail
-				},
-				loadingLoginCheck: false
-			})
-		} else {
-			this.setState({
-				loadingLoginCheck: false
-			})
-		}
-	}
+	// checkForUser = async () => {
+	// 	const isUser = await AsyncStorage.getItem('token')
+	// 	console.log(isUser)
+	// 	const herokuId = await AsyncStorage.getItem("herokuID")
+	// 	const first = await AsyncStorage.getItem("firstname");
+	// 	const last = await AsyncStorage.getItem("lastname");
+	// 	const useremail = await AsyncStorage.getItem("email");
+	// 	const phonenum = await AsyncStorage.getItem("phonenumber")
+	// 	if (isUser) {
+	// 		this.setState({
+	// 			user: {
+	// 				id: herokuId,
+	// 				first_name: first,
+	// 				last_name: last,
+	// 				token: isUser,
+	// 				phone_num: phonenum,
+	// 				email: useremail
+	// 			},
+	// 			loadingLoginCheck: false
+	// 		})
+	// 	} else {
+	// 		this.setState({
+	// 			loadingLoginCheck: false
+	// 		})
+	// 	}
+	// }
 
 	handleOpenURL = ({ url }) => {
 		// Extract stringified user string out of the URL
@@ -153,22 +153,22 @@ export default class Login extends React.Component {
 
 	render() {
 		const { user } = this.state;
-		// console.log('THIS IS THE USER ID', this.state.user);
-		// console.log('loginstate', this.state);
+		console.log('THIS IS THE USER ID', this.state.user);
+		console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
-				{this.state.loadingLoginCheck ? 
+				{/* {this.state.loadingLoginCheck ? 
 				<View>
 					<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
 				</View>
-				:
-				user ? (
+				: */}
+				{ user ? (
 					// Show user info if already logged in
 					this.setGFId() &&
-					AsyncStorage.setItem(
-						'herokuID',
-						this.state.user.id
-						) &&
+					// AsyncStorage.setItem(
+					// 	'herokuID',
+					// 	this.state.user.id
+					// 	) &&
 					AsyncStorage.setItem(
 						'firstname',
 						this.state.user.first_name
