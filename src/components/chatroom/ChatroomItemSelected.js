@@ -81,29 +81,35 @@ export default class ChatroomItemSelected extends Component {
   joinChannel = () => {
     if (this.props.chat.distance === 99999) {
       return alert("Distance still loading, please try again")
-    } else if (this.props.chat.chatroom_type === "worldwide" && this.props.chat.distance > 0) {
+    } else if (this.props.chat.chatroom_type === "worldwide") {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "rural city" && this.props.chat.distance <= 161000) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     }if (this.props.chat.chatroom_type === "big city" && this.props.chat.distance <= 40500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "town" && this.props.chat.distance <= 24500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "beach" && this.props.chat.distance <= 1600) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "stadium" && this.props.chat.distance <= 800) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        chatroom: this.props.chat,
+        user: this.props.user
       })
     } else {
       alert(`You aren't in or near ${this.props.chat.name}!`)
@@ -115,6 +121,7 @@ export default class ChatroomItemSelected extends Component {
 
   render() {
     // console.log("distance in state", this.state.distance)
+    console.log(this.props.chat.chatroom_type)
     // console.log('focusedlocation', this.props.focusedLocation)
     // console.log('location', this.state.location)
     // console.log('chatroom ', this.state.chatroom)

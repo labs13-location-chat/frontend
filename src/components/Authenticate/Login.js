@@ -24,9 +24,9 @@ export default class Login extends React.Component {
 
 		this.state = {
 			user: undefined, // user has not logged in yet
-			userId: 4,
 			nickname: '',
-			loadingLoginCheck: true
+			loadingLoginCheck: true,
+			gfID: undefined
 		};
 	}
 
@@ -43,13 +43,13 @@ export default class Login extends React.Component {
 		});
 	}
 
-	componentWillUnmount() {
-		// Remove event listener
-		Linking.removeEventListener('url', this.handleOpenURL);
-		this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-		this.props.navigation.navigate('JoinChat', { user: this.state.user });
-	}
+	// componentWillUnmount() {
+	// 	// Remove event listener
+	// 	Linking.removeEventListener('url', this.handleOpenURL);
+	// 	this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
+	// 	// this.props.navigation.navigate('Setting', { id: this.state.user.id });
+	// 	this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	// }
 
 	async storeUser(user) {
 		try {
@@ -72,7 +72,9 @@ export default class Login extends React.Component {
 						last_name: data.last_name,
 						token: data.token,
 						phone_num: data.phone_num,
-						email: data.email
+						email: data.email,
+						google_id: data.google_id,
+						facebook_id: data.facebook_id
 					},
 					loadingLoginCheck: false
 				})
@@ -106,16 +108,6 @@ export default class Login extends React.Component {
 	loginWithFacebook = () =>
 		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
-	// logout = async () => {
-	// 	try {
-	// 		await this.openURL(
-	// 			'https://labs13-localchat.herokuapp.com/auth/logout'
-	// 		);
-	// 		this.setState({ user: undefined });
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
 
 	// Open URL in a browser
 	openURL = url => {
@@ -130,17 +122,6 @@ export default class Login extends React.Component {
 			Linking.openURL(url);
 		}
 	
-	// viewJoinChats = () => {
-	//   // AsyncStorage.setItem();
-	//   this.props.navigation.navigate("JoinChat", { id: this.state.user.id });
-	// };
-
-	// signOut = () => {
-	//   this.setState({
-	//     user: undefined
-	//   });
-	// };
-
 	signOut = () => {
 		this.setState({
 			user: undefined
@@ -151,13 +132,17 @@ export default class Login extends React.Component {
 		});
 	};
 
-	setGFId = () => {
-		if (this.state.user.google_id) {
-			return AsyncStorage.setItem('userID', this.state.user.google_id);
-		} else {
-			return AsyncStorage.setItem('userID', this.state.user.facebook_id);
-		}
-	}
+	// setGFId = () => {
+	// 	if (this.state.user.google_id) {
+	// 		return this.setState({
+	// 			gfID: this.state.user.google_id
+	// 		})
+	// 	} else {
+	// 		return this.setState({
+	// 			gfID: this.state.user.facebook_id
+	// 		})
+	// 	}
+	// }
 
 	render() {
 		console.log(this.state)
@@ -173,33 +158,12 @@ export default class Login extends React.Component {
 				:
 				user ? (
 					// Show user info if already logged in
-					// this.setGFId() &&
-					// AsyncStorage.setItem(
-					// 	'herokuID',
-					// 	this.state.user.id
-					// 	) &&
-					// AsyncStorage.setItem(
-					// 	'firstname',
-					// 	this.state.user.first_name
-					// 	) &&
-					// 	AsyncStorage.setItem(
-					// 		'lastname',
-					// 	this.state.user.last_name
-					// 	) &&
-					// 	AsyncStorage.setItem('email', this.state.user.email) &&
-					// AsyncStorage.setItem(
-					// 	'phonenumber',
-					// 	this.state.user.phone_num
-					// 	) &&
-					// AsyncStorage.setItem(
-					// 	'token',
-					// 	this.state.user.token
-					// ) &&
-					// AsyncStorage.setItem('photo', this.state.user.photo) 
+					// this.setGFId() && 
 					this.storeUser()
 					&&
 					this.props.navigation.navigate('JoinChat', {
-						id: this.state.user.id
+						id: this.state.user.id,
+						sendbirdId: this.state.gfID
 					})
 				
 					) : (

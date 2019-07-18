@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from 'react'
 import Setting from './BottomTabs/Setting';
 import JoinChat from './chatroom/JoinChat';
 import Login from './Authenticate/Login';
