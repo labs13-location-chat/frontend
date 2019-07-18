@@ -240,11 +240,20 @@ export default class MyProfile extends React.Component {
 				this.setState({
 					user: res.data[0]
 				});
+				console.log('res', res.data)
 				this.setState({
-					first_name: this.state.user.first_name,
-					phone_num: this.state.user.phone_num,
-					email: this.state.user.email,
-					photo: this.state.user.photo
+					first_name: 
+					// this.state.user.first_name,
+					res.data.first_name,
+					phone_num: 
+					// this.state.user.phone_num,
+					res.data.phone_num,
+					email: 
+					// this.state.user.email,
+					res.data.email,
+					photo: 
+					// this.state.user.photo
+					res.data.photo
 				});
 				console.log('getuser firstname', this.state.first_name);
 			})
@@ -280,11 +289,11 @@ export default class MyProfile extends React.Component {
 
 	signOut = async ({ navigation, screenProps }) => {
 		const { user } = this.state;
-		// await AsyncStorage.clear();
+		await AsyncStorage.clear();
 		// this.props.navigation.navigate('Login');
-		this.setState({
-			user: undefined
-		});
+		// this.setState({
+		// 	user: undefined
+		// });
 		this.props.navigation.navigate('Login');
 		sb.disconnect(function() {
 			// A current user is discconected from SendBird server.
@@ -293,6 +302,8 @@ export default class MyProfile extends React.Component {
 
 	render() {
 		const { photo } = this.state;
+		console.log('u', this.state)
+		console.log('profprops', this.props)
 		// let changePhoto = photo === null ? { uri: photo } : { uri: photo.uri };
 		return (
 			<TouchableWithoutFeedback
