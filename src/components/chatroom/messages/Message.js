@@ -13,7 +13,8 @@ export default class Message extends Component {
     
         this.state = {
             firstname: '',
-            lastname: ''
+            lastname: '',
+            id: undefined
         }
     }
 
@@ -26,10 +27,25 @@ export default class Message extends Component {
     //         lastname: last
     //     })
     // }
+    async componentDidMount() {
+        await this.checkForLoginType()
+    }
+
+    checkForLoginType = () => {
+        if (this.props.userInfo.google_id) {
+            this.setState({
+                id: this.props.userInfo.google_id
+            })
+        } else {
+            this.setState({
+                id: this.props.userInfo.facebook_id
+            })
+        }
+    }
     
 
     inOrOutMessage = () => {
-        if (this.props.userID === this.props.message.sender.userId) {
+        if (this.state.id === this.props.message.sender.userId) {
             return styles.outbound
         } else {
             return styles.inbound
@@ -37,14 +53,14 @@ export default class Message extends Component {
     }
 
     inOrOutText = () => {
-        if (this.props.userID === this.props.message.sender.userId) {
+        if (this.state.id === this.props.message.sender.userId) {
             return styles.outboundText
         } else {
             return styles.inboundText
         }
     }
     inOrOutUser = () => {
-        if (this.props.userID === this.props.message.sender.userId) {
+        if (this.state.id === this.props.message.sender.userId) {
             return styles.outboundUser
         } else {
             return styles.inboundUser
@@ -52,6 +68,7 @@ export default class Message extends Component {
     }
     
     render() {
+    console.log(this.props)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{
@@ -111,7 +128,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-
+        // width: "90%",
         elevation: 10,
     },
     outboundText: {

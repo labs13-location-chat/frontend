@@ -79,6 +79,7 @@ export default class ChatroomItem extends Component {
               navigation={this.props.navigation} 
               chat={this.props.chat} 
               focusedLocation={this.props.focusedLocation}
+              user={this.props.user}
             />
           </View>
         ) : null}

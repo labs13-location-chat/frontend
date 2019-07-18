@@ -29,9 +29,6 @@ export default class JoinChat extends Component {
       
         this.state = {
           mapToggle: false,
-          firstname: '',
-          lastname: '',
-          email: '',
           chatroom: [],
           userID: null,
           loadingChatRooms: true,
@@ -46,10 +43,10 @@ export default class JoinChat extends Component {
             (Dimensions.get("window").width / Dimensions.get("window").height) *
               0.0122
             },
-          anonymous: null,
           chatWithDistance: [],
           chatWithDistanceFallbackForSearch: [],
-          searchValue: ''
+          searchValue: '',
+          user: null
           }
         }
         
@@ -58,7 +55,8 @@ export default class JoinChat extends Component {
           }
     
     async componentDidMount() {
-      this.connectToSendbird()
+      await this.fetchUser()
+      await this.connectToSendbird()
       await this.getGeoLocation()
       await axios
       .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
@@ -95,11 +93,6 @@ export default class JoinChat extends Component {
     };
     
     getDistanceFromChat = () => {
-      // if (this.state.focusedLocation.latitude === 99999 ) {
-      //   return setTimeout(() => {
-      //     this.getDistanceFromChat()
-      //   }, 1000)
-      // } else {
         let newChatItem = []
         chatrooms = this.state.chatroom
         const orderedResults = chatrooms.map((chat) => {
@@ -138,34 +131,25 @@ export default class JoinChat extends Component {
         console.log("Checking")
     }
 
-    anonymousUserOrNot = () => {
-      let anonymous = this.props.navigation.state.params.anonymous;
-      let nickname = this.state.firstname
-      
-      if (anonymous) {
-        return "Anon"
-      } else {
-        return nickname
-      }
-    }
-    
+        
     // sendbird connection initiated
     connectToSendbird = () => {
-        if (this.state.userID == null) {
+        if (this.state.user == null) {
             return setTimeout(() => {
                 this.connectToSendbird()
             }, 1000)
         } else {
-            sb.connect(this.state.userID, (user, error) => {
+            let googleCheck = this.state.user.google_id ? this.state.user.google_id : this.state.user.facebook_id
+            sb.connect(googleCheck, (user, error) => {
                 if (error) {
                     console.log("Error", error)
                 } else {
                     console.log("Connected to Sendbird", user)
-                    sb.updateCurrentUserInfo(this.anonymousUserOrNot(), null, (user, err) => {
-                      if (err) {
-                        console.log(err)
-                      }
-                    })
+                    // sb.updateCurrentUserInfo(this.anonymousUserOrNot(), null, (user, err) => {
+                    //   if (err) {
+                    //     console.log(err)
+                    //   }
+                    // })
                 }
             })
         }
@@ -213,29 +197,24 @@ export default class JoinChat extends Component {
     }
   }
 
-  // viewSettingnav = () => {
-  //     this.props.navigation.navigate('Setting',
-  //     {user: this.props.navigation.state.params.user}
-  //     )
-  // }
 
   fetchUser = async () => {
-    const anon = await AsyncStorage.getItem('anonymous');
-    const id = this.props.navigation.state.params.id;
-    const first = await AsyncStorage.getItem("firstname");
-    const last = await AsyncStorage.getItem("lastname");
-    const useremail = await AsyncStorage.getItem("email");
+    let userData = await AsyncStorage.getItem("userData");
+    let parsedData = JSON.parse(userData);
 
-    let user_id = await AsyncStorage.getItem("userID");
-    // console.log(first, last, useremail, id);
     this.setState({
-      firstname: first,
-      lastname: last,
-      email: useremail,
-      userID: user_id,
-      anonymous: anon
-    });
-  };
+      user: {
+        id: parsedData.id,
+        first_name: parsedData.first_name,
+        last_name: parsedData.last_name,
+        token: parsedData.token,
+        phone_num: parsedData.phone_num,
+        email: parsedData.email,
+        google_id: parsedData.google_id,
+        facebook_id: parsedData.facebook_id
+      },
+  })
+}
 
   searchText = (val) => {
     this.setState({
@@ -307,6 +286,7 @@ export default class JoinChat extends Component {
             navigation={this.props.navigation}
             chatWithDistance={this.state.chatWithDistance}
             focusedLocation={this.state.focusedLocation}
+            user={this.state.user}
           />
           <View style={styles.chats} />
         </View>}
