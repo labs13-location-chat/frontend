@@ -43,13 +43,13 @@ export default class Login extends React.Component {
 		});
 	}
 
-	// componentWillUnmount() {
-	// 	// Remove event listener
-	// 	Linking.removeEventListener('url', this.handleOpenURL);
-	// 	this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-	// 	// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-	// 	this.props.navigation.navigate('JoinChat', { user: this.state.user });
-	// }
+	componentWillUnmount() {
+		// Remove event listener
+		Linking.removeEventListener('url', this.handleOpenURL);
+		// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
+		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
+		// this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	}
 
 	async storeUser(user) {
 		try {
