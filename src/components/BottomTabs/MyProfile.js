@@ -32,6 +32,7 @@ export default class MyProfile extends React.Component {
 		// this.fetchUser();
 		this.state = {
 			user: {},
+			id: '',
 
 			first_name: '',
 			phone_num: '',
@@ -42,8 +43,8 @@ export default class MyProfile extends React.Component {
 	}
 
 	componentDidMount() {
-		const user_id = this.props.navigation.state.params.id;
-		this.getUser(user_id);
+		// const user_id = this.state;
+		this.getUser();
 
 		this.props.navigation.setParams({
 			handleSave: this.handleUpdate,
@@ -202,7 +203,7 @@ export default class MyProfile extends React.Component {
 	};
 
 	updateUser = updatedUser => {
-		const user_id = this.props.navigation.state.params.id;
+		const user_id = this.state.id;
 
 		axios
 			.put(`${URL}/api/users/${user_id}`, updatedUser)
@@ -210,7 +211,7 @@ export default class MyProfile extends React.Component {
 				if (res.status === 200) {
 					alert('Update Successful');
 				}
-				AsyncStorage.setItem('anonymous', this.state.user.anonymous);
+				// AsyncStorage.setItem('anonymous', this.state.user.anonymous);
 			})
 			.catch(err => {
 				console.log(err);
@@ -221,19 +222,24 @@ export default class MyProfile extends React.Component {
 		e.preventDefault();
 		const updatedUser = {
 			first_name: this.first_name(),
-			last_name: this.state.user.last_name,
+			// last_name: this.state.user.last_name,
 			email: this.email(),
 			phone_num: this.phone_num(),
-			anonymous: this.state.user.anonymous,
-			user_type: this.state.user.user_type,
+			// anonymous: this.state.user.anonymous,
+			// user_type: this.state.user.user_type,
 			photo: this.photo()
 		};
 		this.updateUser(updatedUser);
 	};
 
-	getUser = () => {
+	getUser = async () => {
 		// console.log('getUser');
-		const user_id = this.props.navigation.state.params.id;
+		let userData = await AsyncStorage.getItem("userData");
+		let data = JSON.parse(userData);
+		// this.setState({
+		// 	user: data.id
+		// })
+		const user_id = data.id;
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
@@ -242,6 +248,7 @@ export default class MyProfile extends React.Component {
 				});
 				console.log('res', res.data)
 				this.setState({
+					id: res.data.id,
 					first_name: 
 					// this.state.user.first_name,
 					res.data.first_name,
