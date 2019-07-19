@@ -46,9 +46,18 @@ export default class Message extends Component {
 
     inOrOutMessage = () => {
         if (this.state.id === this.props.message.sender.userId) {
-            return styles.outbound
+            if (this.props.message.message.length > 46) {
+                return styles.outboundLong
+            } else {
+                return styles.outbound
+            }
         } else {
-            return styles.inbound
+            if (this.props.message.message.length > 46) {
+                return styles.inboundLong
+            } else {
+                return styles.inbound
+            }
+            
         }
     }
 
@@ -109,13 +118,53 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-
+        elevation: 10,
+    },
+    inboundLong: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        height: 'auto',
+        padding:10,
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor:'white',
+        textAlign: 'center',
+        // borderColor: '#FFFAFA',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
         elevation: 10,
     },
     outbound: {
         display: 'flex',
         marginRight: 30,
         marginLeft: 'auto',
+        marginBottom: 10,
+        alignItems: "flex-end",
+        height: 'auto',
+        backgroundColor: '#3EB1D6',
+        padding:10,
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        // width: "90%",
+        elevation: 10,
+    },
+    outboundLong: {
+        textAlign: 'center',
+        display: 'flex',
+        marginRight: 30,
+        marginLeft: 30,
         marginBottom: 10,
         alignItems: "flex-end",
         height: 'auto',
