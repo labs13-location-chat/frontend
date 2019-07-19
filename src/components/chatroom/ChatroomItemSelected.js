@@ -78,14 +78,9 @@ export default class ChatroomItemSelected extends Component {
     }
 
 
-  joinChannel = () => {
+  joinChannel = (e) => {
     if (this.props.chat.distance === 99999) {
       return alert("Distance still loading, please try again")
-    } else if (this.props.chat.chatroom_type === "worldwide") {
-      this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
-      })
     } else if (this.props.chat.chatroom_type === "rural city" && this.props.chat.distance <= 161000) {
       this.props.navigation.navigate('Chatroom', {
         chatroom: this.props.chat,
@@ -107,6 +102,11 @@ export default class ChatroomItemSelected extends Component {
         user: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "stadium" && this.props.chat.distance <= 800) {
+      this.props.navigation.navigate('Chatroom', {
+        chatroom: this.props.chat,
+        user: this.props.user
+      })
+    } else if (this.props.chat.chatroom_type === "worldwide") {
       this.props.navigation.navigate('Chatroom', {
         chatroom: this.props.chat,
         user: this.props.user
@@ -144,7 +144,7 @@ export default class ChatroomItemSelected extends Component {
           {/* <Marker coordinate={markers} /> */}
         </View>
         <View style={styles.joinContainer}>
-          <TouchableOpacity style={styles.join} onPress={this.joinChannel}>
+          <TouchableOpacity style={styles.join} onPress={e => this.joinChannel(e)}>
             <View>              
               <Text style={styles.joinText}>JOIN CHAT</Text>
             </View>
