@@ -13,8 +13,6 @@ import SendBird from 'sendbird';
 import axios from 'axios'
 import Config from '../../config'
 
-
-
 var sb = new SendBird({ appId: Config.appId });
 
 export default class CreateChatroom extends Component {
@@ -108,27 +106,45 @@ export default class CreateChatroom extends Component {
 
     createChatroom = async (e) => {
         let channel = []
+        let that = this
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
-            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  async function(openChannel, error) {
+            // debugger
+            await sb.OpenChannel.createChannel(that.state.newChatroom.name, that.state.newChatroom.img_url, that.state.newChatroom.description, that.state.userId, function(openChannel, error) {
                 if (error) {
-                    return console.log(error)
+                    return alert("Error:", error)
                 }
-                
-                channel = await openChannel
-                
-                console.log(openChannel, channel, this)
-            }) 
-        
-        
-        this.setState({
-            sendbirdChatroom: channel
-        }, () => 
-        console.log(this.state.sendbirdChatroom)
-        ) 
-    }
+
+                AsyncStorage.setItem("chaturl", openChannel.url)
+                console.log(this)
+                console.log("cat", openChannel, that.state.newChatroom, openChannel.url)
+            })        
+            let chatroomURL = await AsyncStorage.getItem("chaturl")
+            await this.setState({
+                ...this.state.newChatroom,
+                chatroom_url: chatroomURL.toString()
+            })
+            await axios
+                    .post('https://labs13-localchat.herokuapp.com/api/chatrooms/', this.state.newChatroom)
+                    .then(res => {
+                        AsyncStorage.removeItem("chaturl")
+                        this.setState({
+                            ...this.state.newChatroom,
+                            name: '',
+                            description: '',
+                            chatroomURL: ''
+                        })
+                        alert("Chatroom Creation Successful!")
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        AsyncStorage.removeItem("chaturl")
+                        alert("Chatroom creation failure!  Please try again!")
+                    })
+        }
     
+
     render() {
         console.log(this.state.newChatroom)
         return (

@@ -418,7 +418,7 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									title='Logout'
 									onPress={this.signOut}
 								>
@@ -428,7 +428,7 @@ export default class MyProfile extends React.Component {
 											Logout
 										</Text>
 									</View>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 							{/* <KeyboardSpacer /> */}
 						</View>
