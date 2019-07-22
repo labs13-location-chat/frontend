@@ -294,17 +294,18 @@ export default class MyProfile extends React.Component {
 		} else return this.state.photo;
 	};
 
-	signOut = async ({ navigation, screenProps }) => {
-		const { user } = this.state;
+	signOut = async () => {
+		// const { user } = this.state;
 		await AsyncStorage.clear();
 		// this.props.navigation.navigate('Login');
-		// this.setState({
-		// 	user: undefined
-		// });
-		this.props.navigation.navigate('Login');
-		sb.disconnect(function() {
-			// A current user is discconected from SendBird server.
+		this.setState({
+			user: undefined
 		});
+		this.props.navigation.navigate('Login');
+		alert("You have been logged out.")
+		// sb.disconnect(function() {
+		// 	// A current user is discconected from SendBird server.
+		// });
 	};
 
 	render() {
@@ -518,13 +519,14 @@ const styles = StyleSheet.create({
 		// flexWrap: 'nowrap'
 	},
 	logoutView: {
-		flex: 1,
+		// flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 80
+		paddingVertical: 30
 	},
 	logoutText: {
 		color: '#3EB1D6',
-		marginLeft: 10
+		marginLeft: 10,
+		fontSize: 20
 	}
 });

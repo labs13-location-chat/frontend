@@ -43,13 +43,13 @@ export default class Login extends React.Component {
 		});
 	}
 
-	componentWillUnmount() {
-		// Remove event listener
-		Linking.removeEventListener('url', this.handleOpenURL);
-		// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-		// this.props.navigation.navigate('JoinChat', { user: this.state.user });
-	}
+	// componentWillUnmount() {
+	// 	// Remove event listener
+	// 	Linking.removeEventListener('url', this.handleOpenURL);
+	// 	// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
+	// 	// this.props.navigation.navigate('Setting', { id: this.state.user.id });
+	// 	// this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	// }
 
 	async storeUser(user) {
 		try {
@@ -121,16 +121,6 @@ export default class Login extends React.Component {
 			// Or Linking.openURL on Android
 			Linking.openURL(url);
 		}
-	
-	signOut = () => {
-		this.setState({
-			user: undefined
-		});
-		AsyncStorage.removeItem('userID');
-		sb.disconnect(function() {
-			// A current user is discconected from SendBird server.
-		});
-	};
 
 	// setGFId = () => {
 	// 	if (this.state.user.google_id) {
@@ -167,18 +157,6 @@ export default class Login extends React.Component {
 					})
 				
 					) : (
-					// <View style={styles.content}>
-					//   <Text style={styles.header}>Welcome {user.first_name}!</Text>
-					//   <View style={styles.avatar}>
-					//     <Image
-					//       source={{ uri: user.avatar }}
-					//       style={styles.avatarImage}
-					//     />
-					//     <Button title="Join Chats" onPress={this.viewJoinChats} />
-					//     <Button title="Sign Out" onPress={this.signOut} color="red" />
-					//   </View>
-					// </View>
-					// Show Please log in message if not
 					<View style={styles.content}>
 						<Image source={require('./CMLogo.png')} />
 
