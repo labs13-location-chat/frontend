@@ -9,7 +9,6 @@ import {
 export default class Message extends Component {
     constructor(props) {
         super(props)
-        // this.fetchUser()
     
         this.state = {
             firstname: '',
@@ -18,15 +17,6 @@ export default class Message extends Component {
         }
     }
 
-    // fetchUser = async () => {
-    //     const first = await AsyncStorage.getItem("firstname");
-    //     const last = await AsyncStorage.getItem("lastname");
-    //     // console.log(first, last, useremail);
-    //     this.setState({
-    //         firstname: first,
-    //         lastname: last
-    //     })
-    // }
     async componentDidMount() {
         await this.checkForLoginType()
     }
@@ -77,7 +67,6 @@ export default class Message extends Component {
     }
     
     render() {
-    console.log(this.props)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{
@@ -85,9 +74,7 @@ export default class Message extends Component {
                 {this.props.message.sender.}
             }}
         /> */}
-        
-        
-        // console.log("message in message", this.props.message)
+            
         return (
             <View >
                 <View style={this.inOrOutMessage()}>
@@ -131,7 +118,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor:'white',
         textAlign: 'center',
-        // borderColor: '#FFFAFA',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -157,7 +143,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-        // width: "90%",
         elevation: 10,
     },
     outboundLong: {
@@ -177,7 +162,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-        // width: "90%",
         elevation: 10,
     },
     outboundText: {

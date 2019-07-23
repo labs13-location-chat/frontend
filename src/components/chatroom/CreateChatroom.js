@@ -45,6 +45,7 @@ export default class CreateChatroom extends Component {
         })
     }
     
+    // Retrieves location of user's phone
     getGeoLocation =  async () => {
         if (navigator.geolocation) {
           await navigator.geolocation.getCurrentPosition(position => {
@@ -68,8 +69,7 @@ export default class CreateChatroom extends Component {
 
     handleNameInput = val => {
         console.log(this.state.newChatroom)
-        this.setState({
-            // ...this.state.newChatroom, 
+        this.setState({ 
             newChatroom: {
                 ...this.state.newChatroom,
                 name: val
@@ -79,8 +79,7 @@ export default class CreateChatroom extends Component {
 
     handleDescriptionInput = val => {
         console.log(this.state.newChatroom)
-        this.setState({
-            // ...this.state.newChatroom, 
+        this.setState({ 
             newChatroom: {
                 ...this.state.newChatroom,
                 description: val
@@ -105,11 +104,10 @@ export default class CreateChatroom extends Component {
 
 
     createChatroom = async (e) => {
-        let channel = []
         let that = this
-        // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
-        //     await alert("Please enter a Name and/or Description!")
-        // } else {
+        if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
+            await alert("Please enter a Name and/or Description!")
+        } else {
             // debugger
             await sb.OpenChannel.createChannel(that.state.newChatroom.name, that.state.newChatroom.img_url, that.state.newChatroom.description, that.state.userId, function(openChannel, error) {
                 if (error) {
@@ -187,6 +185,7 @@ export default class CreateChatroom extends Component {
                 />
             </View>
         )
+    }
     }
 }
 const styles = StyleSheet.create({

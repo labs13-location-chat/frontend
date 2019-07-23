@@ -101,25 +101,15 @@ export default class JoinChat extends Component {
             { latitude: this.state.focusedLocation.latitude, longitude: this.state.focusedLocation.longitude },
             1
             )
-            // console.log(distance, newChatItem)
             let newChat = {...chat, distance: distance}
-            // return new Promise(function (resolve, reject) { 
-            //   if (error) {
-            //     return reject(error)
-            //   } else {
                 return newChatItem.push(newChat)
-              // }
             })
           
-          // Promise.all(orderedResults)
-          //   .then(() => {
               this.setState({
                 chatWithDistance: newChatItem,
                 chatWithDistanceFallbackForSearch: newChatItem,
                 loadingChatRooms: false
               })
-            // })
-            // .catch(err => console.log(err))
             }
         
     
@@ -145,11 +135,6 @@ export default class JoinChat extends Component {
                     console.log("Error", error)
                 } else {
                     console.log("Connected to Sendbird", user)
-                    // sb.updateCurrentUserInfo(this.anonymousUserOrNot(), null, (user, err) => {
-                    //   if (err) {
-                    //     console.log(err)
-                    //   }
-                    // })
                 }
             })
         }
@@ -236,7 +221,6 @@ export default class JoinChat extends Component {
     return (
       <View style={styles.container}>
         <View>
-          {/* <Text>hello {this.state.firstname}</Text> */}
           <Text style={styles.topText}>Chat Nearby...</Text>
           <View style={styles.searchBar}>
             <Icon name='search' color='#A8A7A3' size={15} style={{paddingHorizontal:20}}/>
@@ -312,9 +296,6 @@ const styles = StyleSheet.create({
   },
   search: {
     flex: 1
-    // borderWidth: 1,
-    // borderColor: "black",
-    // margin: 20
   },
   container: {
       height: '90%'

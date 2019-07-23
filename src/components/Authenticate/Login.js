@@ -12,12 +12,9 @@ import {
 	Platform
 } from 'react-native';
 import SafariView from 'react-native-safari-view';
-// import SendBird from "sendbird";
-// import Config from "../../config";
 
 const URL = 'https://labs13-localchat.herokuapp.com';
 
-// var sb = new SendBird({ appId: Config.appId });
 export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -46,9 +43,6 @@ export default class Login extends React.Component {
 	componentWillUnmount() {
 		// Remove event listener
 		Linking.removeEventListener('url', this.handleOpenURL);
-		// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-		// this.props.navigation.navigate('JoinChat', { user: this.state.user });
 	}
 
 	async storeUser(user) {
@@ -111,6 +105,7 @@ export default class Login extends React.Component {
 
 	// Open URL in a browser
 	openURL = url => {
+		// Code if this is ever to become iOS
 		// Use SafariView on iOS
 		// if (Platform.OS === 'ios') {
 		// 	SafariView.show({
@@ -127,28 +122,10 @@ export default class Login extends React.Component {
 			user: undefined
 		});
 		AsyncStorage.removeItem('userID');
-		sb.disconnect(function() {
-			// A current user is discconected from SendBird server.
-		});
+		sb.disconnect(function() {});
 	};
 
-	// setGFId = () => {
-	// 	if (this.state.user.google_id) {
-	// 		return this.setState({
-	// 			gfID: this.state.user.google_id
-	// 		})
-	// 	} else {
-	// 		return this.setState({
-	// 			gfID: this.state.user.facebook_id
-	// 		})
-	// 	}
-	// }
-
 	render() {
-		console.log(this.state)
-		const { user } = this.state;
-		console.log('THIS IS THE USER ID', this.state.user);
-		console.log('loginstate', this.state);
 		return (
 			<View style={styles.container}>
 				{this.state.loadingLoginCheck ? 
@@ -158,26 +135,15 @@ export default class Login extends React.Component {
 				:
 				user ? (
 					// Show user info if already logged in
-					// this.setGFId() && 
 					this.storeUser()
-					&&
+						&&
 					this.props.navigation.navigate('JoinChat', {
 						id: this.state.user.id,
 						sendbirdId: this.state.gfID
 					})
 				
 					) : (
-					// <View style={styles.content}>
-					//   <Text style={styles.header}>Welcome {user.first_name}!</Text>
-					//   <View style={styles.avatar}>
-					//     <Image
-					//       source={{ uri: user.avatar }}
-					//       style={styles.avatarImage}
-					//     />
-					//     <Button title="Join Chats" onPress={this.viewJoinChats} />
-					//     <Button title="Sign Out" onPress={this.signOut} color="red" />
-					//   </View>
-					// </View>
+						
 					// Show Please log in message if not
 					<View style={styles.content}>
 						<Image source={require('./CMLogo.png')} />

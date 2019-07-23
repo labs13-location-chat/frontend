@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   Dimensions,
   Button,
@@ -106,7 +105,6 @@ export default class ChatMap extends Component {
     const first = await AsyncStorage.getItem("firstname");
     const last = await AsyncStorage.getItem("lastname");
     const useremail = await AsyncStorage.getItem("email");
-    // console.log(first, last, useremail);
     this.setState({
       firstname: first,
       lastname: last,
@@ -115,7 +113,6 @@ export default class ChatMap extends Component {
   };
 
   render() {
-    console.log("Hi", this.state.chatLocations);
     let marker = null;
     let locations = null;
 
@@ -156,6 +153,5 @@ export default class ChatMap extends Component {
 const styles = StyleSheet.create({
   map: {
     height: 360
-    //  marginTop: 80
-  }
+    }
 });

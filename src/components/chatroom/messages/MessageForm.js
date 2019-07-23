@@ -2,20 +2,14 @@ import React, { Component } from 'react'
 import {
     View,
     StyleSheet,
-    ScrollView,
     TextInput,
-    TouchableOpacity,
-    Text,
-    Image,
-    Button,
-    Keyboard
-  } from "react-native";
+    TouchableOpacity 
+    } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import SendBird from 'sendbird'
 import Config from '../../../config'
 
 var sb = new SendBird({appId: Config.appId });
-var ChannelHandler = new sb.ChannelHandler()
 
 export default class MessageForm extends Component {
     constructor(props) {
@@ -47,12 +41,9 @@ export default class MessageForm extends Component {
     }
 
     render() {
-        // console.log(this.state.message)
         return (
             <View
                 style={{
-                    // position: 'absolute',
-                    // bottom: this.state.keyboardOffset,
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center', 

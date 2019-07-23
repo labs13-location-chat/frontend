@@ -2,24 +2,16 @@ import React, { Component } from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Text,
   Image,
-  Button,
   AppRegistry,
-  LayoutAnimation,
   UIManager,
   Platform
 } from "react-native";
-import ChatroomItemMap from "./ChatroomItemMap";
 import ChatroomItemSelected from "./ChatroomItemSelected";
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const pic = {
-  uri:
-    "https://static.highsnobiety.com/thumbor/CDTF4ezi0dHntnuJiNPxepGkMl0=/fit-in/480x320/smart/static.highsnobiety.com/wp-content/uploads/2015/02/saulgoodman01.jpg"
-};
 
 export default class ChatroomItem extends Component {
   constructor(props) {
@@ -34,7 +26,6 @@ export default class ChatroomItem extends Component {
   }
 
   selectionHandler = () => {
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       expanded: !this.state.expanded
     });
@@ -74,7 +65,6 @@ export default class ChatroomItem extends Component {
         </TouchableOpacity>
         {this.state.expanded ? (
           <View>
-            {/* <ChatroomItemMap style={styles.map} /> */}
             <ChatroomItemSelected 
               navigation={this.props.navigation} 
               chat={this.props.chat} 
@@ -113,9 +103,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold"
   },
-  // address: {
-  //     fontSize: 12
-  // }
   image: {
     width: 25,
     borderRadius: 5
