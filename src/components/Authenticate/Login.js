@@ -25,14 +25,14 @@ export default class Login extends React.Component {
 		this.state = {
 			user: undefined, // user has not logged in yet
 			nickname: '',
-			loadingLoginCheck: true,
+			// loadingLoginCheck: true,
 			gfID: undefined
 		};
 	}
 
 	// Set up Linking
 	componentDidMount = async () => {
-		await this.checkForUser();
+		// await this.checkForUser();
 		// Add event listener to handle OAuthLogin:// URLs
 		Linking.addEventListener('url', this.handleOpenURL);
 		// Launched from an external URL
@@ -43,15 +43,15 @@ export default class Login extends React.Component {
 		});
 	}
 
-	// componentWillUnmount() {
-	// 	// Remove event listener
-	// 	Linking.removeEventListener('url', this.handleOpenURL);
-	// 	// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-	// 	// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-	// 	// this.props.navigation.navigate('JoinChat', { user: this.state.user });
-	// }
+	componentWillUnmount() {
+		// Remove event listener
+		Linking.removeEventListener('url', this.handleOpenURL);
+		// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
+		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
+		// this.props.navigation.navigate('JoinChat', { user: this.state.user });
+	}
 
-	async storeUser(user) {
+	async storeUser() {
 		try {
 		   await AsyncStorage.setItem("userData", JSON.stringify(this.state.user));
 		} catch (error) {
@@ -59,34 +59,34 @@ export default class Login extends React.Component {
 		}
 	}
 
-	checkForUser = async () => {
-		try {
-			let userData = await AsyncStorage.getItem("userData");
-			let data = JSON.parse(userData);
-			console.log('checkforuser', data);
-			if (data) {
-				this.setState({
-					user: {
-						id: data.id,
-						first_name: data.first_name,
-						last_name: data.last_name,
-						token: data.token,
-						phone_num: data.phone_num,
-						email: data.email,
-						google_id: data.google_id,
-						facebook_id: data.facebook_id
-					},
-					loadingLoginCheck: false
-				})
-			} else {
-				this.setState({
-					loadingLoginCheck: false
-				})
-			}
-		} catch (error) {
-			console.log("error check", error);
-		}
-	}
+	// checkForUser = async () => {
+	// 	try {
+	// 		let userData = await AsyncStorage.getItem("userData");
+	// 		let data = JSON.parse(userData);
+	// 		console.log('checkforuser', data);
+	// 		if (data) {
+	// 			this.setState({
+	// 				user: {
+	// 					id: data.id,
+	// 					first_name: data.first_name,
+	// 					last_name: data.last_name,
+	// 					token: data.token,
+	// 					phone_num: data.phone_num,
+	// 					email: data.email,
+	// 					google_id: data.google_id,
+	// 					facebook_id: data.facebook_id
+	// 				},
+	// 				loadingLoginCheck: false
+	// 			})
+	// 		} else {
+	// 			this.setState({
+	// 				loadingLoginCheck: false
+	// 			})
+	// 		}
+	// 	} catch (error) {
+	// 		console.log("error check", error);
+	// 	}
+	// }
 
 	handleOpenURL = ({ url }) => {
 		// Extract stringified user string out of the URL
@@ -135,19 +135,20 @@ export default class Login extends React.Component {
 	// }
 
 	render() {
-		console.log(this.state)
+		// console.log(this.state)
 		const { user } = this.state;
 		console.log('THIS IS THE USER ID', this.state.user);
 		console.log('loginstate', this.state);
+		console.log('loginprops', this.props)
 		return (
 			<View style={styles.container}>
-				{this.state.loadingLoginCheck ? 
-				<View>
-					<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
-				</View>
-				:
+				{
+				// 	this.state.loadingLoginCheck ? 
+				// <View>
+				// 	<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
+				// </View>
+				// :
 				user ? (
-					// Show user info if already logged in
 					// this.setGFId() && 
 					this.storeUser()
 					&&
