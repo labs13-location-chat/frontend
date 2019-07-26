@@ -23,19 +23,15 @@ export default class Login extends React.Component {
 		super(props);
 
 		this.state = {
-			user: undefined, // user has not logged in yet
+			user: undefined,
 			nickname: '',
-			// loadingLoginCheck: true,
 			gfID: undefined
 		};
 	}
 
-	// Set up Linking
-	componentDidMount = async () => {
-		// await this.checkForUser();
-		// Add event listener to handle OAuthLogin:// URLs
+	componentDidMount = () => {
+		// Event listener to handle OAuth url
 		Linking.addEventListener('url', this.handleOpenURL);
-		// Launched from an external URL
 		Linking.getInitialURL().then(url => {
 			if (url) {
 				this.handleOpenURL({ url });
@@ -44,72 +40,41 @@ export default class Login extends React.Component {
 	}
 
 	componentWillUnmount() {
-		// Remove event listener
 		Linking.removeEventListener('url', this.handleOpenURL);
-		// this.props.navigation.navigate('MyProfile', { id: this.state.user.id });
-		// this.props.navigation.navigate('Setting', { id: this.state.user.id });
-		// this.props.navigation.navigate('JoinChat', { user: this.state.user });
 	}
 
-	async storeUser() {
+	 storeUser = async () => {
 		try {
-		   await AsyncStorage.setItem("userData", JSON.stringify(this.state.user));
+		   await AsyncStorage.setItem("userData", JSON.stringify(this.props.screenProps.user));
+		   console.log("SORING USER")
 		} catch (error) {
 		  console.log("error storing", error);
 		}
 	}
 
-	// checkForUser = async () => {
-	// 	try {
-	// 		let userData = await AsyncStorage.getItem("userData");
-	// 		let data = JSON.parse(userData);
-	// 		console.log('checkforuser', data);
-	// 		if (data) {
-	// 			this.setState({
-	// 				user: {
-	// 					id: data.id,
-	// 					first_name: data.first_name,
-	// 					last_name: data.last_name,
-	// 					token: data.token,
-	// 					phone_num: data.phone_num,
-	// 					email: data.email,
-	// 					google_id: data.google_id,
-	// 					facebook_id: data.facebook_id
-	// 				},
-	// 				loadingLoginCheck: false
-	// 			})
-	// 		} else {
-	// 			this.setState({
-	// 				loadingLoginCheck: false
-	// 			})
-	// 		}
-	// 	} catch (error) {
-	// 		console.log("error check", error);
-	// 	}
-	// }
+	getStoredUser = () => {
+		AsyncStorage.getItem('userData').then(user => user)
+	}
 
 	handleOpenURL = ({ url }) => {
 		// Extract stringified user string out of the URL
 		const [ , user_string ] = url.match(/user=([^#]+)/);
-		this.setState({
-			// Decode the user string and parse it into JSON
-			user: JSON.parse(decodeURI(user_string))
-		});
+		// this.setState({
+		// 	// Decode the user string and parse it into JSON
+		// 	user: JSON.parse(decodeURI(user_string))
+		// });
+		this.props.screenProps.setUser(JSON.parse(decodeURI(user_string)))
 		if (Platform.OS === 'ios') {
 			SafariView.dismiss();
 		}
 	};
 
-	// Handle Login with Google button tap
 	loginWithGoogle = () =>
 		this.openURL('https://labs13-localchat.herokuapp.com/auth/google');
 
-	// Handle Login with Facebook button tap
 	loginWithFacebook = () =>
 		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
-
-	// Open URL in a browser
 	openURL = url => {
 		// Use SafariView on iOS
 		// if (Platform.OS === 'ios') {
@@ -122,38 +87,18 @@ export default class Login extends React.Component {
 			Linking.openURL(url);
 		}
 
-	// setGFId = () => {
-	// 	if (this.state.user.google_id) {
-	// 		return this.setState({
-	// 			gfID: this.state.user.google_id
-	// 		})
-	// 	} else {
-	// 		return this.setState({
-	// 			gfID: this.state.user.facebook_id
-	// 		})
-	// 	}
-	// }
-
 	render() {
 		// console.log(this.state)
 		const { user } = this.state;
-		console.log('THIS IS THE USER ID', this.state.user);
-		console.log('loginstate', this.state);
-		console.log('loginprops', this.props)
+		console.log("CURRENT USER", this.getStoredUser())
 		return (
 			<View style={styles.container}>
 				{
-				// 	this.state.loadingLoginCheck ? 
-				// <View>
-				// 	<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
-				// </View>
-				// :
-				user ? (
-					// this.setGFId() && 
+				this.getStoredUser() ? (
 					this.storeUser()
 					&&
 					this.props.navigation.navigate('JoinChat', {
-						id: this.state.user.id,
+						id: this.props.screenProps.user.id,
 						sendbirdId: this.state.gfID
 					})
 				

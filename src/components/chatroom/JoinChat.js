@@ -204,16 +204,6 @@ export default class JoinChat extends Component {
 
     this.setState({
       user
-      // : {
-      //   id: parsedData.id,
-      //   first_name: parsedData.first_name,
-      //   last_name: parsedData.last_name,
-      //   token: parsedData.token,
-      //   phone_num: parsedData.phone_num,
-      //   email: parsedData.email,
-      //   google_id: parsedData.google_id,
-      //   facebook_id: parsedData.facebook_id
-      // },
   })
 }
 
@@ -227,8 +217,6 @@ export default class JoinChat extends Component {
 
 
   render() {
-
-
     const config = {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80

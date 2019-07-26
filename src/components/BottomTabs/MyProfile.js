@@ -45,7 +45,6 @@ export default class MyProfile extends React.Component {
 	componentDidMount() {
 		// const user_id = this.state;
 		this.getUser();
-
 		this.props.navigation.setParams({
 			handleSave: this.handleUpdate,
 			keyboardShown: false
@@ -243,9 +242,7 @@ export default class MyProfile extends React.Component {
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
-				this.setState({
-					user: res.data[0]
-				});
+				this.props.screenProps.setUser(res.data[0])
 				console.log('res', res.data)
 				this.setState({
 					id: res.data.id,
@@ -295,14 +292,13 @@ export default class MyProfile extends React.Component {
 	};
 
 	signOut = async () => {
-		// const { user } = this.state;
-		await AsyncStorage.clear();
-		// this.props.navigation.navigate('Login');
+		AsyncStorage.getItem('userData')
+		await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
 		// this.setState({
 		// 	user: undefined
 		// });
-		await this.props.navigation.navigate('Login');
-		// await alert("You have been logged out.")
+		//await this.props.navigation.navigate('Login');
+		await alert("You have been logged out.")
 		// sb.disconnect(function() {
 		// 	// A current user is discconected from SendBird server.
 		// });
