@@ -97,11 +97,6 @@ export default class JoinChat extends Component {
     };
     
     getDistanceFromChat = () => {
-      // if (this.state.focusedLocation.latitude === 99999 ) {
-      //   return setTimeout(() => {
-      //     this.getDistanceFromChat()
-      //   }, 1000)
-      // } else {
         let newChatItem = []
         chatrooms = this.state.chatroom
         const orderedResults = chatrooms.map((chat) => {
@@ -110,25 +105,15 @@ export default class JoinChat extends Component {
             { latitude: this.state.focusedLocation.latitude, longitude: this.state.focusedLocation.longitude },
             1
             )
-            // console.log(distance, newChatItem)
             let newChat = {...chat, distance: distance}
-            // return new Promise(function (resolve, reject) { 
-            //   if (error) {
-            //     return reject(error)
-            //   } else {
                 return newChatItem.push(newChat)
-              // }
+
             })
-          
-          // Promise.all(orderedResults)
-          //   .then(() => {
               this.setState({
                 chatWithDistance: newChatItem,
                 chatWithDistanceFallbackForSearch: newChatItem,
                 loadingChatRooms: false
               })
-            // })
-            // .catch(err => console.log(err))
             }
         
     
