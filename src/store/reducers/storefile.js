@@ -2,7 +2,7 @@ import { UPDATE_CHATROOM_LIST } from '../actions/chatroom'
 
 
 const initialState = {
-    user = undefined,
+    user: [],
     updateChatList: 0
 }
 
@@ -13,6 +13,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 updateChatList: state.updateChatList + 1
             }
+        default:
+            return state;
     }
 }
 

@@ -63,7 +63,7 @@ export default class ChatroomItemSelected extends Component {
           distance: distance
         })
         }
-    }
+    
 
 // Joins the channel if criteria are met.  
   joinChannel = (e) => {

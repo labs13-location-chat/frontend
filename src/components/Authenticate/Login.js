@@ -133,7 +133,7 @@ export default class Login extends React.Component {
 					<ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
 				</View>
 				:
-				user ? (
+				this.state.user ? (
 					// Show user info if already logged in
 					this.storeUser()
 						&&

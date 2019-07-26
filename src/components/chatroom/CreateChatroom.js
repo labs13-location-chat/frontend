@@ -9,13 +9,16 @@ import {
     Button,
     AsyncStorage
   } from "react-native";
+import { connect } from 'react-redux'
 import SendBird from 'sendbird';
 import axios from 'axios'
 import Config from '../../config'
+import { updateChatroomList } from '../../store/actions/chatroom'
 
 var sb = new SendBird({ appId: Config.appId });
+const URL = "https://labs13-localchat.herokuapp.com/api/chatrooms/"
 
-export default class CreateChatroom extends Component {
+class CreateChatroom extends Component {
     constructor(props) {
         super(props)
     
@@ -23,7 +26,6 @@ export default class CreateChatroom extends Component {
              newChatroom: {
                 name: '',
                 chatroom_url: '',
-                radius: 0,
                 description: '',
                 img_url: this.randomAvatar(),
                 user_id: 1,
@@ -33,7 +35,8 @@ export default class CreateChatroom extends Component {
                 chatroom_type: 'rural city'
              },
              userId: 0,
-             sendbirdChatroom: []
+             sendbirdChatroom: [],
+             dog: ''
         }
     }
 
@@ -55,12 +58,7 @@ export default class CreateChatroom extends Component {
               newChatroom: {
                 ...this.state.newChatroom,
                 latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.0122,
-                longitudeDelta:
-                  (Dimensions.get("window").width /
-                    Dimensions.get("window").height) *
-                  0.0122
+                longitude: position.coords.longitude
               }
             });
           });
@@ -102,49 +100,78 @@ export default class CreateChatroom extends Component {
         return images[Math.floor(Math.random() * images.length)]
     }
 
-
-    createChatroom = async (e) => {
-        let that = this
-        if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
-            await alert("Please enter a Name and/or Description!")
-        } else {
-            // debugger
-            await sb.OpenChannel.createChannel(that.state.newChatroom.name, that.state.newChatroom.img_url, that.state.newChatroom.description, that.state.userId, function(openChannel, error) {
-                if (error) {
-                    return alert("Error:", error)
-                }
-
-                AsyncStorage.setItem("chaturl", openChannel.url)
-                console.log(this)
-                console.log("cat", openChannel, that.state.newChatroom, openChannel.url)
-            })        
-            let chatroomURL = await AsyncStorage.getItem("chaturl")
-            await this.setState({
+    fetchUrl = () => {
+            console.log("FART", this.state.sendbirdChatroom, this.state.dog)
+            this.setState({
                 ...this.state.newChatroom,
-                chatroom_url: chatroomURL.toString()
+                chatroom_url: this.state.sendbirdChatroom.url
             })
-            await axios
-                    .post('https://labs13-localchat.herokuapp.com/api/chatrooms/', this.state.newChatroom)
-                    .then(res => {
-                        AsyncStorage.removeItem("chaturl")
-                        this.setState({
-                            ...this.state.newChatroom,
-                            name: '',
-                            description: '',
-                            chatroomURL: ''
-                        })
-                        alert("Chatroom Creation Successful!")
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        AsyncStorage.removeItem("chaturl")
-                        alert("Chatroom creation failure!  Please try again!")
-                    })
+            console.log("check for url11111111111", this.state.newChatroom)
         }
+
+
+    addChatroom = () => {
+        axios
+        .post("https://labs13-localchat.herokuapp.com/api/chatrooms/", this.state.newChatroom)
+        .then(res => {
+            // AsyncStorage.removeItem("chaturl")
+            console.log(res)
+            this.setState({
+                ...this.state.newChatroom,
+                name: '',
+                description: '',
+                chatroomURL: ''
+            })
+            // this.props.updateChatroomList()
+            alert("Chatroom Creation Successful!")
+        })
+        .catch(err => {
+            console.log(".Catch Error", err, err.message)
+            // AsyncStorage.removeItem("chaturl")
+            alert("Chatroom creation failure!  Please try again!")
+        })
+    }
+
     
 
+    sendbirdCreation = () => {
+        let channel = []
+        sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId, (openChannel, error) => {
+            if (error) {
+                return alert("Error:", error) && console.log("error:", error)
+            }
+
+            channel = openChannel
+            this.setState({
+                ...this.state.newChatroom,
+                chatroom_url: channel.url
+                // sendbirdChatroom: openChannel,
+                // dog: 'banana'
+            })
+
+            console.log("stringed url", this.state.newChatroom, this.state.newChatroom.chatroom_url)
+            this.addChatroom()
+            // AsyncStorage.setItem("chaturl", openChannel.url)
+        })        
+    }
+
+    createChatroom = (e) => {
+        // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
+        //     await alert("Please enter a Name and/or Description!")
+        // } else {
+            // debugger
+            console.log("1", this.state.dog)
+            this.sendbirdCreation()
+            console.log("2", this.state.dog)
+            this.fetchUrl()
+            console.log("check for url2", this.state.newChatroom)
+            // this.addChatroom()
+            console.log("3", this.state.dog)
+        }
+    // }
+
+
     render() {
-        console.log(this.state.newChatroom)
         return (
             <View>
                 {/* <Text style={styles.text}>New Feature Coming Soon!</Text> */}
@@ -187,7 +214,14 @@ export default class CreateChatroom extends Component {
         )
     }
     }
-}
+
+    // const mapStateToProps = ({ state }) => {
+    //     updateChatList: state.updateChatList
+    // }
+
+
+export default CreateChatroom
+// connect(mapStateToProps { updateChatroomList })(
 
 const styles = StyleSheet.create({
     text: {
