@@ -71,7 +71,7 @@ export default class CreateChatroom extends Component {
     handleNameInput = val => {
         console.log(this.state.newChatroom)
         this.setState({
-            // ...this.state.newChatroom, 
+            ...this.state,
             newChatroom: {
                 ...this.state.newChatroom,
                 name: val
@@ -82,7 +82,7 @@ export default class CreateChatroom extends Component {
     handleDescriptionInput = val => {
         console.log(this.state.newChatroom)
         this.setState({
-            // ...this.state.newChatroom, 
+            ...this.state,
             newChatroom: {
                 ...this.state.newChatroom,
                 description: val
@@ -111,22 +111,24 @@ export default class CreateChatroom extends Component {
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
-            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  async function(openChannel, error) {
+            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  (openChannel, error) => {
                 if (error) {
                     return console.log(error)
                 }
                 
-                channel = await openChannel
-                
-                console.log(openChannel, channel, this)
-            }) 
-        
-        
-        this.setState({
-            sendbirdChatroom: channel
-        }, () => 
-        console.log(this.state.sendbirdChatroom)
-        ) 
+                channel = openChannel
+                this.setState({
+                    ...this.state,
+                    newChatroom: {
+                        ...this.state.newChatroom,
+                        chatroom_url: channel.url 
+                    }
+                }, () => console.log("in set state", openChannel, channel, this, this.state.newChatroom))
+                if (this.state.newChatroom.chatroom_url !== '') {
+                    alert("Good work!")
+                }
+                console.log(openChannel, channel, this, this.state.newChatroom)
+            })  
     }
     
     render() {
