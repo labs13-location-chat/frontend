@@ -359,7 +359,7 @@ export default class MyProfile extends React.Component {
 									style={styles.nameInputBox}
 									onChangeText={this.handleNameChange}
 									name='first_name'
-									value={this.state.first_name.toUpperCase()}
+									value={this.state.first_name}
 								/>
 								<View style={styles.phoneView}>
 									<Icon name='phone' size={20} />
@@ -415,7 +415,7 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									title='Logout'
 									onPress={this.signOut}
 								>
@@ -425,7 +425,7 @@ export default class MyProfile extends React.Component {
 											Logout
 										</Text>
 									</View>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 							{/* <KeyboardSpacer /> */}
 						</View>

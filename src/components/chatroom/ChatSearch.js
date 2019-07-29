@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { StyleSheet, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import ChatroomItem from "./ChatroomItem";
 
 
@@ -22,10 +21,9 @@ export default class ChatSearch extends Component {
 
 
   render() {
-
-    // console.log(this.props.chatWithDistance)
     return (
-        <FlatList
+    // Filters through the list of chatrooms so the user can search by name
+      <FlatList
           data={this.props.chatWithDistance.filter((item) => {
             return item.name.toLowerCase().match(this.props.searchValue.toLowerCase())
             }).sort(function (a, b) {

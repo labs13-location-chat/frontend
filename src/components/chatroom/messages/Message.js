@@ -9,7 +9,6 @@ import {
 export default class Message extends Component {
     constructor(props) {
         super(props)
-        // this.fetchUser()
     
         this.state = {
             firstname: '',
@@ -18,15 +17,6 @@ export default class Message extends Component {
         }
     }
 
-    // fetchUser = async () => {
-    //     const first = await AsyncStorage.getItem("firstname");
-    //     const last = await AsyncStorage.getItem("lastname");
-    //     // console.log(first, last, useremail);
-    //     this.setState({
-    //         firstname: first,
-    //         lastname: last
-    //     })
-    // }
     async componentDidMount() {
         await this.checkForLoginType()
     }
@@ -46,9 +36,18 @@ export default class Message extends Component {
 
     inOrOutMessage = () => {
         if (this.state.id === this.props.message.sender.userId) {
-            return styles.outbound
+            if (this.props.message.message.length > 46) {
+                return styles.outboundLong
+            } else {
+                return styles.outbound
+            }
         } else {
-            return styles.inbound
+            if (this.props.message.message.length > 46) {
+                return styles.inboundLong
+            } else {
+                return styles.inbound
+            }
+            
         }
     }
 
@@ -68,7 +67,6 @@ export default class Message extends Component {
     }
     
     render() {
-    console.log(this.props)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{
@@ -76,9 +74,7 @@ export default class Message extends Component {
                 {this.props.message.sender.}
             }}
         /> */}
-        
-        
-        // console.log("message in message", this.props.message)
+            
         return (
             <View >
                 <View style={this.inOrOutMessage()}>
@@ -109,7 +105,26 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-
+        elevation: 10,
+    },
+    inboundLong: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        height: 'auto',
+        padding:10,
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor:'white',
+        textAlign: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
         elevation: 10,
     },
     outbound: {
@@ -128,7 +143,25 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-        // width: "90%",
+        elevation: 10,
+    },
+    outboundLong: {
+        textAlign: 'center',
+        display: 'flex',
+        marginRight: 30,
+        marginLeft: 30,
+        marginBottom: 10,
+        alignItems: "flex-end",
+        height: 'auto',
+        backgroundColor: '#3EB1D6',
+        padding:10,
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
         elevation: 10,
     },
     outboundText: {

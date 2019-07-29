@@ -3,9 +3,7 @@ import {
 	View,
 	StyleSheet,
 	ActivityIndicator,
-	Keyboard,
 	AsyncStorage,
-	KeyboardAvoidingView
 } from 'react-native';
 import SendBird from 'sendbird';
 import Config from '../../../config';
@@ -14,7 +12,6 @@ import MessageView from './MessageView';
 
 var sb = new SendBird({ appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler();
-const params = new sb.UserMessageParams();
 
 export default class MessageRoom extends Component {
 	constructor(props) {
@@ -76,19 +73,11 @@ export default class MessageRoom extends Component {
 						return this.getChannel();
 					}, 1000);
 				} else {
-					// sb.connect(this.state.userID, (user, error) => {
-					//     if (error) {
-					//         console.log("Error", error)
-					//     } else {
-					//         console.log("Joining Channel", user)
-					//     }
-					// })
 					channel.enter(function(response, error) {
 						console.log('Welcome to the Channel', channel);
 						if (error) {
 						}
 					});
-					// console.log('Mounting being handled, thats what she said');
 					this.handleMounting(channel, error);
 				}
 			}
@@ -164,12 +153,9 @@ export default class MessageRoom extends Component {
 				messages: messages.concat(this.state.messages)
 			});
 		});
-		// console.log(message);
 	};
 
 	render() {
-		console.log("chatroom", this.state.chatroomInfo)
-		// console.log("Messages", this.state.messages)
 		return (
 			<View>
 				{this.state.loading ? (

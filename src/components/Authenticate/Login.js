@@ -12,12 +12,9 @@ import {
 	Platform
 } from 'react-native';
 import SafariView from 'react-native-safari-view';
-// import SendBird from "sendbird";
-// import Config from "../../config";
 
 const URL = 'https://labs13-localchat.herokuapp.com';
 
-// var sb = new SendBird({ appId: Config.appId });
 export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -76,6 +73,7 @@ export default class Login extends React.Component {
 		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
 
 	openURL = url => {
+		// Code if this is ever to become iOS
 		// Use SafariView on iOS
 		// if (Platform.OS === 'ios') {
 		// 	SafariView.show({
@@ -96,7 +94,7 @@ export default class Login extends React.Component {
 				{
 				this.getStoredUser() ? (
 					this.storeUser()
-					&&
+						&&
 					this.props.navigation.navigate('JoinChat', {
 						id: this.props.screenProps.user.id,
 						sendbirdId: this.state.gfID
