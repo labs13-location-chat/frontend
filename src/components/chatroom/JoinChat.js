@@ -103,6 +103,7 @@ export default class JoinChat extends Component {
             )
             let newChat = {...chat, distance: distance}
                 return newChatItem.push(newChat)
+
             })
           
               this.setState({
