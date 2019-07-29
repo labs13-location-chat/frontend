@@ -137,9 +137,11 @@ class CreateChatroom extends Component {
             console.log(res)
             this.setState({
                 ...this.state.newChatroom,
-                name: '',
-                description: '',
-                chatroomURL: ''
+                newChatroom: {
+                    name: '',
+                    description: '',
+                    chatroomURL: ''
+                }
             })
             // this.props.updateChatroomList()
             alert("Chatroom Creation Successful!")
@@ -178,7 +180,7 @@ class CreateChatroom extends Component {
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
-            await sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  (openChannel, error) => {
+            sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  (openChannel, error) => {
                 if (error) {
                     return console.log(error)
                 }
@@ -190,10 +192,7 @@ class CreateChatroom extends Component {
                         ...this.state.newChatroom,
                         chatroom_url: channel.url 
                     }
-                }, () => console.log("in set state", openChannel, channel, this, this.state.newChatroom))
-                if (this.state.newChatroom.chatroom_url !== '') {
-                    alert("Good work!")
-                }
+                }, () => axios.post().then().catch())
                 console.log(openChannel, channel, this, this.state.newChatroom)
             })  
     }

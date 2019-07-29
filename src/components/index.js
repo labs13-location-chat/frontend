@@ -76,12 +76,12 @@ const Create = createStackNavigator(
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
 			headerTitleStyle: {
-				color: 'black',
+				color: 'white',
 				fontSize: 20,
 				fontWeight: '400'
 			},
 			headerStyle: {
-				backgroundColor: 'white'
+				backgroundColor: '#3EB1D6'
 			}
 			// headerLeft: <View></View>
 		}
