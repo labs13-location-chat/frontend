@@ -45,7 +45,6 @@ export default class MyProfile extends React.Component {
 	componentDidMount() {
 		// const user_id = this.state;
 		this.getUser();
-
 		this.props.navigation.setParams({
 			handleSave: this.handleUpdate,
 			keyboardShown: false
@@ -243,9 +242,7 @@ export default class MyProfile extends React.Component {
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
-				this.setState({
-					user: res.data[0]
-				});
+				this.props.screenProps.setUser(res.data[0])
 				console.log('res', res.data)
 				this.setState({
 					id: res.data.id,
@@ -294,17 +291,17 @@ export default class MyProfile extends React.Component {
 		} else return this.state.photo;
 	};
 
-	signOut = async ({ navigation, screenProps }) => {
-		const { user } = this.state;
-		await AsyncStorage.clear();
-		// this.props.navigation.navigate('Login');
+	signOut = async () => {
+		AsyncStorage.getItem('userData')
+		await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
 		// this.setState({
 		// 	user: undefined
 		// });
-		this.props.navigation.navigate('Login');
-		sb.disconnect(function() {
-			// A current user is discconected from SendBird server.
-		});
+		//await this.props.navigation.navigate('Login');
+		await alert("You have been logged out.")
+		// sb.disconnect(function() {
+		// 	// A current user is discconected from SendBird server.
+		// });
 	};
 
 	render() {
@@ -518,13 +515,14 @@ const styles = StyleSheet.create({
 		// flexWrap: 'nowrap'
 	},
 	logoutView: {
-		flex: 1,
+		// flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 80
+		paddingVertical: 30
 	},
 	logoutText: {
 		color: '#3EB1D6',
-		marginLeft: 10
+		marginLeft: 10,
+		fontSize: 20
 	}
 });

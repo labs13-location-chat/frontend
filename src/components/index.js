@@ -12,6 +12,7 @@ import CreateChatroom from './chatroom/CreateChatroom'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage, View, Text } from 'react-native';
 import MessageRoom from './chatroom/messages/MessageRoom';
+import AuthLoad from './Authenticate/AuthLoad';
 import {
 	createAppContainer,
 	createStackNavigator,
@@ -21,16 +22,9 @@ import {
 
 const Settings = createStackNavigator(
 	{
-		// Setting: { screen: Setting },
 		MyProfile: { screen: MyProfile }
-		// MenuSettings: { screen: MenuSettings },
-		// Notifications: { screen: Notifications }
 	},
 	{
-		// navigationOptions: {
-		// 	tabBarLabel: 'Profile',
-		// 	tabBarIcon: <Icon name='md-settings' size={25} />
-		// },
 		initialRouteName: 'MyProfile',
 		headerLayoutPreset: 'center',
 		defaultNavigationOptions: {
@@ -146,12 +140,13 @@ const LoginScreen = createStackNavigator({
 const LocalChat = createAppContainer(
 	createSwitchNavigator(
 		{
+			AuthLoading: AuthLoad,
 			AuthCheck: LoginScreen,
 			App: tabNavigator
+		},
+		{
+		    initialRouteName: 'AuthLoading',
 		}
-		// {
-		//     initialRouteName: 'AuthCheck',
-		// }
 	)
 );
 export default LocalChat;
