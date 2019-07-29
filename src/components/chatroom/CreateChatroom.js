@@ -145,7 +145,7 @@ class CreateChatroom extends Component {
             })
             // this.props.updateChatroomList()
             alert("Chatroom Creation Successful!")
-        })
+        }, () => this.props.navigation.navigate("Chats"))
         .catch(err => {
             console.log(".Catch Error", err, err.message)
             // AsyncStorage.removeItem("chaturl")
@@ -155,31 +155,13 @@ class CreateChatroom extends Component {
 
     
 
-    sendbirdCreation = () => {
-        let channel = []
-        sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId, (openChannel, error) => {
-            if (error) {
-                return alert("Error:", error) && console.log("error:", error)
-            }
 
-            channel = openChannel
-            this.setState({
-                ...this.state.newChatroom,
-                chatroom_url: channel.url
-                // sendbirdChatroom: openChannel,
-                // dog: 'banana'
-            })
-
-            console.log("stringed url", this.state.newChatroom, this.state.newChatroom.chatroom_url)
-            this.addChatroom()
-            // AsyncStorage.setItem("chaturl", openChannel.url)
-        })        
-    }
-
-    createChatroom = (e) => {
+    createChatroom = async (e) => {
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
+
+        let channel = []
             sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  (openChannel, error) => {
                 if (error) {
                     return console.log(error)
@@ -192,7 +174,7 @@ class CreateChatroom extends Component {
                         ...this.state.newChatroom,
                         chatroom_url: channel.url 
                     }
-                }, () => axios.post().then().catch())
+                }, () => this.addChatroom())
                 console.log(openChannel, channel, this, this.state.newChatroom)
             })  
     }
@@ -219,7 +201,7 @@ class CreateChatroom extends Component {
                     name="description"
                 />
                
-               <Text style={styles.titleText}>Please Select a Chatroom Diameter:</Text>
+               <Text style={styles.titleText}>Please Select a Chatroom Radius:</Text>
                 <Picker
                     style={styles.textInputs}
                     selectedValue={this.state.newChatroom.chatroom_type}
@@ -279,7 +261,7 @@ const styles = StyleSheet.create({
       },
       titleText: {
         marginLeft: 10,
-        marginTop: 10,
+        marginTop: 14,
         fontSize: 15,
         fontWeight: "600"
       },
@@ -293,16 +275,18 @@ const styles = StyleSheet.create({
     buttonContainer: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: "80%"
     },
     buttonStyle: {
-        marginTop: 50,
+        marginTop: 75,
         borderRadius: 50,
         // flexDirection: 'row',
         // justifyContent: 'center',
         textAlign: 'center',
         backgroundColor: '#3EB1D6',
         width: '75%',
+        marginLeft: '12.5%',
         padding: 15,
         margin: 'auto'
     },
