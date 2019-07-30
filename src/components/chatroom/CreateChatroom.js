@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Picker,  
     Text,
-    Dimensions,
+    Alert,
     TouchableOpacity,
     AsyncStorage
   } from "react-native";
@@ -107,34 +107,13 @@ class CreateChatroom extends Component {
     }
 
 
-    createServerChatroom = () => {
-        axios
-        .post('http://labs13-localchat.herokuapp.com/api/chatrooms/', this.state.newChatroom)
-        .then(res => {
-            this.setState({
-                ...this.state,
-                newChatroom: {
-                    ...this.state.newChatroom,
-                    name: '',
-                    description: '',
-                    chatroom_url: ''
-                }
-            })
-            alert("Chatroom Creation Successful!")
-        })
-        .catch(err => {
-            console.log(err)
-            alert("Chatroom Creation Failure!")
-        })
-    }
 
 
     addChatroom = () => {
         axios
         .post("https://labs13-localchat.herokuapp.com/api/chatrooms/", this.state.newChatroom)
         .then(res => {
-            // AsyncStorage.removeItem("chaturl")
-            console.log(res)
+            this.props.screenProps.updateJoinChats()
             this.setState({
                 ...this.state.newChatroom,
                 newChatroom: {
@@ -144,8 +123,19 @@ class CreateChatroom extends Component {
                 }
             })
             // this.props.updateChatroomList()
-            alert("Chatroom Creation Successful!")
-        }, () => this.props.navigation.navigate("Chats"))
+            Alert.alert(
+                'Chatroom Creation Success!',
+                'Would you like to view your chatroom?',
+                [
+                  {
+                    text: 'Yes',
+                    onPress: () => this.props.navigation.navigate("Chats"),
+                  },
+                  {text: 'No', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
+        })
         .catch(err => {
             console.log(".Catch Error", err, err.message)
             // AsyncStorage.removeItem("chaturl")
