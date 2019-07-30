@@ -29,8 +29,9 @@ export default class ChatSearch extends Component {
             }).sort(function (a, b) {
             return a.distance - b.distance
           })}
-
-          renderItem={info => 
+          onRefresh={() => this.props.refreshPage()}
+          refreshing={this.state.updating}
+          renderItem={info =>  
             <ChatroomItem 
               navigation={this.props.navigation} 
               noData={this.props.noData}

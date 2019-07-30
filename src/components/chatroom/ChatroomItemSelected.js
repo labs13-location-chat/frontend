@@ -1,7 +1,13 @@
 import {
-  StyleSheet,
+  View,
+  StyleSheet,  
+  Text,
+  Button,
   Dimensions,
+  TouchableOpacity
 } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { Component } from "react";
 import axios from 'axios'
 import SendBird from 'sendbird'
@@ -34,6 +40,7 @@ export default class ChatroomItemSelected extends Component {
   componentDidMount() {
     axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
+        // console.log('data',res.data)
         this.setState({
           location: {
             longitude: res.data.longitude,
@@ -45,16 +52,20 @@ export default class ChatroomItemSelected extends Component {
           },
           chatroom: res.data
         })
-        })
+        // console.log('location', this.state.location)
+      })
       .catch(err => console.log(err))
 
       this.getDistanceFromChat()
     }
   
-
-    // Calculates distance from each chatroom
-    getDistanceFromChat = async () => {
-        let distance = await getDistance(
+    getDistanceFromChat = () => {
+      if (this.state.location.latitude === 0 ) {
+        return setTimeout(() => {
+          this.getDistanceFromChat()
+        }, 1000)
+      } else {
+        let distance = getDistance(
           { latitude: this.props.focusedLocation.latitude, longitude: this.props.focusedLocation.longitude }, 
           { latitude: this.state.location.latitude, longitude: this.state.location.longitude },
           1
@@ -62,42 +73,37 @@ export default class ChatroomItemSelected extends Component {
         this.setState({
           distance: distance
         })
+        // console.log("distance", distance)
         }
-    
+    }
 
-// Joins the channel if criteria are met.  
-  joinChannel = (e) => {
+
+  joinChannel = () => {
     if (this.props.chat.distance === 99999) {
       return alert("Distance still loading, please try again")
+    } else if (this.props.chat.chatroom_type === "worldwide" && this.props.chat.distance > 0) {
+      this.props.navigation.navigate('Chatroom', {
+        user: this.props.chat
+      })
     } else if (this.props.chat.chatroom_type === "rural city" && this.props.chat.distance <= 161000) {
       this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
+        user: this.props.chat
       })
     }if (this.props.chat.chatroom_type === "big city" && this.props.chat.distance <= 40500) {
       this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
+        user: this.props.chat
       })
     } else if (this.props.chat.chatroom_type === "town" && this.props.chat.distance <= 24500) {
       this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
+        user: this.props.chat
       })
     } else if (this.props.chat.chatroom_type === "beach" && this.props.chat.distance <= 1600) {
       this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
+        user: this.props.chat
       })
     } else if (this.props.chat.chatroom_type === "stadium" && this.props.chat.distance <= 800) {
       this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
-      })
-    } else if (this.props.chat.chatroom_type === "worldwide") {
-      this.props.navigation.navigate('Chatroom', {
-        chatroom: this.props.chat,
-        user: this.props.user
+        user: this.props.chat
       })
     } else {
       alert(`You aren't in or near ${this.props.chat.name}!`)
@@ -109,7 +115,6 @@ export default class ChatroomItemSelected extends Component {
 
   render() {
     // console.log("distance in state", this.state.distance)
-    console.log(this.props.chat.chatroom_type)
     // console.log('focusedlocation', this.props.focusedLocation)
     // console.log('location', this.state.location)
     // console.log('chatroom ', this.state.chatroom)
@@ -132,7 +137,7 @@ export default class ChatroomItemSelected extends Component {
           {/* <Marker coordinate={markers} /> */}
         </View>
         <View style={styles.joinContainer}>
-          <TouchableOpacity style={styles.join} onPress={e => this.joinChannel(e)}>
+          <TouchableOpacity style={styles.join} onPress={this.joinChannel}>
             <View>              
               <Text style={styles.joinText}>JOIN CHAT</Text>
             </View>

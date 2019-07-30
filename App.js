@@ -9,11 +9,18 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: {}
+      user: {},
+      pageRefreshCounter: 0
     }
   
     // Initialize sendbird using our app id
     var sb = new Sendbird({ appId: Config.appId })
+  }
+
+  updateJoinChats = () => {
+    this.setState({
+      pageRefreshCounter: this.state.pageRefreshCounter + 1
+    })
   }
 
   setUser = (user) => {
@@ -25,8 +32,9 @@ export default class App extends Component {
   }
   
   render() {
+    console.log('prf', this.state.pageRefreshCounter)
     return (
-        <LocalChat screenProps={{setUser: this.setUser, clearUser: this.clearUser, user: this.state.user}}/>
+        <LocalChat screenProps={{setUser: this.setUser, clearUser: this.clearUser, user: this.state.user, updateJoinChats: this.updateJoinChats, pageRefreshCounter: this.state.pageRefreshCounter}}/>
     );
   }
 }
