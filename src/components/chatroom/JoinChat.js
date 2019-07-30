@@ -93,6 +93,23 @@ export default class JoinChat extends Component {
       }
     }
 
+    refreshPage = async () => {
+      await this.getGeoLocation()
+        await axios
+        .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+        .then(res => {
+          this.setState({
+            chatroom: res.data,
+            data: res.data
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        await this.getDistanceFromChat()
+      }
+    
+
 
     getGeoLocation =  async () => {
       if (navigator.geolocation) {
@@ -282,6 +299,7 @@ export default class JoinChat extends Component {
             chatWithDistance={this.state.chatWithDistance}
             focusedLocation={this.state.focusedLocation}
             user={this.state.user}
+            refreshPage={this.refreshPage}
           />
           <View style={styles.chats} />
         </View>}
