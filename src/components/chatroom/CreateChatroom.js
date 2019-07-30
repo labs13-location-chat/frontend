@@ -6,6 +6,7 @@ import {
     Picker,  
     Text,
     Alert,
+    ActivityIndicator,
     TouchableOpacity,
     AsyncStorage
   } from "react-native";
@@ -37,7 +38,7 @@ class CreateChatroom extends Component {
              },
              userId: 0,
              sendbirdChatroom: [],
-             dog: ''
+             creatingChat: false
         }
     }
 
@@ -119,10 +120,11 @@ class CreateChatroom extends Component {
                 newChatroom: {
                     name: '',
                     description: '',
-                    chatroomURL: ''
+                    chatroomURL: '',
+                    creatingChat: false
                 }
             })
-            // this.props.updateChatroomList()
+            
             Alert.alert(
                 'Chatroom Creation Success!',
                 'Would you like to view your chatroom?',
@@ -135,10 +137,14 @@ class CreateChatroom extends Component {
                 ],
                 {cancelable: false},
               );
+            // alert("Chatroom Created Successfully!")
         })
         .catch(err => {
             console.log(".Catch Error", err, err.message)
             // AsyncStorage.removeItem("chaturl")
+            this.setState({
+                creatingChat: false
+            })
             alert("Chatroom creation failure!  Please try again!")
         })
     }
@@ -150,7 +156,9 @@ class CreateChatroom extends Component {
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
-
+        this.setState({
+            creatingChat: true
+        })
         let channel = []
             sb.OpenChannel.createChannel(this.state.newChatroom.name, this.state.newChatroom.img_url, this.state.newChatroom.description, this.state.userId,  (openChannel, error) => {
                 if (error) {
@@ -172,26 +180,32 @@ class CreateChatroom extends Component {
     render() {
         return (
             <View>
-                {/* <Text style={styles.text}>New Feature Coming Soon!</Text> */}
+                {this.state.creatingChat ? 
+                <View>
+                    <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
+                </View>
+                :
+                <View>
+
                 <Text style={styles.headerText}>Please Fill Out All Information</Text>
                 <Text style={styles.titleText}>Name of Chatroom:</Text>
                 <TextInput
-                    style={styles.textInputs}
-                    placeholder="Name"
+                style={styles.textInputs}
+                placeholder="Name"
                     value={this.state.newChatroom.name}
                     onChangeText={val => this.handleNameInput(val)}
                     name="name"
-                />
-                <Text style={styles.titleText}>Chatroom Description:</Text>
-                <TextInput
+                    />
+                    <Text style={styles.titleText}>Chatroom Description:</Text>
+                    <TextInput
                     style={styles.textInputs}
                     placeholder="Description"
                     value={this.state.newChatroom.description}
                     onChangeText={val => this.handleDescriptionInput(val)}
                     name="description"
-                />
-               
-               <Text style={styles.titleText}>Please Select a Chatroom Radius:</Text>
+                    />
+                
+                <Text style={styles.titleText}>Please Select a Chatroom Radius:</Text>
                 <Picker
                     style={styles.textInputs}
                     selectedValue={this.state.newChatroom.chatroom_type}
@@ -203,7 +217,7 @@ class CreateChatroom extends Component {
                             }
                         })
                     }}
-                >
+                    >
                     <Picker.Item label="Rural City (100 mi radius)" value="rural city" />
                     <Picker.Item label="Big City (25 mi radius)" value="big city" />
                     <Picker.Item label="Town (15 mi radius)" value="town" />
@@ -218,6 +232,8 @@ class CreateChatroom extends Component {
                         <Text style={styles.buttonText}>Create Chatroom</Text>
                     </TouchableOpacity>
                 </View>
+            </View>
+            }
             </View>
         )
     }
@@ -284,5 +300,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         textAlign: 'center'
-    }
+    },
+  loader: {
+      flex: 1,
+      marginTop: '50%'
+  }
 })
