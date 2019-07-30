@@ -72,6 +72,27 @@ export default class JoinChat extends Component {
       await this.getDistanceFromChat()
     }
 
+    componentDidUpdate = async (prevProps) => {
+      if (this.props.screenProps.pageRefreshCounter !== prevProps.screenProps.pageRefreshCounter) {
+        this.setState({
+          loadingChatRooms: true
+        })
+        await this.getGeoLocation()
+        await axios
+        .get("https://labs13-localchat.herokuapp.com/api/chatrooms")
+        .then(res => {
+          this.setState({
+            chatroom: res.data,
+            data: res.data
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        await this.getDistanceFromChat()
+      }
+    }
+
 
     getGeoLocation =  async () => {
       if (navigator.geolocation) {
