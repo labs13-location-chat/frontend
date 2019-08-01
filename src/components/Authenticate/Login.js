@@ -43,27 +43,22 @@ export default class Login extends React.Component {
 		Linking.removeEventListener('url', this.handleOpenURL);
 	}
 
-	 storeUser = async () => {
+	async storeUser() {
 		try {
-		   await AsyncStorage.setItem("userData", JSON.stringify(this.props.screenProps.user));
-		   console.log("SORING USER")
+			await AsyncStorage.setItem("userData", JSON.stringify(this.state.user));
 		} catch (error) {
-		  console.log("error storing", error);
+			console.log(error)
 		}
-	}
-
-	getStoredUser = () => {
-		AsyncStorage.getItem('userData').then(user => user)
 	}
 
 	handleOpenURL = ({ url }) => {
 		// Extract stringified user string out of the URL
 		const [ , user_string ] = url.match(/user=([^#]+)/);
-		// this.setState({
-		// 	// Decode the user string and parse it into JSON
-		// 	user: JSON.parse(decodeURI(user_string))
-		// });
-		this.props.screenProps.setUser(JSON.parse(decodeURI(user_string)))
+		this.setState({
+			// Decode the user string and parse it into JSON
+			user: JSON.parse(decodeURI(user_string))
+		});
+		// this.props.screenProps.setUser(JSON.parse(decodeURI(user_string)))
 		if (Platform.OS === 'ios') {
 			SafariView.dismiss();
 		}
@@ -90,15 +85,16 @@ export default class Login extends React.Component {
 	render() {
 		// console.log(this.state)
 		const { user } = this.state;
-		console.log("CURRENT USER", this.getStoredUser())
 		return (
 			<View style={styles.container}>
 				{
-				this.getStoredUser() ? (
+				user	
+				? (
 					this.storeUser()
 					&&
 					this.props.navigation.navigate('JoinChat', {
-						id: this.props.screenProps.user.id,
+						id: this.state.user.id,
+						// id: this.props.screenProps.user.id,
 						sendbirdId: this.state.gfID
 					})
 				

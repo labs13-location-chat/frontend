@@ -9,7 +9,7 @@ export default class AuthLoad extends React.Component {
   
   checkingUser = async () => {
     const existing = await AsyncStorage.getItem("userData");
-    existing ? this.props.navigation.navigate("App") :  this.props.navigation.navigate("AuthCheck");
+    this.props.navigation.navigate(existing ? "App" : "AuthCheck");
   };
 
   render() {

@@ -68,7 +68,7 @@ export default class Message extends Component {
     }
     
     render() {
-    console.log(this.props)
+    // console.log(this.props)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{

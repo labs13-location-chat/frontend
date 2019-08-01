@@ -235,14 +235,13 @@ export default class MyProfile extends React.Component {
 		// console.log('getUser');
 		let userData = await AsyncStorage.getItem("userData");
 		let data = JSON.parse(userData);
-		// this.setState({
-		// 	user: data.id
-		// })
 		const user_id = data.id;
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
-				this.props.screenProps.setUser(res.data[0])
+				this.setState({
+					user: res.data[0]
+				});
 				console.log('res', res.data)
 				this.setState({
 					id: res.data.id,
@@ -259,7 +258,6 @@ export default class MyProfile extends React.Component {
 					// this.state.user.photo
 					res.data.photo
 				});
-				console.log('getuser firstname', this.state.first_name);
 			})
 			.catch(err => {
 				console.log(err);
@@ -291,23 +289,22 @@ export default class MyProfile extends React.Component {
 		} else return this.state.photo;
 	};
 
-	signOut = async () => {
-		AsyncStorage.getItem('userData')
-		await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
-		// this.setState({
-		// 	user: undefined
-		// });
-		//await this.props.navigation.navigate('Login');
-		await alert("You have been logged out.")
-		// sb.disconnect(function() {
-		// 	// A current user is discconected from SendBird server.
-		// });
-	};
+	// signOut = async () => {
+	// 	AsyncStorage.getItem('userData')
+	// 	await AsyncStorage.clear()
+	// 	// await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
+	// 	// this.setState({
+	// 	// 	user: undefined
+	// 	// });
+	// 	await this.props.navigation.navigate('AuthLoading');
+	// 	await alert("You have been logged out.")
+	// 	// sb.disconnect(function() {
+	// 	// 	// A current user is discconected from SendBird server.
+	// 	// });
+	// };
 
 	render() {
 		const { photo } = this.state;
-		console.log('u', this.state)
-		console.log('profprops', this.props)
 		// let changePhoto = photo === null ? { uri: photo } : { uri: photo.uri };
 		return (
 			<TouchableWithoutFeedback
@@ -415,7 +412,7 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									title='Logout'
 									onPress={this.signOut}
 								>
@@ -425,7 +422,7 @@ export default class MyProfile extends React.Component {
 											Logout
 										</Text>
 									</View>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 							{/* <KeyboardSpacer /> */}
 						</View>
