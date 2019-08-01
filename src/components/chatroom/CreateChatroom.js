@@ -152,7 +152,7 @@ class CreateChatroom extends Component {
     
 
 
-    createChatroom = async (e) => {
+    createChatroom = async () => {
         // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
         //     await alert("Please enter a Name and/or Description!")
         // } else {
@@ -173,7 +173,7 @@ class CreateChatroom extends Component {
                         chatroom_url: channel.url 
                     }
                 }, () => this.addChatroom())
-                console.log(openChannel, channel, this, this.state.newChatroom)
+                // console.log(openChannel, channel, this, this.state.newChatroom)
             })  
     }
     
@@ -227,7 +227,7 @@ class CreateChatroom extends Component {
                 </Picker>   
                 <View styles={styles.buttonContainer}>
                     <TouchableOpacity 
-                        onPress={e => this.createChatroom(e)}
+                        onPress={this.createChatroom}
                         style={styles.buttonStyle}
                         >
                         <Text style={styles.buttonText}>Create Chatroom</Text>
@@ -258,9 +258,10 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5
     },
-    loaaderText: {
+    loaderText: {
+        marginLeft: "5%",
         textAlign: 'center',
-        marginTop: "60%",
+        marginTop: "70%",
         fontSize: 18,
         marginTop: 5,
         marginBottom: 5

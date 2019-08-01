@@ -291,30 +291,30 @@ export default class MyProfile extends React.Component {
 		} else return this.state.photo;
 	};
 
-	signOut = async () => {
-		try {
-			return await AsyncStorage.getAllKeys()
-				.then(AsyncStorage.multiRemove)
-				.then(this.props.screenProps.clearState())
-				.then(this.props.navigation.navigate("Login"))
-		} catch (err) {
-			console.log(err)
-			return false;
-		}
-		// try{
+	// signOut = async () => {
+	// 	try {
+	// 		return await AsyncStorage.getAllKeys()
+	// 			.then(AsyncStorage.multiRemove)
+	// 			.then(this.props.screenProps.clearState())
+	// 			.then(this.props.navigation.navigate("Login"))
+	// 	} catch (err) {
+	// 		console.log(err)
+	// 		return false;
+	// 	}
+	// 	// try{
 			
-		// 	AsyncStorage.setItem('userData', 'hamza').then(() => {
-		// 		AsyncStorage.getItem('userData').then(user => {
-		// 			if(user === 'hamza'){
-		// 				this.props.navigation.navigate('Login')
-		// 			}
-		// 		})
-		// 	})
-		// } catch(e) {
-		// 	console.log(e)
-		// }
+	// 	// 	AsyncStorage.setItem('userData', 'hamza').then(() => {
+	// 	// 		AsyncStorage.getItem('userData').then(user => {
+	// 	// 			if(user === 'hamza'){
+	// 	// 				this.props.navigation.navigate('Login')
+	// 	// 			}
+	// 	// 		})
+	// 	// 	})
+	// 	// } catch(e) {
+	// 	// 	console.log(e)
+	// 	// }
 
-	};
+	// };
 
 	render() {
 		const { photo } = this.state;
@@ -427,7 +427,7 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									title='Logout'
 									onPress={this.signOut}
 								>
@@ -437,7 +437,7 @@ export default class MyProfile extends React.Component {
 											Logout
 										</Text>
 									</View>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 							{/* <KeyboardSpacer /> */}
 						</View>
