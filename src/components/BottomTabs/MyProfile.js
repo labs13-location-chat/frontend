@@ -1,5 +1,5 @@
 import React from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import {
 	View,
 	Text,
@@ -10,6 +10,7 @@ import {
 	ScrollView,
 	TouchableWithoutFeedback,
 	TouchableOpacity,
+	AsyncStorage,
 	Button,
 	Platform
 } from 'react-native';
@@ -241,7 +242,7 @@ export default class MyProfile extends React.Component {
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
-				this.props.screenProps.setUser(res.data[0])
+				// this.props.screenProps.setUser(res.data[0])
 				console.log('res', res.data)
 				this.setState({
 					id: res.data.id,
@@ -291,20 +292,28 @@ export default class MyProfile extends React.Component {
 	};
 
 	signOut = async () => {
-		// AsyncStorage.getItem('userData')
-		try{
-			await AsyncStorage.clear();
-		} catch(e) {
-			console.log(e)
+		try {
+			return await AsyncStorage.getAllKeys()
+				.then(AsyncStorage.multiRemove)
+				.then(this.props.screenProps.clearState())
+				.then(this.props.navigation.navigate("Login"))
+		} catch (err) {
+			console.log(err)
+			return false;
 		}
-		// this.setState({
-		// 	user: undefined
-		// });
-		//await this.props.navigation.navigate('Login');
-		await alert("You have been logged out.")
-		// sb.disconnect(function() {
-		// 	// A current user is discconected from SendBird server.
-		// });
+		// try{
+			
+		// 	AsyncStorage.setItem('userData', 'hamza').then(() => {
+		// 		AsyncStorage.getItem('userData').then(user => {
+		// 			if(user === 'hamza'){
+		// 				this.props.navigation.navigate('Login')
+		// 			}
+		// 		})
+		// 	})
+		// } catch(e) {
+		// 	console.log(e)
+		// }
+
 	};
 
 	render() {

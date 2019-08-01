@@ -19,15 +19,15 @@ export default class Login extends React.Component {
 		};
 	}
 
-	componentDidMount = () => {
-		// Event listener to handle OAuth url
-		Linking.addEventListener('url', this.props.screenProps.handleOpenURL);
-		Linking.getInitialURL().then(url => {
-			if (url) {
-				this.props.screenProps.handleOpenURL({ url });
-			}
-		});
-	}
+	// componentDidMount = () => {
+	// 	// Event listener to handle OAuth url
+	// 	Linking.addEventListener('url', this.props.screenProps.handleOpenURL);
+	// 	Linking.getInitialURL().then(url => {
+	// 		if (url) {
+	// 			this.props.screenProps.handleOpenURL({ url });
+	// 		}
+	// 	});
+	// }
 
 	componentWillUnmount() {
 		Linking.removeEventListener('url', this.props.screenProps.handleOpenURL);

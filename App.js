@@ -1,11 +1,11 @@
 
 import React, {Component} from 'react';
-import { Platform, StyleSheet, Text, View, Linking, } from 'react-native';
+import { Platform, StyleSheet, Text, View, Linking, AsyncStorage} from 'react-native';
 import Sendbird from 'sendbird'
 import Config from './src/config'
 import LocalChat from './src/components/index';
 
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 export default class App extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ loginWithFacebook = () =>{
         // 	user: JSON.parse(decodeURI(user_string))
         // });
         this.setUser(JSON.parse(decodeURI(user_string)))
-        console.log(JSON.parse(decodeURI(user_string)))
+        console.log("handleOpenURL", JSON.parse(decodeURI(user_string)))
         if (Platform.OS === 'ios') {
             SafariView.dismiss();
         }
@@ -53,15 +53,23 @@ loginWithFacebook = () =>{
 storeUser = async () => {
 try {
    await AsyncStorage.setItem("userData", JSON.stringify(this.props.screenProps.user));
-   console.log("SORING USER")
+   console.log("STORING USER - storeUser()")
 } catch (error) {
   console.log("error storing", error);
 }
 }
 
+clearState = () => {
+  console.log("clearState()")
+  this.setState({
+    user: {}
+  })
+}
+
 getStoredUser = async () => {
   try {
     let user = AsyncStorage.getItem('userData').then(user => user)
+    console.log("getStoredUser()")
     if (user) {
         this.setState({
             user: user
@@ -89,7 +97,7 @@ getStoredUser = async () => {
   render() {
     console.log(this.state.user)
     return (
-        <LocalChat screenProps={{setUser: this.setUser, clearUser: this.clearUser, user: this.state.user, updateJoinChats: this.updateJoinChats, pageRefreshCounter: this.state.pageRefreshCounter, getStoredUser: this.getStoredUser, storeUser: this.storeUser,  handleOpenURL: this.handleOpenURL, loginWithFacebook: this.loginWithFacebook, loginWithGoogle: this.loginWithGoogle}}/>
+        <LocalChat screenProps={{setUser: this.setUser, clearUser: this.clearUser, user: this.state.user, updateJoinChats: this.updateJoinChats, pageRefreshCounter: this.state.pageRefreshCounter, getStoredUser: this.getStoredUser, storeUser: this.storeUser,  handleOpenURL: this.handleOpenURL, loginWithFacebook: this.loginWithFacebook, loginWithGoogle: this.loginWithGoogle, clearState: this.clearState}}/>
     );
   }
 }
