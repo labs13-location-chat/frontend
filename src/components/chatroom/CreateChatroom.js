@@ -121,8 +121,8 @@ class CreateChatroom extends Component {
                     name: '',
                     description: '',
                     chatroomURL: '',
-                    creatingChat: false
-                }
+                },
+                creatingChat: false
             })
             
             Alert.alert(
@@ -183,6 +183,7 @@ class CreateChatroom extends Component {
                 {this.state.creatingChat ? 
                 <View>
                     <ActivityIndicator style={styles.loader} size="large" color="#3EB1D6" />
+                    <Text style={styles.loaderText}>Creating Chatroom...</Text>
                 </View>
                 :
                 <View>
@@ -253,6 +254,13 @@ const styles = StyleSheet.create({
     },
     headerText: {
         textAlign: 'center',
+        fontSize: 18,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    loaaderText: {
+        textAlign: 'center',
+        marginTop: "60%",
         fontSize: 18,
         marginTop: 5,
         marginBottom: 5

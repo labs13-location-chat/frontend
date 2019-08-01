@@ -1,24 +1,25 @@
 import React from 'react'
-import Setting from './BottomTabs/Setting';
 import JoinChat from './chatroom/JoinChat';
 import Login from './Authenticate/Login';
-import Register from './Authenticate/Register';
-import ChatMap from '../components/chatroom/ChatMap';
-import Camera from './BottomTabs/Camera';
 import MyProfile from './BottomTabs/MyProfile';
-import MenuSettings from './BottomTabs/Settings';
-import Notifications from './BottomTabs/Notifications';
 import CreateChatroom from './chatroom/CreateChatroom'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { AsyncStorage, View, Text } from 'react-native';
 import MessageRoom from './chatroom/messages/MessageRoom';
 import AuthLoad from './Authenticate/AuthLoad';
 import {
 	createAppContainer,
 	createStackNavigator,
 	createSwitchNavigator,
-	createBottomTabNavigator
+	createBottomTabNavigator,
+	withNavigation
 } from 'react-navigation';
+
+// import privateRoute from '../components/Authenticate/AuthCheck'
+
+
+// const ChatroomListWithAuth = withNavigation(privateRoute(JoinChat))
+// const CreateWithAuth = privateRoute(CreateChatroom)
+// const ProfileWithAuth = privateRoute(MyProfile)
 
 const Settings = createStackNavigator(
 	{

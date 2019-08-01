@@ -1,19 +1,12 @@
 import React from 'react';
-import axios from 'axios';
 import {
 	View,
 	TouchableOpacity,
 	Text,
-	ActivityIndicator,
 	StyleSheet,
-	AsyncStorage,
 	Image,
 	Linking,
-	Platform
 } from 'react-native';
-import SafariView from 'react-native-safari-view';
-
-const URL = 'https://labs13-localchat.herokuapp.com';
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -28,79 +21,23 @@ export default class Login extends React.Component {
 
 	componentDidMount = () => {
 		// Event listener to handle OAuth url
-		Linking.addEventListener('url', this.handleOpenURL);
+		Linking.addEventListener('url', this.props.screenProps.handleOpenURL);
 		Linking.getInitialURL().then(url => {
 			if (url) {
-				this.handleOpenURL({ url });
+				this.props.screenProps.handleOpenURL({ url });
 			}
 		});
 	}
 
 	componentWillUnmount() {
-		Linking.removeEventListener('url', this.handleOpenURL);
+		Linking.removeEventListener('url', this.props.screenProps.handleOpenURL);
 	}
 
-	 storeUser = async () => {
-		try {
-		   await AsyncStorage.setItem("userData", JSON.stringify(this.props.screenProps.user));
-		   console.log("SORING USER")
-		} catch (error) {
-		  console.log("error storing", error);
-		}
-	}
-
-	getStoredUser = () => {
-		AsyncStorage.getItem('userData').then(user => user)
-	}
-
-	handleOpenURL = ({ url }) => {
-		// Extract stringified user string out of the URL
-		const [ , user_string ] = url.match(/user=([^#]+)/);
-		// this.setState({
-		// 	// Decode the user string and parse it into JSON
-		// 	user: JSON.parse(decodeURI(user_string))
-		// });
-		this.props.screenProps.setUser(JSON.parse(decodeURI(user_string)))
-		if (Platform.OS === 'ios') {
-			SafariView.dismiss();
-		}
-	};
-
-	loginWithGoogle = () =>
-		this.openURL('https://labs13-localchat.herokuapp.com/auth/google');
-
-	loginWithFacebook = () =>
-		this.openURL('https://labs13-localchat.herokuapp.com/auth/facebook');
-
-	openURL = url => {
-		// Code if this is ever to become iOS
-		// Use SafariView on iOS
-		// if (Platform.OS === 'ios') {
-		// 	SafariView.show({
-		// 		url: url,
-		// 		fromBottom: true
-		// 	});
-		// } else {
-			// Or Linking.openURL on Android
-			Linking.openURL(url);
-		}
+	
 
 	render() {
-		// console.log(this.state)
-		const { user } = this.state;
-		console.log("CURRENT USER", this.getStoredUser())
 		return (
 			<View style={styles.container}>
-				{
-				this.getStoredUser() ? (
-					this.storeUser()
-						&&
-					this.props.navigation.navigate('JoinChat', {
-						id: this.props.screenProps.user.id,
-						sendbirdId: this.state.gfID
-					})
-				
-					) : (
 					<View style={styles.content}>
 						<Image source={require('./CMLogo.png')} />
 
@@ -112,7 +49,7 @@ export default class Login extends React.Component {
 							</Text>
 						</View>
 						<TouchableOpacity
-							onPress={this.loginWithGoogle}
+							onPress={this.props.screenProps.loginWithGoogle}
 							style={styles.btnClickContain}
 						>
 							<View style={styles.btnContainer}>
@@ -126,7 +63,7 @@ export default class Login extends React.Component {
 							</View>
 						</TouchableOpacity>
 						<TouchableOpacity
-							onPress={this.loginWithFacebook}
+							onPress={this.props.screenProps.loginWithFacebook}
 							style={styles.btnClickContain}
 						>
 							<View style={styles.btnContainer}>
@@ -140,7 +77,7 @@ export default class Login extends React.Component {
 							</View>
 						</TouchableOpacity>
 					</View>
-				)}
+			
 			</View>
 		);
 	}

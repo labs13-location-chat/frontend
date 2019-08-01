@@ -1,5 +1,5 @@
 import React from 'react';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import {
 	View,
 	Text,
@@ -10,7 +10,6 @@ import {
 	ScrollView,
 	TouchableWithoutFeedback,
 	TouchableOpacity,
-	AsyncStorage,
 	Button,
 	Platform
 } from 'react-native';
@@ -292,8 +291,12 @@ export default class MyProfile extends React.Component {
 	};
 
 	signOut = async () => {
-		AsyncStorage.getItem('userData')
-		await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
+		// AsyncStorage.getItem('userData')
+		try{
+			await AsyncStorage.clear();
+		} catch(e) {
+			console.log(e)
+		}
 		// this.setState({
 		// 	user: undefined
 		// });

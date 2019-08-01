@@ -67,6 +67,8 @@ export default class Message extends Component {
     }
     
     render() {
+        console.log('in message', this.props)
+        console.log(this.state)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{
