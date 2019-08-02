@@ -1,5 +1,5 @@
 import React from 'react';
-
+// import AsyncStorage from '@react-native-community/async-storage';
 import {
 	View,
 	Text,
@@ -356,7 +356,7 @@ export default class MyProfile extends React.Component {
 									style={styles.nameInputBox}
 									onChangeText={this.handleNameChange}
 									name='first_name'
-									value={this.state.first_name.toUpperCase()}
+									value={this.state.first_name}
 								/>
 								<View style={styles.phoneView}>
 									<Icon name='phone' size={20} />

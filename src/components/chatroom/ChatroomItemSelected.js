@@ -55,10 +55,17 @@ export default class ChatroomItemSelected extends Component {
         // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
-
+      
       this.getDistanceFromChat()
     }
   
+    getUser = async () => {
+      let user = await AsyncStorage.getItem('userData')
+      this.setState({
+
+      })
+    }
+
     getDistanceFromChat = () => {
       if (this.state.location.latitude === 0 ) {
         return setTimeout(() => {

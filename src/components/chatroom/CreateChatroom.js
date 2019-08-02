@@ -128,6 +128,7 @@ export default class CreateChatroom extends Component {
         console.log(this.state.sendbirdChatroom)
         ) 
     }
+}
     
     render() {
         console.log(this.state.newChatroom)
@@ -169,6 +170,8 @@ export default class CreateChatroom extends Component {
                     title="Create Channel" 
                     onPress={e => this.createChatroom(e)}
                 />
+            </View>
+            }
             </View>
         )
     }

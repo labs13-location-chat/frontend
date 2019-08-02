@@ -1,9 +1,11 @@
 
 import React, {Component} from 'react';
-import { Platform, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { Platform, StyleSheet, Text, View, Linking, AsyncStorage} from 'react-native';
 import Sendbird from 'sendbird'
 import Config from './src/config'
 import LocalChat from './src/components/index';
+
+// import AsyncStorage from '@react-native-community/async-storage';
 
 export default class App extends Component {
   constructor(props) {

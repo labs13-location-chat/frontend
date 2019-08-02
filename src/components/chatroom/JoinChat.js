@@ -201,9 +201,9 @@ export default class JoinChat extends Component {
   fetchUser = async () => {
     let userData = await AsyncStorage.getItem("userData");
     let user = JSON.parse(userData);
-
+    console.log("fetchuser in joinchat", user)
     this.setState({
-      user
+      user: user
   })
 }
 
@@ -221,7 +221,7 @@ export default class JoinChat extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     };
-
+console.log("JC User state", this.state.user)
     return (
       <View style={styles.container}>
         <View>

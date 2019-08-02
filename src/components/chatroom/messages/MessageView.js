@@ -35,7 +35,7 @@ export default class MessageView extends Component {
                         <Message 
                             message={info.item}
                             userID={this.props.userID}
-                            userInfo={this.props.userInfo}
+                            user={this.props.user}
                         />
                     }
 
@@ -45,4 +45,3 @@ export default class MessageView extends Component {
         )
     }
 }
-
