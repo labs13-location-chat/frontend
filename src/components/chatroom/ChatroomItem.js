@@ -41,6 +41,7 @@ export default class ChatroomItem extends Component {
   }
 
   render() {
+    console.log(this.props.user)
     let image = this.props.chat.img_url
     return (
       <View style={styles.container}>

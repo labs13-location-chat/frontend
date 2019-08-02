@@ -153,9 +153,9 @@ class CreateChatroom extends Component {
 
 
     createChatroom = async () => {
-        // if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
-        //     await alert("Please enter a Name and/or Description!")
-        // } else {
+        if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
+            await alert("Please enter a Name and/or Description!")
+        } else {
         this.setState({
             creatingChat: true
         })
@@ -176,6 +176,7 @@ class CreateChatroom extends Component {
                 // console.log(openChannel, channel, this, this.state.newChatroom)
             })  
     }
+}
     
     render() {
         return (

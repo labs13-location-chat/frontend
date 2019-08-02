@@ -34,15 +34,18 @@ export default class MessageRoom extends Component {
 			messageSentUpdate: false,
 			keyboardOffset: 0,
 			keyboardShown: false,
-			name: ''
+			name: '',
+			userData: {}
 		};
 	}
 
 	async componentDidMount() {
 		let chatInfo = this.props.navigation.getParam('user');
+		let userInfo = this.props.navigation.getParam('userObject');
 		this.setState({
 			chatroomInfo: chatInfo,
-			keyboardShown: false
+			keyboardShown: false,
+			userData: userInfo
 		});
 		this.getChannel();
 	}
@@ -184,6 +187,7 @@ export default class MessageRoom extends Component {
 								userID={this.state.userID}
 								chatroomInfo={this.state.chatroomInfo}
 								messages={this.state.messages}
+								user={this.state.userData}
 								// style={styles.messageSection}
 							/>
 							<MessageForm

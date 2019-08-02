@@ -19,6 +19,11 @@ export default class App extends Component {
     var sb = new Sendbird({ appId: Config.appId })
   }
 
+componentDidMount() {
+  this.getStoredUser()
+}
+
+
 	openURL = url => {
 			Linking.openURL(url);
 		}
@@ -69,10 +74,10 @@ clearState = () => {
 getStoredUser = async () => {
   try {
     let user = AsyncStorage.getItem('userData').then(user => user)
-    console.log("getStoredUser()")
+    console.log("getStoredUser()", JSON.parse(user), user)
     if (user) {
         this.setState({
-            user: user
+            user: JSON.parse(user)
     })
   }} catch(e){
 
@@ -95,7 +100,7 @@ getStoredUser = async () => {
   }
   
   render() {
-    console.log(this.state.user)
+    console.log("cat", this.state.user)
     return (
         <LocalChat screenProps={{setUser: this.setUser, clearUser: this.clearUser, user: this.state.user, updateJoinChats: this.updateJoinChats, pageRefreshCounter: this.state.pageRefreshCounter, getStoredUser: this.getStoredUser, storeUser: this.storeUser,  handleOpenURL: this.handleOpenURL, loginWithFacebook: this.loginWithFacebook, loginWithGoogle: this.loginWithGoogle, clearState: this.clearState}}/>
     );
