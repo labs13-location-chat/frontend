@@ -3,7 +3,9 @@ import {
 	View,
 	StyleSheet,
 	ActivityIndicator,
+	Keyboard,
 	AsyncStorage,
+	KeyboardAvoidingView
 } from 'react-native';
 import SendBird from 'sendbird';
 import Config from '../../../config';
@@ -12,6 +14,7 @@ import MessageView from './MessageView';
 
 var sb = new SendBird({ appId: Config.appId });
 var ChannelHandler = new sb.ChannelHandler();
+const params = new sb.UserMessageParams();
 
 export default class MessageRoom extends Component {
 	constructor(props) {
@@ -31,17 +34,18 @@ export default class MessageRoom extends Component {
 			messageSentUpdate: false,
 			keyboardOffset: 0,
 			keyboardShown: false,
-			name: ''
+			name: '',
+			userData: {}
 		};
 	}
 
-	componentDidMount() {
-		let chatInfo = this.props.navigation.getParam('chatroom');
-		let userInfo = this.props.navigation.getParam('user');
+	async componentDidMount() {
+		let chatInfo = this.props.navigation.getParam('user');
+		let userInfo = this.props.navigation.getParam('userObject');
 		this.setState({
 			chatroomInfo: chatInfo,
-			userInfo: userInfo,
-			keyboardShown: false
+			keyboardShown: false,
+			userData: userInfo
 		});
 		this.getChannel();
 	}
@@ -73,11 +77,19 @@ export default class MessageRoom extends Component {
 						return this.getChannel();
 					}, 1000);
 				} else {
+					// sb.connect(this.state.userID, (user, error) => {
+					//     if (error) {
+					//         console.log("Error", error)
+					//     } else {
+					//         console.log("Joining Channel", user)
+					//     }
+					// })
 					channel.enter(function(response, error) {
 						console.log('Welcome to the Channel', channel);
 						if (error) {
 						}
 					});
+					// console.log('Mounting being handled, thats what she said');
 					this.handleMounting(channel, error);
 				}
 			}
@@ -153,9 +165,11 @@ export default class MessageRoom extends Component {
 				messages: messages.concat(this.state.messages)
 			});
 		});
+		// console.log(message);
 	};
 
 	render() {
+		// console.log("Messages", this.state.messages)
 		return (
 			<View>
 				{this.state.loading ? (
@@ -170,9 +184,10 @@ export default class MessageRoom extends Component {
 					<View style={styles.messageSection}>
 						<View>
 							<MessageView
-								userInfo={this.state.userInfo}
+								userID={this.state.userID}
 								chatroomInfo={this.state.chatroomInfo}
 								messages={this.state.messages}
+								user={this.state.userData}
 								// style={styles.messageSection}
 							/>
 							<MessageForm

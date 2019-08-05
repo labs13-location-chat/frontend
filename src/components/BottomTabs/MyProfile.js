@@ -1,5 +1,5 @@
 import React from 'react';
-
+// import AsyncStorage from '@react-native-community/async-storage';
 import {
 	View,
 	Text,
@@ -242,7 +242,7 @@ export default class MyProfile extends React.Component {
 		axios
 			.get(`${URL}/api/users/${user_id}`)
 			.then(res => {
-				this.props.screenProps.setUser(res.data[0])
+				// this.props.screenProps.setUser(res.data[0])
 				console.log('res', res.data)
 				this.setState({
 					id: res.data.id,
@@ -291,18 +291,30 @@ export default class MyProfile extends React.Component {
 		} else return this.state.photo;
 	};
 
-	signOut = async () => {
-		AsyncStorage.getItem('userData')
-		await AsyncStorage.clear(() => this.props.screenProps.clearUser(this.props));
-		// this.setState({
-		// 	user: undefined
-		// });
-		//await this.props.navigation.navigate('Login');
-		await alert("You have been logged out.")
-		// sb.disconnect(function() {
-		// 	// A current user is discconected from SendBird server.
-		// });
-	};
+	// signOut = async () => {
+	// 	try {
+	// 		return await AsyncStorage.getAllKeys()
+	// 			.then(AsyncStorage.multiRemove)
+	// 			.then(this.props.screenProps.clearState())
+	// 			.then(this.props.navigation.navigate("Login"))
+	// 	} catch (err) {
+	// 		console.log(err)
+	// 		return false;
+	// 	}
+	// 	// try{
+			
+	// 	// 	AsyncStorage.setItem('userData', 'hamza').then(() => {
+	// 	// 		AsyncStorage.getItem('userData').then(user => {
+	// 	// 			if(user === 'hamza'){
+	// 	// 				this.props.navigation.navigate('Login')
+	// 	// 			}
+	// 	// 		})
+	// 	// 	})
+	// 	// } catch(e) {
+	// 	// 	console.log(e)
+	// 	// }
+
+	// };
 
 	render() {
 		const { photo } = this.state;
@@ -359,7 +371,7 @@ export default class MyProfile extends React.Component {
 									style={styles.nameInputBox}
 									onChangeText={this.handleNameChange}
 									name='first_name'
-									value={this.state.first_name.toUpperCase()}
+									value={this.state.first_name}
 								/>
 								<View style={styles.phoneView}>
 									<Icon name='phone' size={20} />
@@ -415,7 +427,7 @@ export default class MyProfile extends React.Component {
 									borderBottomWidth: 0.7
 								}}
 							/> */}
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									title='Logout'
 									onPress={this.signOut}
 								>
@@ -425,7 +437,7 @@ export default class MyProfile extends React.Component {
 											Logout
 										</Text>
 									</View>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 							</View>
 							{/* <KeyboardSpacer /> */}
 						</View>

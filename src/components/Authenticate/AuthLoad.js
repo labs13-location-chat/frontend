@@ -1,5 +1,7 @@
 import React from "react";
-import { ActivityIndicator, AsyncStorage, StatusBar, View } from "react-native";
+import { ActivityIndicator, StatusBar, View, AsyncStorage } from "react-native";
+// import AsyncStorage from '@react-native-community/async-storage';
+
 
 export default class AuthLoad extends React.Component {
   constructor() {
@@ -7,9 +9,18 @@ export default class AuthLoad extends React.Component {
     this.checkingUser();
   }
   
+  componentDidUpdate(prevProps) {
+    if (this.props.screenProps.pageRefreshCounter !== prevProps.screenProps.pageRefreshCounter) {
+      this.checkingUser()
+    }
+  }
+
   checkingUser = async () => {
-    const existing = await AsyncStorage.getItem("userData");
-    existing ? this.props.navigation.navigate("App") :  this.props.navigation.navigate("AuthCheck");
+    try {
+      const existing = await AsyncStorage.getItem("userData");
+      console.log("Checking User:", existing)
+      this.props.navigation.navigate(existing ? "App" : "AuthCheck")
+    } catch (e) {}
   };
 
   render() {

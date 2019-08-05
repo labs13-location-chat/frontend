@@ -22,13 +22,13 @@ export default class Message extends Component {
     }
 
     checkForLoginType = () => {
-        if (this.props.userInfo.google_id) {
+        if (this.props.user.google_id) {
             this.setState({
-                id: this.props.userInfo.google_id
+                id: this.props.user.google_id
             })
         } else {
             this.setState({
-                id: this.props.userInfo.facebook_id
+                id: this.props.user.facebook_id
             })
         }
     }
@@ -67,6 +67,9 @@ export default class Message extends Component {
     }
     
     render() {
+        console.log(this.props.user)
+        // console.log('in message', this.props)
+        // console.log(this.state)
         {/* <Image
             style={{ width: 35, height: 35, borderRadius: 35 }}
             source={{

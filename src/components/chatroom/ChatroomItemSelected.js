@@ -55,10 +55,17 @@ export default class ChatroomItemSelected extends Component {
         // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
-
+      
       this.getDistanceFromChat()
     }
   
+    getUser = async () => {
+      let user = await AsyncStorage.getItem('userData')
+      this.setState({
+
+      })
+    }
+
     getDistanceFromChat = () => {
       if (this.state.location.latitude === 0 ) {
         return setTimeout(() => {
@@ -83,27 +90,27 @@ export default class ChatroomItemSelected extends Component {
       return alert("Distance still loading, please try again")
     } else if (this.props.chat.chatroom_type === "worldwide" && this.props.chat.distance > 0) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "rural city" && this.props.chat.distance <= 161000) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     }if (this.props.chat.chatroom_type === "big city" && this.props.chat.distance <= 40500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "town" && this.props.chat.distance <= 24500) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "beach" && this.props.chat.distance <= 1600) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     } else if (this.props.chat.chatroom_type === "stadium" && this.props.chat.distance <= 800) {
       this.props.navigation.navigate('Chatroom', {
-        user: this.props.chat
+        user: this.props.chat, userObject: this.props.user
       })
     } else {
       alert(`You aren't in or near ${this.props.chat.name}!`)
