@@ -40,7 +40,6 @@ export default class ChatroomItemSelected extends Component {
   componentDidMount() {
     axios.get(`${URL}/api/chatrooms/${this.props.chat.id}`)
       .then(res => {
-        // console.log('data',res.data)
         this.setState({
           location: {
             longitude: res.data.longitude,
@@ -52,7 +51,6 @@ export default class ChatroomItemSelected extends Component {
           },
           chatroom: res.data
         })
-        // console.log('location', this.state.location)
       })
       .catch(err => console.log(err))
       
@@ -80,7 +78,6 @@ export default class ChatroomItemSelected extends Component {
         this.setState({
           distance: distance
         })
-        // console.log("distance", distance)
         }
     }
 
@@ -121,10 +118,6 @@ export default class ChatroomItemSelected extends Component {
 
 
   render() {
-    // console.log("distance in state", this.state.distance)
-    // console.log('focusedlocation', this.props.focusedLocation)
-    // console.log('location', this.state.location)
-    // console.log('chatroom ', this.state.chatroom)
     return (
       <View>
         <View>

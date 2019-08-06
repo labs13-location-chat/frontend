@@ -77,19 +77,11 @@ export default class MessageRoom extends Component {
 						return this.getChannel();
 					}, 1000);
 				} else {
-					// sb.connect(this.state.userID, (user, error) => {
-					//     if (error) {
-					//         console.log("Error", error)
-					//     } else {
-					//         console.log("Joining Channel", user)
-					//     }
-					// })
 					channel.enter(function(response, error) {
 						console.log('Welcome to the Channel', channel);
 						if (error) {
 						}
 					});
-					// console.log('Mounting being handled, thats what she said');
 					this.handleMounting(channel, error);
 				}
 			}
@@ -165,11 +157,9 @@ export default class MessageRoom extends Component {
 				messages: messages.concat(this.state.messages)
 			});
 		});
-		// console.log(message);
-	};
+		};
 
 	render() {
-		// console.log("Messages", this.state.messages)
 		return (
 			<View>
 				{this.state.loading ? (
@@ -188,7 +178,6 @@ export default class MessageRoom extends Component {
 								chatroomInfo={this.state.chatroomInfo}
 								messages={this.state.messages}
 								user={this.state.userData}
-								// style={styles.messageSection}
 							/>
 							<MessageForm
 								sendMessage={this.sendMessage}

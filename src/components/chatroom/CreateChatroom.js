@@ -81,6 +81,7 @@ class CreateChatroom extends Component {
         })
     }
 
+    
     handleDescriptionInput = val => {
         console.log(this.state.newChatroom)
         this.setState({
@@ -92,6 +93,7 @@ class CreateChatroom extends Component {
         })
     }
 
+    // Generates a random image to upload to server
     randomAvatar = () => {
         let images = 
         ["https://sendbird.com/main/img/cover/cover_01.jpg", 
@@ -109,7 +111,7 @@ class CreateChatroom extends Component {
 
 
 
-
+// Axios call for creation of chatroom on our server
     addChatroom = () => {
         axios
         .post("https://labs13-localchat.herokuapp.com/api/chatrooms/", this.state.newChatroom)
@@ -151,7 +153,7 @@ class CreateChatroom extends Component {
 
     
 
-
+// First, checks to make sure fields have info populated.  Then creates a chatroom on the sendbird server.  If that chatroom creation is successful, it posts the chatroom to our server.
     createChatroom = async () => {
         if (this.state.newChatroom.name.length < 1 || this.state.newChatroom.description.length < 1) {
             await alert("Please enter a Name and/or Description!")
@@ -173,8 +175,7 @@ class CreateChatroom extends Component {
                         chatroom_url: channel.url 
                     }
                 }, () => this.addChatroom())
-                // console.log(openChannel, channel, this, this.state.newChatroom)
-            })  
+               })  
     }
 }
     

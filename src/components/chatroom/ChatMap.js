@@ -16,7 +16,6 @@ export default class ChatMap extends Component {
 
     this.state = {
       chatLocations: [],
-      chatCoords: [],
       firstname: "",
       lastname: "",
       email: "",

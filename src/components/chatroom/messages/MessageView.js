@@ -14,17 +14,12 @@ var ChannelHandler = new sb.ChannelHandler()
 export default class MessageView extends Component {
     constructor(props) {
         super(props)
-    
-        this.state = {
-             
-        }
     }
 
 
     
     
     render() {
-        // const messages = this.props.messages.reverse()
         return (
             <View>
                 <FlatList 

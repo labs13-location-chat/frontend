@@ -149,18 +149,8 @@ export default class JoinChat extends Component {
                 chatWithDistanceFallbackForSearch: newChatItem,
                 loadingChatRooms: false
               })
-            }
-        
-    
+            }    
 
-    checkForSortedChats = () => {
-        return this.setState({
-          loadingChatRooms: false
-        }) &&
-        console.log("Checking")
-    }
-
-        
     // sendbird connection initiated
     connectToSendbird = () => {
         if (this.state.user == null) {
@@ -245,7 +235,6 @@ export default class JoinChat extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     };
-console.log("JC User state", this.state.user)
     return (
       <View style={styles.container}>
         <View>
